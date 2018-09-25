@@ -23,6 +23,7 @@ import VoteButton from '../../components/VoteButton/VoteButton';
 import FormattedText from '../../components/FormattedText/FormattedText';
 import Link from '../../components/Link/Link';
 import StickyMessage from '../../components/StickyMessage/StickyMessage';
+import withEverything from '../../withEverything';
 
 class Article extends React.Component {
   static propTypes = {};
@@ -245,4 +246,4 @@ async componentDidMount()
   }
 }
 
-export default withStyles(s)(Article);
+export default withEverything(Article, s, '/api/article/:id');

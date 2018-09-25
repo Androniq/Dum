@@ -50,6 +50,7 @@ import deleteArticle from './serverLogic/deleteArticle';
 import getAccount from './serverLogic/getAccount';
 import assert from 'assert';
 import FB from 'fb';
+import { StaticRouter } from 'react-router';
 
 process.env.IS_SERVER=true;
 
@@ -304,7 +305,7 @@ app.get('/api/getArticles', async (req, res) => {
 app.get('/api/article/:code', async (req, res) => {
   await serverReady();
   const articleData = await getArticleInfo(req.params.code, getUser(req));
-  res.send({ articleData });
+  res.send(articleData);
 });
 
 app.get('/api/getArticle/:code', async (req, res) => {
@@ -432,19 +433,16 @@ app.get('*', async (req, res, next) => {
       pathname: req.path,
       query: req.query,
     };
-    
-    const route = await router.resolve(context);
-
-    if (route.redirect) {
-      res.redirect(route.status || 302, route.redirect);
-      return;
-    }
 
     context.location = { state: { returnTo: req.session.ssrLastUrl || "/" }};
     if (req.path != "/json") { req.session.ssrLastUrl = req.path; }
-    const data = { ...route };
+    const data = { };
     data.children = ReactDOM.renderToString(
-      <UserContext.Provider value={context}><App context={context}>{route.component}</App></UserContext.Provider>,
+      <UserContext.Provider value={context}>
+        <StaticRouter location={context.pathname} context={context}>
+          <App context={context} />
+        </StaticRouter>
+      </UserContext.Provider>,
     );
     data.styles = [{ id: 'css', cssText: [...css].join('') }];
 
@@ -457,8 +455,6 @@ app.get('*', async (req, res, next) => {
       }
     };
     addChunk('client');
-    if (route.chunk) addChunk(route.chunk);
-    if (route.chunks) route.chunks.forEach(addChunk);
 
     data.scripts = Array.from(scripts);
     data.app = {
@@ -466,7 +462,7 @@ app.get('*', async (req, res, next) => {
     };
 
     const html = ReactDOM.renderToStaticMarkup(<Html {...data} />);
-    res.status(route.status || 200);
+    res.status(200);
     res.send(`<!doctype html>${html}`);
   } catch (err) {
     next(err);

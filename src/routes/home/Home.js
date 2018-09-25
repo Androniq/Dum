@@ -11,23 +11,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Home.css';
+import withEverything from '../../withEverything';
 
 class Home extends React.Component {
   static propTypes = {
-    articles: PropTypes.arrayOf(
-      PropTypes.shape({
-        _id: PropTypes.string.isRequired,
-        PageTitle: PropTypes.string.isRequired,
-        Url: PropTypes.string.isRequired,
-      }),
-    ).isRequired,
   };
 
   render() {
+    console.info(this.props.data);
     return (
       <div className={s.root}>
         <div className={s.container}>
-          {this.props.articles.map(item => (
+          {this.props.data.data.map(item => (
             <article key={item._id} className={s.newsItem}>
               <h3 className={s.newsTitle}>
                 <a href={`/article/${item.Url}`}>{item.PageTitle}</a>
@@ -41,4 +36,4 @@ class Home extends React.Component {
   }
 }
 
-export default withStyles(s)(Home);
+export default withEverything(Home, s, '/api/getArticles');

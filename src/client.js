@@ -19,8 +19,8 @@ import App from './components/App';
 import createFetch from './createFetch';
 import history from './history';
 import { updateMeta } from './DOMUtils';
-import router from './router';
 import { UserContext } from './UserContext';
+import { BrowserRouter } from 'react-router-dom';
 
 process.env.IS_SERVER=false;
 
@@ -66,18 +66,8 @@ async function onLocationChange(location, action) {
     context.pathname = location.pathname;
     context.query = queryString.parse(location.search);
 
-    // Traverses the list of routes in the order they are defined until
-    // it finds the first route that matches provided URL path string
-    // and whose action method returns anything other than `undefined`.
-    const route = await router.resolve(context);
-
     // Prevent multiple page renders during the routing process
     if (currentLocation.key !== location.key) {
-      return;
-    }
-
-    if (route.redirect) {
-      history.replace(route.redirect);
       return;
     }
 
@@ -100,7 +90,11 @@ async function onLocationChange(location, action) {
 
     const renderReactApp = isInitialRender ? ReactDOM.hydrate : ReactDOM.render;
     appInstance = renderReactApp(
-      <UserContext.Provider value={context}><App context={context}>{route.component}</App></UserContext.Provider>,
+      <UserContext.Provider value={context}>
+        <BrowserRouter>
+          <App context={context} />
+        </BrowserRouter>
+      </UserContext.Provider>,
       container,
       () => {
         if (isInitialRender) {
@@ -115,9 +109,7 @@ async function onLocationChange(location, action) {
           return;
         }
 
-        document.title = route.title;
-
-        updateMeta('description', route.description);
+        //updateMeta('description', route.description);
         // Update necessary tags in <head> at runtime here, ie:
         // updateMeta('keywords', route.keywords);
         // updateCustomMeta('og:url', route.canonicalUrl);
