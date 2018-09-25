@@ -1,0 +1,162 @@
+.editArticleContainer
+{
+    max-width: 980px;
+    margin-left: auto;
+    margin-right: auto;    
+}
+
+.editArticleGrid
+{
+    display: grid;
+    justify-items: center;    
+}
+
+.textInput
+{
+    margin: 2px;
+    padding: 0 0 6px 6px;
+    border-radius: 10px;
+    border-color: darkgoldenrod;
+    height: 28px;
+    width: 460px;
+}
+
+.textInput:focus
+{
+    box-shadow: 0 0 3pt 2pt silver;
+    outline: none;
+}
+
+.textInput::placeholder
+{
+    color: #709090;
+}
+
+.grid11
+{
+    grid-row: 1;
+    grid-column: 1;
+}
+
+.grid12
+{
+    grid-row: 1;
+    grid-column: 2;    
+}
+
+.grid21
+{
+    grid-row: 2;
+    grid-column: 1;
+}
+
+.grid22
+{
+    grid-row: 2;
+    grid-column: 2;
+}
+
+.grid31
+{
+    grid-row: 3;
+    grid-column: 1;
+}
+
+.grid32
+{
+    grid-row: 3;
+    grid-column: 2;
+}
+
+.grid41
+{
+    grid-row: 4;
+    grid-column: 1;
+}
+
+.grid42
+{
+    grid-row: 4;
+    grid-column: 2;
+}
+
+.contentEditor
+{
+    margin: 10px;
+    min-height: 200px;
+}
+
+.buttonsContainer
+{
+    display: flex;
+    flex-direction: row;
+}
+
+.textEditor
+{
+}
+
+.validationFail
+{
+    border: red;
+    border-width: 2px;
+    border-style: solid;
+}
+
+.urlValidator
+{
+    display: flex;
+    margin: 0;
+    width: 480px;
+    align-items: center;
+}
+
+.urlBoxSpecial
+{
+    margin: 2px 2px 2px 5px;
+}
+
+.visible
+{
+    display: inline;
+}
+
+.invisible
+{
+    display: none;
+}
+
+.urlValidatorOk
+{
+    flex-basis: 0;
+    width: 28px;
+    height: 28px;
+    flex: auto;
+}
+
+.urlValidatorFail
+{    
+    width: 28px;
+    height: 28px;
+    flex: auto;
+}
+
+.modalContainer
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.modalText
+{
+    text-align: center;
+    font-weight: 600;
+}
+
+.modalButtons
+{
+    display: flex;
+    flex-direction: row;
+    width: 600px;
+}

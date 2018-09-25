@@ -1,0 +1,48 @@
+
+.priorityCollapseIndicator
+{
+    margin: 1px -8px 0px 10px;
+    width: 20px;
+    height: 20px;
+}
+
+.priorityCollapseIndicatorClose
+{
+    transition: transform 0.5s;
+    transform: rotate(90deg);
+}
+
+.priorityCollapseIndicatorOpen
+{
+    transition: transform 0.5s;
+    transform: rotate(0deg);
+}
+
+.priorityHeader
+{
+    display: flex;
+    background: blue;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    margin: 3px;
+}
+
+.priorityTitle
+{
+    flex-grow: 1;
+    font-weight: bold;
+}
+
+.priorityPopularOverride
+{
+    font-weight: bold;
+    text-align: center;
+}
+
+.priorityVoteFor
+{
+    flex-grow: 1;
+    font-weight: bold;
+    text-align: right;
+}

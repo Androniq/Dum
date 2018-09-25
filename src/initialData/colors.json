@@ -1,0 +1,133 @@
+[
+    {
+       "Title": "White",
+       "Description": "Ми не знаємо, який варіант правильний.",
+       "Code": "N",
+       "ID": "1087f2bd-325c-42c1-bfeb-420457e99b40",
+       "CreatedDate": "2018-08-24T19:37:48Z",
+       "UpdatedDate": "2018-08-26T15:41:25Z",
+       "Owner": "4d17fb2a-b39c-4fb2-b575-6cae82773a51",
+       "ColorCode": "white",
+       "Swap": false
+    },
+    {
+       "Title": "Cyan",
+       "Description": "Обидва варіанти правильні, але вони можуть мати різні значення.",
+       "Code": "EQS",
+       "ID": "cf3ef224-1bad-4ef0-9031-816e81f6faa7",
+       "CreatedDate": "2018-08-24T19:37:24Z",
+       "UpdatedDate": "2018-08-25T09:22:34Z",
+       "Owner": "4d17fb2a-b39c-4fb2-b575-6cae82773a51",
+       "ColorCode": "cyan"
+    },
+    {
+       "Title": "LimeB",
+       "Description": "Варіанти видаються рівноправними, хоча варіант праворуч більш рекомендований.",
+       "Code": "BAE",
+       "ID": "c73da588-bf4a-4221-a0db-22e6b178871b",
+       "CreatedDate": "2018-08-24T19:37:06Z",
+       "UpdatedDate": "2018-08-26T21:11:49Z",
+       "Owner": "4d17fb2a-b39c-4fb2-b575-6cae82773a51",
+       "ColorCode": "#C0FF00"
+    },
+    {
+       "Title": "LimeA",
+       "Description": "Варіанти видаються рівноправними, хоча варіант праворуч більш рекомендований.",
+       "Code": "ABE",
+       "ID": "3e7bcf9d-186a-44ed-ac16-d48997618e6a",
+       "CreatedDate": "2018-08-24T19:36:43Z",
+       "UpdatedDate": "2018-08-26T21:11:53Z",
+       "Owner": "4d17fb2a-b39c-4fb2-b575-6cae82773a51",
+       "ColorCode": "#C0FF00",
+       "Swap": true
+    },
+    {
+       "Title": "OrangeB",
+       "Description": "Варіант ліворуч помилковий або не рекомендований до вжитку.",
+       "Code": "BBA",
+       "WhiteText": true,
+       "ID": "bf3062e7-d34a-4429-a492-d7e301c78860",
+       "CreatedDate": "2018-08-24T19:36:29Z",
+       "UpdatedDate": "2018-08-25T09:22:39Z",
+       "Owner": "4d17fb2a-b39c-4fb2-b575-6cae82773a51",
+       "ColorCode": "orange"
+    },
+    {
+       "Title": "OrangeA",
+       "Description": "Варіант ліворуч помилковий або не рекомендований до вжитку.",
+       "Code": "AAB",
+       "WhiteText": true,
+       "ID": "4374f54c-7134-4fb9-a35b-e3169ac53858",
+       "CreatedDate": "2018-08-24T19:36:10Z",
+       "UpdatedDate": "2018-08-26T15:41:48Z",
+       "Owner": "4d17fb2a-b39c-4fb2-b575-6cae82773a51",
+       "ColorCode": "orange",
+       "Swap": true
+    },
+    {
+       "Title": "Blue",
+       "Description": "Ці дві лексеми мають різні значення.",
+       "Code": "S",
+       "WhiteText": true,
+       "ID": "29fdd805-098c-4994-8212-39cb99b56f40",
+       "CreatedDate": "2018-08-24T19:35:59Z",
+       "UpdatedDate": "2018-08-25T09:22:43Z",
+       "Owner": "4d17fb2a-b39c-4fb2-b575-6cae82773a51",
+       "ColorCode": "blue"
+    },
+    {
+       "Title": "Green",
+       "Description": "Обидва варіанти рівноправні й мають однакове значення.",
+       "Code": "EQ",
+       "WhiteText": true,
+       "ID": "653c15de-b166-45c2-86ed-a16f4f8dffa8",
+       "CreatedDate": "2018-08-24T19:35:44Z",
+       "UpdatedDate": "2018-08-25T09:33:59Z",
+       "Owner": "4d17fb2a-b39c-4fb2-b575-6cae82773a51",
+       "ColorCode": "green"
+    },
+    {
+       "Title": "YellowB",
+       "Description": "Варіант ліворуч правильний, але не рекомендований до вжитку.",
+       "Code": "BA",
+       "ID": "65987a55-2eca-45b1-aedd-9776bc6417a7",
+       "CreatedDate": "2018-08-24T19:35:30Z",
+       "UpdatedDate": "2018-08-25T09:22:47Z",
+       "Owner": "4d17fb2a-b39c-4fb2-b575-6cae82773a51",
+       "ColorCode": "yellow"
+    },
+    {
+       "Title": "YellowA",
+       "Description": "Варіант ліворуч правильний, але не рекомендований до вжитку.",
+       "Code": "AB",
+       "ID": "76d6c0e2-a9ba-4ded-9450-c508e88176f7",
+       "CreatedDate": "2018-08-24T19:35:08Z",
+       "UpdatedDate": "2018-08-26T15:41:46Z",
+       "Owner": "4d17fb2a-b39c-4fb2-b575-6cae82773a51",
+       "ColorCode": "yellow",
+       "Swap": true
+    },
+    {
+       "Title": "RedB",
+       "Description": "Варіант ліворуч помилковий.",
+       "Code": "B",
+       "WhiteText": true,
+       "ID": "11a89943-c104-48f9-ae01-df0dc925dd81",
+       "CreatedDate": "2018-08-24T19:34:55Z",
+       "UpdatedDate": "2018-08-25T09:22:51Z",
+       "Owner": "4d17fb2a-b39c-4fb2-b575-6cae82773a51",
+       "ColorCode": "red"
+    },
+    {
+       "Title": "RedA",
+       "Description": "Варіант ліворуч помилковий.",
+       "Code": "A",
+       "WhiteText": true,
+       "ID": "9400f52f-83ca-4112-af8b-6563c9607dc3",
+       "CreatedDate": "2018-08-24T19:33:53Z",
+       "UpdatedDate": "2018-08-26T15:41:45Z",
+       "Owner": "4d17fb2a-b39c-4fb2-b575-6cae82773a51",
+       "ColorCode": "red",
+       "Swap": true
+    }
+ ]

@@ -1,0 +1,144 @@
+.infoArea
+{
+    margin: 0px auto;
+    min-width: 480px;
+    max-width: 980px;
+    display: flex;
+    flex-direction: column;
+}
+
+.header
+{
+    text-align: center;
+}
+
+.tokenHeader
+{
+    padding: 10px 20px;
+    margin: 0px auto;
+    min-height: 20px;
+    display: flex;
+    border-radius: 20px;
+    width: 100%;
+}
+
+.tokenBase
+{
+    font-weight: bold;
+    flex-grow: 1;
+}
+
+.tokenA
+{
+    text-align: left;
+}
+
+.tokenB
+{
+    text-align: right;
+}
+
+.generalResult
+{
+    font-weight: bold;
+    text-align: center;
+}
+
+.totalVotes
+{
+    text-align: right;
+    flex-grow: 1;
+    font-style: italic;
+    color: gray;
+}
+
+.buttonContainer
+{
+    display: flex;
+}
+
+.textNotAuthorized
+{
+    text-align: center;
+    color: lightslategray;
+    font-style: italic;
+    flex-grow: 1;
+}
+
+.containerNotAuthorized
+{
+    display: flex;
+}
+
+.pvContainer
+{
+    display: grid;
+    grid-gap: 6px;    
+}
+
+.prioritiesContainer
+{
+    display: inline;
+}
+
+.priorityContainer
+{
+    display: inline;
+}
+
+.priorityArgs
+{
+    display: inline;       
+}
+
+.priorityArgsEmpty
+{
+    margin: 0 1px 0 0;
+}
+
+.argumentContainer
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.argumentHeader
+{
+    display: flex;
+    background: cyan;
+    padding: 5px 15px;
+    border-radius: 20px;
+    margin: 3px;
+}
+
+.argumentTitle
+{
+    flex-grow: 1;
+    text-align: left;
+    font-weight: bold;
+    align-items: center;
+}
+
+.argumentVote
+{
+    flex-grow: 1;
+    text-align: right;
+    font-weight: bold;
+}
+
+.argumentBody
+{
+    border-color: cyan;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 20px;
+    padding: 0px 20px;
+    margin: 1px 3px;    
+}
+
+.argumentEditButton
+{
+    width: 24px;
+    height: 24px;  
+    margin: -1px -9px 1px 9px;
+}

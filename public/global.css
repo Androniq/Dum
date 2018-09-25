@@ -1,0 +1,3 @@
+/* make bold bold and unmake list items italic :) */
+strong { font-weight: bold !important; }
+li { font-style: normal; }

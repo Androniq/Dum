@@ -1,0 +1,10 @@
+.outerSpan
+{
+    font-size: 20px;
+    text-align: justify;
+}
+
+.outerSpan * p
+{
+    text-indent: 50px;
+}

@@ -1,0 +1,69 @@
+.blogContainer
+{
+    display: flex;
+    flex-direction: column;
+    max-width: 980px;
+    min-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.blogHeader
+{
+    display: flex;
+    flex-direction: row;
+}
+
+.blogTitle
+{
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+}
+
+.blogTitleH
+{
+    font-weight: bold;
+    text-align: left;
+    flex-grow: 1;
+    font-size: 60px;
+    margin: 0;
+}
+
+.authorArea
+{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    align-items: flex-end;
+}
+
+.userCardContainer
+{
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    margin: 20px 0 0 0;
+    align-items: center;
+}
+
+.userCardAvatar
+{
+    object-fit: cover;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;    
+}
+
+.userCardName
+{
+    margin: 2px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-align: right;
+}
+
+.authorAreaDate
+{
+    font-style: italic;    
+}

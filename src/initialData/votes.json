@@ -1,0 +1,74 @@
+[
+    {
+       "Title": "A",
+       "Description": "<p><span style=\"color:#ffffff\"><span style=\"background-color:#ff0000\">Червоний<\/span><\/span>: лексема ліворуч&nbsp;правильна, праворуч&nbsp;&ndash; помилкова<\/p>",
+       "HintTemplate": "<p><span style=\"color:#ffffff\"><span style=\"background-color:#ff0000\">Червоний<\/span><\/span>: «%A%» &ndash; правильно, «%B%» &ndash; помилка<\/p>",
+       "Code": "A",
+       "ShortDescriptionTemplate": "Тільки %A%",
+       "ID": "ba625e0e-a1c6-4605-a615-b83b0a99399e",
+       "CreatedDate": "2018-08-24T14:04:12Z",
+       "UpdatedDate": "2018-08-27T08:23:58Z",
+       "Owner": "4d17fb2a-b39c-4fb2-b575-6cae82773a51",
+       "Order": 1
+    },
+    {
+        "Title": "А або Б",
+        "Description": "<p><span style=\"background-color:#ffff00\">Жовтий<\/span>: обидві лексеми правильні, але та, що ліворуч,&nbsp;краща і рекомендована<\/p>",
+        "HintTemplate": "<p><span style=\"background-color:#ffff00\">Жовтий<\/span>: обидві лексеми правильні, але «%A%» краща і рекомендована<\/p>",
+        "Code": "AB",
+        "ShortDescriptionTemplate": "Краще %A%",
+        "ID": "d4ff0d39-7419-45b9-9471-460e564f7e89",
+        "CreatedDate": "2018-08-24T14:04:14Z",
+        "UpdatedDate": "2018-08-27T08:23:59Z",
+        "Owner": "4d17fb2a-b39c-4fb2-b575-6cae82773a51",
+        "Order": 2
+     },
+     {
+        "Title": "Рівнозначні",
+        "Description": "<p><span style=\"background-color:#00a000;color:#ffffff\">Зелений<\/span>: обидві лексеми правильні, рівнозначні та синонімічні<\/p>",
+        "HintTemplate": "<p><span style=\"background-color:#00a000;color:#ffffff\">Зелений<\/span>: обидві лексеми правильні, рівнозначні та синонімічні<\/p>",
+        "Code": "EQ",
+        "ShortDescriptionTemplate": "Рівнозначні",
+        "ID": "c36ae448-dd14-4417-a397-fd8cd77dc285",
+        "CreatedDate": "2018-08-24T14:04:20Z",
+        "UpdatedDate": "2018-08-27T08:24:00Z",
+        "Owner": "4d17fb2a-b39c-4fb2-b575-6cae82773a51",
+        "Order": 3
+     },
+     {
+        "Title": "Б або А",
+        "Description": "<p><span style=\"background-color:#ffff00\">Жовтий<\/span>: обидві лексеми правильні, але та, що праворуч,&nbsp;краща і рекомендована<\/p>",
+        "HintTemplate": "<p><span style=\"background-color:#ffff00\">Жовтий<\/span>: обидві лексеми правильні, але «%B%» краща і рекомендована<\/p>",
+        "Code": "BA",
+        "ShortDescriptionTemplate": "Краще %B%",
+        "ID": "596f995a-0b86-43cb-838b-3e84e7935092",
+        "CreatedDate": "2018-08-24T14:04:34Z",
+        "UpdatedDate": "2018-08-27T08:24:00Z",
+        "Owner": "4d17fb2a-b39c-4fb2-b575-6cae82773a51",
+        "Order": 4
+     },
+     {
+        "Title": "Б",
+        "Description": "<p><span style=\"color:#ffffff\"><span style=\"background-color:#ff0000\">Червоний<\/span><\/span>: лексема праворуч&nbsp;правильна, ліворуч&nbsp;&ndash; помилкова<\/p>",
+        "HintTemplate": "<p><span style=\"color:#ffffff\"><span style=\"background-color:#ff0000\">Червоний<\/span><\/span>: «%B%» &ndash; правильно, «%A%» &ndash; помилка<\/p>",
+        "Code": "B",
+        "ShortDescriptionTemplate": "Тільки %B%",
+        "ID": "e2830cac-3779-45fd-aed7-0bed1d95098a",
+        "CreatedDate": "2018-08-24T14:04:41Z",
+        "UpdatedDate": "2018-08-27T08:24:02Z",
+        "Owner": "4d17fb2a-b39c-4fb2-b575-6cae82773a51",
+        "Order": 5
+     },
+     {
+        "Title": "Семантика",
+        "Description": "<p><span style=\"color:#ffffff\"><span style=\"background-color:#0000ff\">Синій<\/span><\/span>: обидві лексеми правильні, але вони мають різні значення<\/p>",
+        "HintTemplate": "<p><span style=\"color:#ffffff\"><span style=\"background-color:#0000ff\">Синій<\/span><\/span>: обидві лексеми правильні, але вони мають різні значення<\/p>",
+        "Code": "S",
+        "ShortDescriptionTemplate": "Значення різні",
+        "ID": "90de26a1-ee44-41d4-9af4-07dfeb03b06b",
+        "CreatedDate": "2018-08-24T14:04:46Z",
+        "UpdatedDate": "2018-08-27T08:24:03Z",
+        "Owner": "4d17fb2a-b39c-4fb2-b575-6cae82773a51",
+        "Order": 6
+     }
+ ]
