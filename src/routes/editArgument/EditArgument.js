@@ -8,7 +8,6 @@ import TextInput from '../../components/TextInput/TextInput';
 import history from '../../history';
 import { guid, quillToolbarOptions, htmlNonEmpty } from '../../utility';
 import Select from 'react-select';
-import ReactQuill from 'react-quill';
 import BlueButton from '../../components/BlueButton/BlueButton';
 import FormattedText from '../../components/FormattedText/FormattedText';
 import Popup from "reactjs-popup";

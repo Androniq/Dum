@@ -7,7 +7,6 @@ import { UserContext } from '../../UserContext';
 import TextInput from '../../components/TextInput/TextInput';
 import history from '../../history';
 import { guid, quillToolbarOptions, htmlNonEmpty, checkPrivilege, USER_LEVEL_ADMIN } from '../../utility';
-import ReactQuill from 'react-quill';
 import BlueButton from '../../components/BlueButton/BlueButton';
 import Popup from "reactjs-popup";
 import QuillWrapper from '../../components/QuillWrapper/QuillWrapper';
@@ -21,7 +20,7 @@ class EditArticle extends React.Component {
     Title: '',
     PageTitle: '',
     Keywords: '',
-    Url: '',    
+    Url: '',
     TokenA: '',
     TokenB: '',
     ShortA: '',
