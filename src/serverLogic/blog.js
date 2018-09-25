@@ -25,7 +25,7 @@ import {
         var owner = await mongoAsync.dbCollections.users.findOne({ _id: blog.Owner });
         if (!owner)
         {
-            owner = await mongoAsync.dbCollections.users.findOne();
+            owner = await mongoAsync.dbCollections.users.findOne() || { displayName: "ТОЙ-КОГО-НЕ-МОЖНА-НАЗИВАТИ" };
         }
         blog.Owner = owner;
         return blog;
