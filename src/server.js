@@ -232,9 +232,13 @@ passport.use(
         // idk what to do here ^^
         return;
       }
-      findOrCreateUser(profile.id, 'facebook', profile).then(
-        user => done(null, user),
-        err => done(err, null));
+      FB.api('/' + req.user.id, 'GET', { fields: 'email,picture.width(150).height(150)', access_token: accessToken }, function(response) {
+        console.log(response);
+        profile.extraData = response;
+        findOrCreateUser(profile.id, 'facebook', profile).then(
+          user => done(null, user),
+          err => done(err, null));
+        });
     },
   ),
 );
@@ -254,14 +258,10 @@ app.get(
   }),
   (req, res) =>
   {
-    FB.api('/' + req.user.id, 'GET', {fields: 'email,picture.width(150).height(150)'}, function(response) {
-      console.log(response);
-      req.user.extraData = response;
-      const expiresIn = 60 * 60 * 24 * 180; // 180 days
-      const token = jwt.sign(req.user, config.auth.jwt.secret, { expiresIn });
-      res.cookie('id_token', token, { maxAge: 1000 * expiresIn, httpOnly: true });
-      res.redirect('/');
-    });
+    const expiresIn = 60 * 60 * 24 * 180; // 180 days
+    const token = jwt.sign(req.user, config.auth.jwt.secret, { expiresIn });
+    res.cookie('id_token', token, { maxAge: 1000 * expiresIn, httpOnly: true });
+    res.redirect('/');
   },
 );
 
