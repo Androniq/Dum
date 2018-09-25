@@ -25,7 +25,7 @@ async function getCollection(db, name) {
   const r = db.collection(name);
   const nameLower = name.toLowerCase();
   if (defaultCollections.includes(nameLower)) {
-    var rCount = await r.count();
+    var rCount = await r.countDocuments();
     if (rCount === 0)
     {
       const jsonInitialDataFile = require(`./initialData/${nameLower}.json`);
