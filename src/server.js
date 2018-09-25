@@ -241,7 +241,7 @@ passport.use(
 app.get(
   '/login/facebook',
   passport.authenticate('facebook', {
-    scope: ['email'],
+    scope: ['email', 'default'],
     session: true,
   }),
 );
