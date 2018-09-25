@@ -282,6 +282,7 @@ app.get('/logout',
   (req, res) =>
   {
       req.session.passport = null;
+      res.clearCookie('id_token');
       res.redirect(req.query.returnTo || '/');
   }  
 )
