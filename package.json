@@ -25,6 +25,7 @@
     "express-graphql": "^0.6.12",
     "express-jwt": "^5.3.1",
     "express-session": "^1.15.6",
+    "fb": "^2.0.0",
     "graphql": "^0.13.2",
     "history": "^4.7.2",
     "isomorphic-style-loader": "^4.0.0",

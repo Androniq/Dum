@@ -49,6 +49,7 @@ import deleteArgument from './serverLogic/deleteArgument';
 import deleteArticle from './serverLogic/deleteArticle';
 import getAccount from './serverLogic/getAccount';
 import assert from 'assert';
+import FB from 'fb';
 
 process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at:', p, 'reason:', reason);
@@ -241,7 +242,7 @@ passport.use(
 app.get(
   '/login/facebook',
   passport.authenticate('facebook', {
-    scope: ['email', 'default'],
+    scope: ['email'],
     session: true,
   }),
 );
@@ -251,11 +252,16 @@ app.get(
     failureRedirect: '/login',
     session: true,
   }),
-  (req, res) => {
-    const expiresIn = 60 * 60 * 24 * 180; // 180 days
-    const token = jwt.sign(req.user, config.auth.jwt.secret, { expiresIn });
-    res.cookie('id_token', token, { maxAge: 1000 * expiresIn, httpOnly: true });
-    res.redirect('/');
+  (req, res) =>
+  {
+    FB.api('/' + req.user.id, 'GET', {fields: 'email,picture.width(150).height(150)'}, function(response) {
+      console.log(response);
+      req.user.extraData = response;
+      const expiresIn = 60 * 60 * 24 * 180; // 180 days
+      const token = jwt.sign(req.user, config.auth.jwt.secret, { expiresIn });
+      res.cookie('id_token', token, { maxAge: 1000 * expiresIn, httpOnly: true });
+      res.redirect('/');
+    });
   },
 );
 
