@@ -171,7 +171,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: 'http://mydomain.example.com:3000/login/google/callback',
+      callbackURL: process.env.SITE_URL + 'login/google/callback',
       passReqToCallback: false,
     },
     (accessToken, refreshToken, profile, done) => {
@@ -222,7 +222,7 @@ passport.use(
     {
       clientID: process.env.FACEBOOK_APP_ID,
       clientSecret: process.env.FACEBOOK_APP_SECRET,
-      callbackURL: 'http://mydomain.example.com:3000/auth/facebook/callback',
+      callbackURL: process.env.SITE_URL + 'login/facebook/callback',
       passReqToCallback: false
     },
     (accessToken, refreshToken, profile, done) => {
