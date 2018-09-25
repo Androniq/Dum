@@ -51,6 +51,8 @@ import getAccount from './serverLogic/getAccount';
 import assert from 'assert';
 import FB from 'fb';
 
+process.env.IS_SERVER=true;
+
 process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at:', p, 'reason:', reason);
   // send entire app down. Process manager will restart it

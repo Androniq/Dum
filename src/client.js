@@ -22,6 +22,8 @@ import { updateMeta } from './DOMUtils';
 import router from './router';
 import { UserContext } from './UserContext';
 
+process.env.IS_SERVER=false;
+
 // Global (context) variables that can be easily accessed from any React component
 // https://facebook.github.io/react/docs/context.html
 const context = {

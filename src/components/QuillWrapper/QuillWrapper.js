@@ -6,14 +6,12 @@ export default class QuillWrapper extends Component
   constructor(props)
   {
     super(props);
-    if (typeof document !== 'undefined')
+    if (!process.env.IS_SERVER)
     {
-      console.info("POCHAV");
       this.quill = require('react-quill');
     }
     else
     {
-      console.info("NE POCHAV");
       this.quill = null;
     }
   }
