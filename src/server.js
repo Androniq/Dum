@@ -232,7 +232,7 @@ passport.use(
         // idk what to do here ^^
         return;
       }
-      FB.api('/' + req.user.id, 'GET', { fields: 'email,picture.width(150).height(150)', access_token: accessToken }, function(response) {
+      FB.api('/' + profile.id, 'GET', { fields: 'email,picture.width(150).height(150)', access_token: accessToken }, function(response) {
         console.log(response);
         profile.extraData = response;
         findOrCreateUser(profile.id, 'facebook', profile).then(
