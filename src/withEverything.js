@@ -11,6 +11,15 @@ export default function withEverything(Component, styles, apiCall)
         {
             return <StyledComponent {...props} />;
         }
+        var fetchMethod;
+        if (process.env.IS_SERVER)
+        {
+            fetchMethod = props.staticContext.fetch;
+        }
+        else
+        {
+            fetchMethod = fetch;
+        }
         const AsyncComponent = asyncComponent(
         {
             resolve: async () =>
@@ -23,8 +32,12 @@ export default function withEverything(Component, styles, apiCall)
                         matchedApiUrl = matchedApiUrl.replace(':' + paramName, props.match.params[paramName]);
                     }
                 }
-                var fetchReq = await fetch(matchedApiUrl);
+                var fetchReq = await fetchMethod(matchedApiUrl, { method: 'GET' });
                 var fetchJson = await fetchReq.json();
+                if (props.staticContext)
+                {
+                    props.staticContext.data = fetchJson;
+                }
                 return (WrappedComponent =>
                 {
                     class Hoc extends React.Component // HOC ad hoc!
@@ -37,10 +50,10 @@ export default function withEverything(Component, styles, apiCall)
                     return Hoc;
                 })(StyledComponent);
             },
+            LoadingComponent: () => <div style={{"text-align":"center","font-weight":"bold"}}>ЗОҐвантаження!</div>,
             serverMode: "resolve",
             env: process.env.IS_SERVER ? "node" : "browser"
         });
-        console.info(props);
         return <AsyncComponent {...props} />
     };
 }

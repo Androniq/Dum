@@ -13,6 +13,7 @@ import Layout from './Layout/Layout';
 import { Switch, Route } from 'react-router';
 import Home from '../routes/home/Home';
 import Article from '../routes/article/Article';
+import ErrorPage from '../routes/error/ErrorPage';
 
 const ContextType = {
   // Enables critical path CSS rendering
@@ -24,7 +25,8 @@ const ContextType = {
   query: PropTypes.object,
   user: PropTypes.object,
   location: PropTypes.object,
-  history: PropTypes.object
+  history: PropTypes.object,
+  data: PropTypes.object
 };
 
 /**
@@ -68,6 +70,7 @@ class App extends React.PureComponent {
         <Switch>
           <Route path='/' exact render={Home} />
           <Route path='/article/:id' render={Article} />
+          <Route component={ErrorPage} />
         </Switch>
       </Layout>
     );

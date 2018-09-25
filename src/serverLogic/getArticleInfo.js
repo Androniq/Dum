@@ -17,8 +17,11 @@ import {
 	USER_LEVEL_ADMIN,
     USER_LEVEL_OWNER } from '../utility';
 
- export default async function getArticleInfo(url, user)
-    {
+var counter = 1;
+
+export default async function getArticleInfo(url, user)
+{
+    var localCounter = counter++;
       const article = await mongoAsync.dbCollections.articles.findOne({ Url: url });
       const loadData = [];
       const voteResults = [];

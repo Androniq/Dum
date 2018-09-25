@@ -51,6 +51,8 @@ import getAccount from './serverLogic/getAccount';
 import assert from 'assert';
 import FB from 'fb';
 import { StaticRouter } from 'react-router';
+import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
+import asyncBootstrapper from 'react-async-bootstrapper';
 
 process.env.IS_SERVER=true;
 
@@ -434,16 +436,29 @@ app.get('*', async (req, res, next) => {
       query: req.query,
     };
 
+    const asyncContext = createAsyncContext();
+
     context.location = { state: { returnTo: req.session.ssrLastUrl || "/" }};
     if (req.path != "/json") { req.session.ssrLastUrl = req.path; }
     const data = { };
-    data.children = ReactDOM.renderToString(
+
+    const reactApp = (
       <UserContext.Provider value={context}>
-        <StaticRouter location={context.pathname} context={context}>
-          <App context={context} />
-        </StaticRouter>
-      </UserContext.Provider>,
+        <AsyncComponentProvider context={asyncContext}>
+          <StaticRouter location={req.url} context={context}>
+            <App context={context} />
+          </StaticRouter>
+        </AsyncComponentProvider>
+      </UserContext.Provider>
     );
+
+    await asyncBootstrapper(reactApp);
+    if (context.data)
+    {
+      asyncContext.data = context.data;
+    }
+
+    data.children = ReactDOM.renderToString(reactApp);
     data.styles = [{ id: 'css', cssText: [...css].join('') }];
 
     const scripts = new Set();
@@ -460,6 +475,7 @@ app.get('*', async (req, res, next) => {
     data.app = {
       apiUrl: config.api.clientUrl,
     };
+    data.asyncState = asyncContext.getState();
 
     const html = ReactDOM.renderToStaticMarkup(<Html {...data} />);
     res.status(200);

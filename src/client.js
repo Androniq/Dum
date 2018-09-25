@@ -21,6 +21,7 @@ import history from './history';
 import { updateMeta } from './DOMUtils';
 import { UserContext } from './UserContext';
 import { BrowserRouter } from 'react-router-dom';
+import { AsyncComponentProvider } from 'react-async-component';
 
 process.env.IS_SERVER=false;
 
@@ -88,12 +89,18 @@ async function onLocationChange(location, action) {
     context.history = history;
     context.location = location;
 
+    const rehydrateState = window.ASYNC_COMPONENTS_STATE;
+
+    console.info(rehydrateState);
+
     const renderReactApp = isInitialRender ? ReactDOM.hydrate : ReactDOM.render;
     appInstance = renderReactApp(
       <UserContext.Provider value={context}>
-        <BrowserRouter>
-          <App context={context} />
-        </BrowserRouter>
+        <AsyncComponentProvider rehydrateState={rehydrateState}>
+          <BrowserRouter>
+            <App context={context} />
+          </BrowserRouter>
+        </AsyncComponentProvider>
       </UserContext.Provider>,
       container,
       () => {

@@ -18,7 +18,6 @@ class Home extends React.Component {
   };
 
   render() {
-    console.info(this.props.data);
     return (
       <div className={s.root}>
         <div className={s.container}>

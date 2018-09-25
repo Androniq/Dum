@@ -27,6 +27,7 @@ class Html extends React.Component {
     scripts: PropTypes.arrayOf(PropTypes.string.isRequired),
     app: PropTypes.object, // eslint-disable-line
     children: PropTypes.string.isRequired,
+    asyncState: PropTypes.object
   };
 
   static defaultProps = {
@@ -61,6 +62,9 @@ class Html extends React.Component {
         </head>
         <body>
           <div id="app" dangerouslySetInnerHTML={{ __html: children }} />
+          <script type="text/javascript">
+              window.ASYNC_COMPONENTS_STATE = ${serialize(this.props.asyncState)};
+          </script>
           <script
             dangerouslySetInnerHTML={{ __html: `window.App=${serialize(app)}` }}
           />
