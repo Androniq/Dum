@@ -181,6 +181,16 @@ passport.use(
         // idk what to do here ^^
         return;
       }
+      if (profile.photos)
+      {
+        var photo = null;
+        profile.photos.forEach(it =>
+          {
+            if (it && it.value)
+              photo = it.value;
+          });
+        profile.photo = photo;
+      }
       findOrCreateUser(profile.id, 'google', profile).then(
         user => done(null, user),
         err => done(err, null),
@@ -233,8 +243,11 @@ passport.use(
         return;
       }
       FB.api('/' + profile.id, 'GET', { fields: 'email,picture.width(150).height(150)', access_token: accessToken }, function(response) {
-        console.log(response);
-        profile.extraData = response;
+        var picture = response.picture.data.url;
+        var email = response.email;
+        profile.email = email;
+        profile.photo = picture;
+        profile.fetchedData = response;
         findOrCreateUser(profile.id, 'facebook', profile).then(
           user => done(null, user),
           err => done(err, null));

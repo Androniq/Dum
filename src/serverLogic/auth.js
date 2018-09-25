@@ -52,9 +52,9 @@ export async function findOrCreateUser(token, type, profile)
 						newUser.email = email.value;
 				});
 			}
-			if (profile.photos)
+			if (profile.photo)
 			{
-				newUser.photo = profile.photos[0].value;
+				newUser.photo = profile.photo;
 			}
 			if (profile.displayName)
 			{
@@ -83,9 +83,9 @@ export async function findOrCreateUser(token, type, profile)
 						newUser.email = email.value;
 				});
 			}
-			if (profile.photos)
+			if (profile.photo)
 			{
-				newUser.photo = profile.photos[0].value;
+				newUser.photo = profile.photo;
 			}
 			if (profile.displayName)
 			{
