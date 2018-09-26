@@ -15,8 +15,10 @@ import Link from '../Link';
 import { UserContext } from '../../UserContext.js';
 import { checkPrivilege, USER_LEVEL_MODERATOR } from '../../utility';
 
-class Navigation extends React.Component {
-  render() {
+class Navigation extends React.Component
+{
+  render()
+  {    
     return (
       <div className={s.root} role="navigation">
         <div className={s.linkPanel}>

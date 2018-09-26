@@ -1,7 +1,17 @@
 import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { asyncComponent } from 'react-async-component';
+import Layout from './components/Layout/Layout';
 
+// This function amends top-level React Components (app routes)
+// with everything they need:
+// 1. Layout (header, navigation panel etc.)
+// 2. CSS styles (isomorphic style loader)
+// 3. Data to fetch from the Express server
+// 4. Context (common data shared by all components)
+// 5. Router props (history, location and match)
+// 6. Rehydrated data (preloaded on SSR into HTML)
+// Context will be injected by the App, and router props by Routes.
 export default function withEverything(Component, styles, apiCall)
 {
     var StyledComponent = withStyles(styles)(Component);
@@ -10,9 +20,14 @@ export default function withEverything(Component, styles, apiCall)
         var rehydData = context && context.rehydrateState && context.rehydrateState.resolved && context.rehydrateState.resolved.data;
         return routerProps =>
         {
+            context.pathname = routerProps.location.pathname;
+
+            var allProps = { ...routerProps };
+            allProps.context = context;
+
             if (!apiCall) // this is a dataless page, like Login or About
-                return <StyledComponent {...routerProps} context={context} />;
-            return applyData(StyledComponent, apiCall, routerProps, rehydData);            
+                return <Layout><StyledComponent {...allProps} /></Layout>;
+            return applyData(StyledComponent, apiCall, allProps, rehydData);            
         }
     }
 }
@@ -22,7 +37,7 @@ function applyData(Component, apiCall, props, rehydData)
 {
     if (props.data)
     {            
-        return <Component {...props} />;
+        return <Layout {...props}><Component {...props} /></Layout>;
     }
     var fetchMethod;
     if (process.env.IS_SERVER)
@@ -77,7 +92,7 @@ function applyData(Component, apiCall, props, rehydData)
         serverMode: "resolve",
         env: process.env.IS_SERVER ? "node" : "browser"
     });
-    return <AsyncComponent {...props} />
+    return <Layout {...props}><AsyncComponent {...props} /></Layout>
 }
 
 function resolveApi(apiCall, matchParams)

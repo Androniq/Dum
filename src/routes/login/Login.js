@@ -15,17 +15,19 @@ import { UserContext } from '../../UserContext';
 import { Helmet } from 'react-helmet';
 import withEverything from '../../withEverything';
 
-class Login extends React.Component {
-  static propTypes = {
-    title: PropTypes.string.isRequired,
+class Login extends React.Component
+{
+  static propTypes =
+  {
   };
 
-  getReturnTo(context)
+  getReturnTo(location)
   {
-    return (context && context.location && context.location.state && context.location.state.returnTo) || "/";
+    return location && location.state && location.state.returnTo;
   }
 
-  render() {
+  render()
+  {
     return (
       <UserContext.Consumer>
         {context => (
@@ -53,7 +55,7 @@ class Login extends React.Component {
             </a>
           </div>
           <div className={s.formGroup}>
-            <a className={s.google} href={"/login/google?returnTo=" + this.getReturnTo(context)}>
+            <a className={s.google} href={"/login/google?returnTo=" + this.getReturnTo(this.props.location)}>
               <svg
                 className={s.icon}
                 width="30"

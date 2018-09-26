@@ -75,7 +75,7 @@ class App extends React.Component
   {
     var context = this.props.context;
     return (      
-      <Layout>
+      <React.Fragment>
         <Switch>
           <Route path='/' exact render={Home(context)} />
           <Route path='/article/:id' render={Article(context)} />
@@ -87,7 +87,7 @@ class App extends React.Component
           <Route component={ErrorPage} />
         </Switch>
         <Helmet titleTemplate="%s | ДУМ" />
-      </Layout>
+      </React.Fragment>
     );
   }
 }
