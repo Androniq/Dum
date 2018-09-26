@@ -20,7 +20,7 @@ import {
 import history from '../../history';
 import BlueButton from '../../components/BlueButton/BlueButton';
 import FormattedText from '../../components/FormattedText/FormattedText';
-import Link from '../../components/Link/Link';
+import { Link } from 'react-router-dom';
 import StickyMessage from '../../components/StickyMessage/StickyMessage';
 import withEverything from '../../withEverything';
 import { Helmet } from 'react-helmet';

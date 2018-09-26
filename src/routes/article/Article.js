@@ -21,7 +21,7 @@ import history from '../../history';
 import BlueButton from '../../components/BlueButton/BlueButton';
 import VoteButton from '../../components/VoteButton/VoteButton';
 import FormattedText from '../../components/FormattedText/FormattedText';
-import Link from '../../components/Link/Link';
+import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import StickyMessage from '../../components/StickyMessage/StickyMessage';
 import withEverything from '../../withEverything';

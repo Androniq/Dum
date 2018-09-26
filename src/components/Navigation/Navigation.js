@@ -11,7 +11,7 @@ import React from 'react';
 import cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Navigation.css';
-import Link from '../Link';
+import { Link } from 'react-router-dom';
 import { checkPrivilege, USER_LEVEL_MODERATOR } from '../../utility';
 
 class Navigation extends React.Component

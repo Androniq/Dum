@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Home.css';
 import withEverything from '../../withEverything';
-import Link from '../../components/Link/Link';
+import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
 class Home extends React.Component
