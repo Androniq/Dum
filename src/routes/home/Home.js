@@ -12,6 +12,7 @@ import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Home.css';
 import withEverything from '../../withEverything';
+import Link from '../../components/Link/Link';
 
 class Home extends React.Component {
   static propTypes = {
@@ -24,7 +25,7 @@ class Home extends React.Component {
           {this.props.data.data.map(item => (
             <article key={item._id} className={s.newsItem}>
               <h3 className={s.newsTitle}>
-                <a href={`/article/${item.Url}`}>{item.PageTitle}</a>
+                <Link to={`/article/${item.Url}`}>{item.PageTitle}</Link>
               </h3>
               <div />
             </article>

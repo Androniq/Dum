@@ -458,10 +458,6 @@ app.get('*', async (req, res, next) => {
     {
       asyncContext.data = context.data;
     }
-    else
-    {
-      console.warn('no data prefetched');
-    }
 
     data.children = ReactDOM.renderToString(reactApp);
     data.styles = [{ id: 'css', cssText: [...css].join('') }];
@@ -482,10 +478,12 @@ app.get('*', async (req, res, next) => {
     };
     data.asyncState = asyncContext.getState();
     data.asyncState.resolved.data = asyncContext.data;
+    asyncContext.data = null;
 
     const html = ReactDOM.renderToStaticMarkup(<Html {...data} />)
       .replace('window.ASYNC_COMPONENTS_STATE = null', 'window.ASYNC_COMPONENTS_STATE = ' + serialize(data.asyncState));
-    res.status(200);
+    data.asyncState = null;
+      res.status(200);
     res.send(`<!doctype html>${html}`);
   } catch (err) {
     next(err);

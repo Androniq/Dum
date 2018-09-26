@@ -52,14 +52,17 @@ const ContextType = {
  *     container,
  *   );
  */
-class App extends React.PureComponent {
-  static propTypes = {
+class App extends React.Component
+{
+  static propTypes =
+  {
     context: PropTypes.shape(ContextType).isRequired
   };
 
   static childContextTypes = ContextType;
 
-  getChildContext() {
+  getChildContext()
+  {
     return this.props.context;
   }
 

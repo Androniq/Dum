@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 
 export default function withEverything(Component, styles, apiCall)
 {
-    var StyledComponent = withRouter(withStyles(styles)(Component));
+    var StyledComponent = withStyles(styles)(Component);
     return context =>
     {
         var rehydData = context && context.rehydrateState && context.rehydrateState.resolved && context.rehydrateState.resolved.data;
@@ -38,25 +38,27 @@ function applyData(Component, apiCall, props, rehydData)
         resolve: async () =>
         {
             var data = null;
-            if (rehydData)
+            var matchedApiUrl = apiCall;
+            if (props.match && props.match.params)
             {
-                data = rehydData;
+                for (var paramName in props.match.params)
+                {
+                    matchedApiUrl = matchedApiUrl.replace(':' + paramName, props.match.params[paramName]);
+                }
+            }
+            if (rehydData && rehydData[matchedApiUrl])
+            {
+                data = rehydData[matchedApiUrl];
             }
             else
             {
-                var matchedApiUrl = apiCall;
-                if (props.match && props.match.params)
-                {
-                    for (var paramName in props.match.params)
-                    {
-                        matchedApiUrl = matchedApiUrl.replace(':' + paramName, props.match.params[paramName]);
-                    }
-                }
                 var fetchReq = await fetchMethod(matchedApiUrl, { method: 'GET' });
                 data = await fetchReq.json();
                 if (process.env.IS_SERVER)
                 {
-                    props.staticContext.data = data;
+                    if (!props.staticContext.data)
+                        props.staticContext.data = {};
+                    props.staticContext.data[matchedApiUrl] = data;
                 }
             }
             return (WrappedComponent =>

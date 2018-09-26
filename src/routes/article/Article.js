@@ -153,7 +153,8 @@ async componentDidMount()
   }
 }
 
-  render() {
+  render()
+  {
     return (
       <React.Fragment>
       <div className={s.infoArea}>
