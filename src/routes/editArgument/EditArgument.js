@@ -117,7 +117,7 @@ async onSave()
     {
       redirect.state = { initMessage: "Ваш аргумент прийнято до розгляду!" };
     }
-    history.push(redirect);
+    this.props.history.push(redirect);
   }
   else
   {
@@ -136,7 +136,7 @@ placeholderApplyStyle(style)
 
 onCancel()
 {
-  history.push('/article/' + this.props.data.article.Url);
+  this.props.history.push('/article/' + this.props.data.article.Url);
 }
 
 onDelete()
@@ -155,7 +155,7 @@ async onDeleteDo()
   var resj = await res.json();
   if (resj.success)
   {
-    history.push('/article/' + this.props.data.article.Url);
+    this.props.history.push('/article/' + this.props.data.article.Url);
   }
   else
   {

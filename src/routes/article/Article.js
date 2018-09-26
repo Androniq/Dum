@@ -136,12 +136,12 @@ voteButton(code)
 
 clickEdit()
 {
-  history.push('/editArticle/' + this.props.data.article.Url);
+  this.props.history.push('/editArticle/' + this.props.data.article.Url);
 }
 
 clickArgument()
 {
-  history.push('/editArgument/new/' + this.props.data.article.Url);
+  this.props.history.push('/editArgument/new/' + this.props.data.article.Url);
 }
 
 async componentDidMount()

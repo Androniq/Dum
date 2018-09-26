@@ -43,19 +43,22 @@ function applyData(Component, apiCall, props, rehydData)
             {
                 matchedApiUrl = resolveApi(matchedApiUrl, props.match.params);
             }
-            if (rehydData && rehydData[matchedApiUrl])
+            if (rehydData && matchedApiUrl && rehydData[matchedApiUrl])
             {
                 data = rehydData[matchedApiUrl];
             }
             else
             {
-                var fetchReq = await fetchMethod(matchedApiUrl, { method: 'GET' });
-                data = await fetchReq.json();
-                if (process.env.IS_SERVER)
+                if (matchedApiUrl)
                 {
-                    if (!props.staticContext.data)
-                        props.staticContext.data = {};
-                    props.staticContext.data[matchedApiUrl] = data;
+                    var fetchReq = await fetchMethod(matchedApiUrl, { method: 'GET' });
+                    data = await fetchReq.json();
+                    if (process.env.IS_SERVER)
+                    {
+                        if (!props.staticContext.data)
+                            props.staticContext.data = {};
+                        props.staticContext.data[matchedApiUrl] = data;
+                    }
                 }
             }
             return (WrappedComponent =>
@@ -79,6 +82,8 @@ function applyData(Component, apiCall, props, rehydData)
 
 function resolveApi(apiCall, matchParams)
 {
+    if (!apiCall)
+        return null;
     if (typeof apiCall === 'object' && apiCall.length)
     {
         for (let index = 0; index < apiCall.length; index++)

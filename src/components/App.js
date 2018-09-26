@@ -82,7 +82,7 @@ class App extends React.Component
           <Route path='/blog/:id' render={Blog(context)} />
           <Route path='/login' render={Login(context)} />
           <Route path='/editArticle/:id' render={EditArticle(context)} />
-          <Route path='/editArgument/:articleId/:argId' render={EditArgument(context)} />
+          <Route path='/editArgument/:argId/:articleId' render={EditArgument(context)} />
           <Route path='/editArgument/:argId' render={EditArgument(context)} />
           <Route component={ErrorPage} />
         </Switch>

@@ -30,8 +30,9 @@ class EditArticle extends React.Component {
     Content: ''
   };
 
-getTitle(article)
+getTitle(data)
 {
+  var article = data && data.article;
   return article ? ('Редагування: ' + article.PageTitle) : 'Нова стаття';
 }
 
@@ -119,7 +120,7 @@ async onSave()
     var resj = await res.json();
   if (resj.success)
   {
-    history.push('/article/' + article.Url);
+    this.props.history.push('/article/' + article.Url);
   }
   else
   {
@@ -130,10 +131,10 @@ async onSave()
 onCancel()
 {
   if (this.props.data && this.props.data.Url)
-    history.push('/article/' + this.props.data.Url);
+    this.props.history.push('/article/' + this.props.data.Url);
   else
     {
-      history.goBack();
+      this.props.history.goBack();
     }
 }
 
@@ -153,7 +154,7 @@ async onDeleteDo()
   var resj = await res.json();
   if (resj.success)
   {
-    history.push('/');
+    this.props.history.push('/');
   }
   else
   {
@@ -166,7 +167,7 @@ async onDeleteDo()
       return (
           <div className={s.editArticleContainer}>
             <Helmet>
-              <title>{this.getTitle(this.props.data.article)}</title>
+              <title>{this.getTitle(this.props.data)}</title>
             </Helmet>
             <div className={s.editArticleGrid}>
               <TextInput className={classnames(s.textInput, s.grid11, this.state.validatorTitle)} placeholder="Коротка назва статті, наприклад: Вірно"
@@ -224,4 +225,4 @@ async onDeleteDo()
   }
 }
 
-export default withEverything(EditArticle, s, '/api/getArticle/:id');
+export default withEverything(EditArticle, s, [ { condition: q => q.id === 'new', value: null }, '/api/getArticle/:id' ]);
