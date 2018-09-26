@@ -33,10 +33,6 @@ export default function withEverything(Component, styles, apiCall)
     }
 }
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
 function applyData(Component, apiCall, props, rehydData)
 {
     if (props.data)
@@ -56,7 +52,6 @@ function applyData(Component, apiCall, props, rehydData)
     {
         resolve: async () =>
         {
-            await sleep(5000);
             var data = null;
             var matchedApiUrl = apiCall;
             if (props.match && props.match.params)
