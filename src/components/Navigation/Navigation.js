@@ -12,7 +12,6 @@ import cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Navigation.css';
 import Link from '../Link';
-import { UserContext } from '../../UserContext.js';
 import { checkPrivilege, USER_LEVEL_MODERATOR } from '../../utility';
 
 class Navigation extends React.Component
@@ -37,7 +36,7 @@ class Navigation extends React.Component
           {checkPrivilege(this.props.context.user, USER_LEVEL_MODERATOR) ? (
             <Link className={s.link} to="/editArticle/new">
               Написати статтю
-              </Link>
+            </Link>
           ) : null}
         </div>
         <span className={s.spacer}> | </span>
