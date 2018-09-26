@@ -91,7 +91,7 @@ async function onLocationChange(location, action) {
 
     const rehydrateState = window.ASYNC_COMPONENTS_STATE;
 
-    console.info(rehydrateState);
+    context.rehydrateState = rehydrateState;
 
     const renderReactApp = isInitialRender ? ReactDOM.hydrate : ReactDOM.render;
     appInstance = renderReactApp(

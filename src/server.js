@@ -53,6 +53,7 @@ import FB from 'fb';
 import { StaticRouter } from 'react-router';
 import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
 import asyncBootstrapper from 'react-async-bootstrapper';
+import serialize from 'serialize-javascript';
 
 process.env.IS_SERVER=true;
 
@@ -476,8 +477,10 @@ app.get('*', async (req, res, next) => {
       apiUrl: config.api.clientUrl,
     };
     data.asyncState = asyncContext.getState();
+    data.asyncState.resolved.data = asyncContext.data;
 
-    const html = ReactDOM.renderToStaticMarkup(<Html {...data} />);
+    const html = ReactDOM.renderToStaticMarkup(<Html {...data} />)
+      .replace('window.ASYNC_COMPONENTS_STATE = null', 'window.ASYNC_COMPONENTS_STATE = ' + serialize(data.asyncState));
     res.status(200);
     res.send(`<!doctype html>${html}`);
   } catch (err) {

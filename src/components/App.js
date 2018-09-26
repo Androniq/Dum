@@ -26,7 +26,8 @@ const ContextType = {
   user: PropTypes.object,
   location: PropTypes.object,
   history: PropTypes.object,
-  data: PropTypes.object
+  data: PropTypes.object,
+  rehydrateState: PropTypes.object
 };
 
 /**

@@ -63,7 +63,7 @@ class Html extends React.Component {
         <body>
           <div id="app" dangerouslySetInnerHTML={{ __html: children }} />
           <script type="text/javascript">
-              window.ASYNC_COMPONENTS_STATE = ${serialize(this.props.asyncState)};
+              window.ASYNC_COMPONENTS_STATE = null;
           </script>
           <script
             dangerouslySetInnerHTML={{ __html: `window.App=${serialize(app)}` }}

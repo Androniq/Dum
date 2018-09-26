@@ -7,6 +7,10 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
+import { Link } from 'react-router-dom';
+export default Link;
+
+/*
 import React from 'react';
 import PropTypes from 'prop-types';
 import history from '../../history';
@@ -58,3 +62,4 @@ class Link extends React.Component {
 }
 
 export default Link;
+*/

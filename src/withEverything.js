@@ -1,15 +1,48 @@
 import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { asyncComponent } from 'react-async-component';
+import { UserContext } from './UserContext';
 
 export default function withEverything(Component, styles, apiCall)
 {
     var StyledComponent = withStyles(styles)(Component);
-    return props =>
+    var ContextedStyledComponent = withContext(StyledComponent);
+    return applyData(ContextedStyledComponent, apiCall);
+}
+
+function withContext(Component)
+{
+    var hocFunc = Wrapped =>
     {
-        if (props.data)
+        class Hoc extends React.Component
         {
-            return <StyledComponent {...props} />;
+            render()
+            {
+                return (
+                    <UserContext.Consumer>
+                        {context => (
+                            <Wrapped {...this.props} context={context} />
+                        )}
+                    </UserContext.Consumer>
+                );
+            }
+        }
+        return Hoc;
+    }
+    return hocFunc(Component);
+}
+
+function applyData(Component, apiCall)
+{
+    return props =>
+    {        
+        if (!process.env.IS_SERVER)
+        {
+            console.info(props);
+        }
+        if (props.data)
+        {            
+            return <Component {...props} />;
         }
         var fetchMethod;
         if (process.env.IS_SERVER)
@@ -33,10 +66,10 @@ export default function withEverything(Component, styles, apiCall)
                     }
                 }
                 var fetchReq = await fetchMethod(matchedApiUrl, { method: 'GET' });
-                var fetchJson = await fetchReq.json();
-                if (props.staticContext)
+                var data = await fetchReq.json();
+                if (process.env.IS_SERVER)
                 {
-                    props.staticContext.data = fetchJson;
+                    props.staticContext.data = data;
                 }
                 return (WrappedComponent =>
                 {
@@ -44,13 +77,13 @@ export default function withEverything(Component, styles, apiCall)
                     {
                         render()
                         {
-                            return <WrappedComponent {...props} data={fetchJson} />;
+                            return <WrappedComponent {...props} data={data} />;
                         }
                     }
                     return Hoc;
-                })(StyledComponent);
+                })(Component);
             },
-            LoadingComponent: () => <div style={{"text-align":"center","font-weight":"bold"}}>ЗОҐвантаження!</div>,
+            LoadingComponent: () => <div style={{"textAlign":"center","fontWeight":"bold"}}>ЗОҐвантаження!</div>,
             serverMode: "resolve",
             env: process.env.IS_SERVER ? "node" : "browser"
         });
