@@ -13,14 +13,21 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Home.css';
 import withEverything from '../../withEverything';
 import Link from '../../components/Link/Link';
+import { Helmet } from 'react-helmet';
 
-class Home extends React.Component {
-  static propTypes = {
+class Home extends React.Component
+{
+  static propTypes =
+  {
   };
 
-  render() {
+  render()
+  {
     return (
       <div className={s.root}>
+        <Helmet>
+          <title>Головна</title>
+        </Helmet>
         <div className={s.container}>
           {this.props.data.data.map(item => (
             <article key={item._id} className={s.newsItem}>

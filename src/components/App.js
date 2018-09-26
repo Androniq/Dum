@@ -14,6 +14,7 @@ import { Switch, Route } from 'react-router';
 import Home from '../routes/home/Home';
 import Article from '../routes/article/Article';
 import ErrorPage from '../routes/error/ErrorPage';
+import { Helmet } from 'react-helmet';
 
 const ContextType = {
   // Enables critical path CSS rendering
@@ -76,6 +77,7 @@ class App extends React.Component
           <Route path='/article/:id' render={Article(context)} />
           <Route component={ErrorPage} />
         </Switch>
+        <Helmet titleTemplate="%s | ДУМ" />
       </Layout>
     );
   }

@@ -54,6 +54,7 @@ import { StaticRouter } from 'react-router';
 import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
 import asyncBootstrapper from 'react-async-bootstrapper';
 import serialize from 'serialize-javascript';
+import { Helmet } from 'react-helmet';
 
 process.env.IS_SERVER=true;
 
@@ -462,6 +463,7 @@ app.get('*', async (req, res, next) => {
     data.children = ReactDOM.renderToString(reactApp);
     data.styles = [{ id: 'css', cssText: [...css].join('') }];
 
+
     const scripts = new Set();
     const addChunk = chunk => {
       if (chunks[chunk]) {
@@ -479,6 +481,10 @@ app.get('*', async (req, res, next) => {
     data.asyncState = asyncContext.getState();
     data.asyncState.resolved.data = asyncContext.data;
     asyncContext.data = null;
+
+    const helmet = Helmet.renderStatic();
+    data.helmet = helmet;
+    console.info(helmet);
 
     const html = ReactDOM.renderToStaticMarkup(<Html {...data} />)
       .replace('window.ASYNC_COMPONENTS_STATE = null', 'window.ASYNC_COMPONENTS_STATE = ' + serialize(data.asyncState));
@@ -500,8 +506,10 @@ pe.skipPackage('express');
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   console.error(pe.render(err));
+  const helmet = Helmet.renderStatic();
   const html = ReactDOM.renderToStaticMarkup(
     <Html
+      helmet={helmet}
       title="Internal Server Error"
       description={err.message}
       styles={[{ id: 'css', cssText: errorPageStyle._getCss() }]} // eslint-disable-line no-underscore-dangle

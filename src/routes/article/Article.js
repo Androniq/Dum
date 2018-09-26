@@ -22,6 +22,7 @@ import BlueButton from '../../components/BlueButton/BlueButton';
 import VoteButton from '../../components/VoteButton/VoteButton';
 import FormattedText from '../../components/FormattedText/FormattedText';
 import Link from '../../components/Link/Link';
+import { Helmet } from 'react-helmet';
 import StickyMessage from '../../components/StickyMessage/StickyMessage';
 import withEverything from '../../withEverything';
 
@@ -157,6 +158,9 @@ async componentDidMount()
   {
     return (
       <React.Fragment>
+      <Helmet>
+        <title>{this.props.data.article.PageTitle}</title>
+      </Helmet>
       <div className={s.infoArea}>
         <div className={s.tokenHeader}
           style={{backgroundColor: this.props.data.result.ColorCode, color: this.props.data.result.WhiteText ? "white" : "black"}}>

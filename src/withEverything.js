@@ -1,8 +1,6 @@
 import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { asyncComponent } from 'react-async-component';
-import { UserContext } from './UserContext';
-import { withRouter } from 'react-router-dom';
 
 export default function withEverything(Component, styles, apiCall)
 {
