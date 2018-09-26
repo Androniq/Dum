@@ -2,6 +2,7 @@ import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { asyncComponent } from 'react-async-component';
 import Layout from './components/Layout/Layout';
+import Loading from './components/Loading/Loading';
 
 // This function amends top-level React Components (app routes)
 // with everything they need:
@@ -32,6 +33,10 @@ export default function withEverything(Component, styles, apiCall)
     }
 }
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
 function applyData(Component, apiCall, props, rehydData)
 {
     if (props.data)
@@ -51,6 +56,7 @@ function applyData(Component, apiCall, props, rehydData)
     {
         resolve: async () =>
         {
+            await sleep(5000);
             var data = null;
             var matchedApiUrl = apiCall;
             if (props.match && props.match.params)
@@ -87,7 +93,7 @@ function applyData(Component, apiCall, props, rehydData)
                 return Hoc;
             })(Component);
         },
-        LoadingComponent: () => <div style={{"textAlign":"center","fontWeight":"bold"}}>ЗОҐвантаження!</div>,
+        LoadingComponent: () => <Loading />,
         serverMode: "resolve",
         env: process.env.IS_SERVER ? "node" : "browser"
     });

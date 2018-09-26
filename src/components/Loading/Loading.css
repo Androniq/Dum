@@ -1,0 +1,51 @@
+.container
+{
+    width: 100%;
+    justify-content: center;
+    display: flex;
+    height: 400px;
+}
+
+.loaderText
+{
+    text-align: center;
+}
+
+.circle1 {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: red;
+    position: relative;
+    animation-name: loader1;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+}
+
+.circle2 {
+    width: 100px;
+    height: 100px;
+    margin: -100px 0;
+    border-radius: 50%;
+    background-color: blue;
+    position: relative;
+    animation-name: loader2;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes loader1 {
+    0%   {background-color:red; left:-100px; top:0px;}
+    25%  {background-color:yellow; left:100px; top:0px;}
+    50%  {background-color:blue; left:100px; top:200px;}
+    75%  {background-color:green; left:-100px; top:200px;}
+    100% {background-color:red; left:-100px; top:0px;}
+}
+
+@keyframes loader2 {
+    0%  {background-color:blue; left:100px; top:200px;}
+    25%  {background-color:green; left:-100px; top:200px;}
+    50% {background-color:red; left:-100px; top:0px;}
+    75%  {background-color:yellow; left:100px; top:0px;}
+    100%  {background-color:blue; left:100px; top:200px;}
+}
