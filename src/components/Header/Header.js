@@ -14,19 +14,17 @@ import Link from '../Link';
 import Navigation from '../Navigation';
 import logoUrl from './logo-small.png';
 import logoUrl2x from './logo-small@2x.png';
-import Button from 'react-bootstrap/lib/Button';
-import ToggleButton from 'react-bootstrap/lib/ToggleButton';
-import ToggleButtonGroup from 'react-bootstrap/lib/ToggleButtonGroup';
-import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
-import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
 import logo from './logo.png';
 
-class Header extends React.Component {
-  constructor(props) {
+class Header extends React.Component
+{
+  constructor(props)
+  {
     super(props);
   }
 
-  render() {
+  render()
+  {
     return (
       <div className={s.root}>
         <div className={s.container}>
@@ -40,7 +38,7 @@ class Header extends React.Component {
             />
             <span className={s.brandTxt}>ДУМ</span>
           </Link>
-          <Navigation className={s.navigation} />
+          <Navigation className={s.navigation} context={this.props.context} />
         </div>
       </div>
     );

@@ -26,10 +26,10 @@ class Layout extends React.Component {
   render() {
     return (
       <div>
-        <Header />
+        <Header context={this.props.context} />
         {this.props.children}
-        <Feedback />
-        <Footer />
+        <Feedback context={this.props.context} />
+        <Footer context={this.props.context} />
       </div>
     );
   }

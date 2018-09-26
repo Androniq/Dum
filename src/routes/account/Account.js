@@ -22,8 +22,11 @@ import BlueButton from '../../components/BlueButton/BlueButton';
 import FormattedText from '../../components/FormattedText/FormattedText';
 import Link from '../../components/Link/Link';
 import StickyMessage from '../../components/StickyMessage/StickyMessage';
+import withEverything from '../../withEverything';
+import { Helmet } from 'react-helmet';
 
-class Account extends React.Component {
+class Account extends React.Component
+{
   static propTypes = {};
 
   state = {};
@@ -55,16 +58,20 @@ class Account extends React.Component {
 
   render()
   {
+      var user = this.props.context.user;
       return (
         <div className={s.container}>
-            <img className={s.userpic} src={this.props.data.photo} />
+            <Helmet>
+                <title>{user.displayName}</title>
+            </Helmet>
+            <img className={s.userpic} src={user.photo} />
             <div className={s.userCard}>
-            <span className={s.displayName}>{this.props.data.displayName}</span>
-            {this.userRolePanel(this.props.data.role)}
+            <span className={s.displayName}>{user.displayName}</span>
+            {this.userRolePanel(user.role)}
             </div>
         </div>
       );
   }
 }
 
-export default withStyles(s)(Account);
+export default withEverything(Account, s);

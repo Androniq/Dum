@@ -22,39 +22,36 @@ class Navigation extends React.Component
     return (
       <div className={s.root} role="navigation">
         <div className={s.linkPanel}>
-        <Link className={s.link} to="/">
-          Домівка
+          <Link className={s.link} to="/">
+            Домівка
         </Link>
-        <Link className={s.link} to="/blog/whatisdum">
-          Що таке ДУМ
+          <Link className={s.link} to="/blog/whatisdum">
+            Що таке ДУМ
         </Link>
-        <Link className={s.link} to="/blog/principles">
-          Принципи
+          <Link className={s.link} to="/blog/principles">
+            Принципи
         </Link>
-        <Link className={s.link} to="/blog/zunpa">
-          ЗУНПА
+          <Link className={s.link} to="/blog/zunpa">
+            ЗУНПА
         </Link>
-        <UserContext.Consumer>
-          {context => checkPrivilege(context.user, USER_LEVEL_MODERATOR) ? (
-              <Link className={s.link} to="/editArticle/new">
-                Написати статтю
+          {checkPrivilege(this.props.context.user, USER_LEVEL_MODERATOR) ? (
+            <Link className={s.link} to="/editArticle/new">
+              Написати статтю
               </Link>
-            ) : ""}
-        </UserContext.Consumer>
+          ) : null}
         </div>
         <span className={s.spacer}> | </span>
         <div className={s.userPanel}>
-        <UserContext.Consumer>
-          {context => context.user ? (
+          {this.props.context.user ? (
             <React.Fragment>
               <Link className={s.link} to="/account">
-                <img src={context.user.photo} className={s.profilePicture} />
+                <img src={this.props.context.user.photo} className={s.profilePicture} />
               </Link>
               <div className={s.verticalPanel}>
                 <Link className={s.link} to="/account">
-                  <span>{context.user.displayName}</span>
+                  <span>{this.props.context.user.displayName}</span>
                 </Link>
-                <a className={cx(s.link, s.logoutLink)} href={"/logout?returnTo=" + context.pathname}>
+                <a className={cx(s.link, s.logoutLink)} href={"/logout?returnTo=" + this.props.context.pathname}>
                   Вийти
                 </a>
               </div>
@@ -62,7 +59,7 @@ class Navigation extends React.Component
           ) : (
             <React.Fragment>
               <span className={s.spacer}> | </span>
-              <Link className={s.link} to={{pathname: "/login", state: { returnTo: context.pathname }}}>
+              <Link className={s.link} to={{ pathname: "/login", state: { returnTo: this.props.context.pathname } }}>
                 Увійти
               </Link>
               <span className={s.spacer}>чи</span>
@@ -70,8 +67,7 @@ class Navigation extends React.Component
                 Зареєструватися
               </Link>
             </React.Fragment>
-          )}
-        </UserContext.Consumer>
+            )}
         </div>
       </div>
     );

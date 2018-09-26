@@ -11,7 +11,7 @@ import Layout from './components/Layout/Layout';
 // 4. Context (common data shared by all components)
 // 5. Router props (history, location and match)
 // 6. Rehydrated data (preloaded on SSR into HTML)
-// Context will be injected by the App, and router props by Routes.
+// Context will be provided by the App, and router props by Routes.
 export default function withEverything(Component, styles, apiCall)
 {
     var StyledComponent = withStyles(styles)(Component);
@@ -26,12 +26,11 @@ export default function withEverything(Component, styles, apiCall)
             allProps.context = context;
 
             if (!apiCall) // this is a dataless page, like Login or About
-                return <Layout><StyledComponent {...allProps} /></Layout>;
+                return <Layout {...allProps}><StyledComponent {...allProps} /></Layout>;
             return applyData(StyledComponent, apiCall, allProps, rehydData);            
         }
     }
 }
-
 
 function applyData(Component, apiCall, props, rehydData)
 {
@@ -98,21 +97,27 @@ function applyData(Component, apiCall, props, rehydData)
 function resolveApi(apiCall, matchParams)
 {
     if (!apiCall)
-        return null;
-    if (typeof apiCall === 'object' && apiCall.length)
+        return null; // no API provided - no data needed
+
+    if (typeof apiCall === 'function')
+    {
+        return apiCall(matchParams); // custom function (match.Params => API URL) provided
+    }
+
+    if (typeof apiCall === 'object' && apiCall.length) // array of condition/value pairs provided - first met condition is returned
     {
         for (let index = 0; index < apiCall.length; index++)
         {
             var apiOption = apiCall[index];
             if (apiOption.condition && apiOption.condition(matchParams))
                 return resolveApi(apiOption.value, matchParams);
-            if (typeof apiOption === 'string')
+            if (typeof apiOption === 'string') // string is the default value in the sequence if no condition is met
                 return resolveApi(apiOption, matchParams);
         }
-        return null; // no condition met
+        return null; // no condition met and no default provided
     }
 
-    for (var paramName in matchParams)
+    for (var paramName in matchParams) // just string - only substitute :parameters with URL matches from Router
     {
         apiCall = apiCall.replace(':' + paramName, matchParams[paramName]);
     }
