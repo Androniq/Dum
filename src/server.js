@@ -458,6 +458,10 @@ app.get('*', async (req, res, next) => {
     {
       asyncContext.data = context.data;
     }
+    else
+    {
+      console.warn('no data prefetched');
+    }
 
     data.children = ReactDOM.renderToString(reactApp);
     data.styles = [{ id: 'css', cssText: [...css].join('') }];

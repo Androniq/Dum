@@ -96,11 +96,9 @@ async function onLocationChange(location, action) {
     const renderReactApp = isInitialRender ? ReactDOM.hydrate : ReactDOM.render;
     appInstance = renderReactApp(
       <UserContext.Provider value={context}>
-        <AsyncComponentProvider rehydrateState={rehydrateState}>
           <BrowserRouter>
             <App context={context} />
           </BrowserRouter>
-        </AsyncComponentProvider>
       </UserContext.Provider>,
       container,
       () => {

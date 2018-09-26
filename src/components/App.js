@@ -63,14 +63,14 @@ class App extends React.PureComponent {
     return this.props.context;
   }
 
-  render() {    
-    // NOTE: If you need to add or modify header, footer etc. of the app,
-    // please do that inside the Layout component.
-    return (
+  render()
+  {
+    var context = this.props.context;
+    return (      
       <Layout>
         <Switch>
-          <Route path='/' exact render={Home} />
-          <Route path='/article/:id' render={Article} />
+          <Route path='/' exact render={Home(context)} />
+          <Route path='/article/:id' render={Article(context)} />
           <Route component={ErrorPage} />
         </Switch>
       </Layout>

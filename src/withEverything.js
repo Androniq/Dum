@@ -2,60 +2,47 @@ import React from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { asyncComponent } from 'react-async-component';
 import { UserContext } from './UserContext';
+import { withRouter } from 'react-router-dom';
 
 export default function withEverything(Component, styles, apiCall)
 {
-    var StyledComponent = withStyles(styles)(Component);
-    var ContextedStyledComponent = withContext(StyledComponent);
-    return applyData(ContextedStyledComponent, apiCall);
-}
-
-function withContext(Component)
-{
-    var hocFunc = Wrapped =>
+    var StyledComponent = withRouter(withStyles(styles)(Component));
+    return context =>
     {
-        class Hoc extends React.Component
+        var rehydData = context && context.rehydrateState && context.rehydrateState.resolved && context.rehydrateState.resolved.data;
+        return routerProps =>
         {
-            render()
-            {
-                return (
-                    <UserContext.Consumer>
-                        {context => (
-                            <Wrapped {...this.props} context={context} />
-                        )}
-                    </UserContext.Consumer>
-                );
-            }
+            return applyData(StyledComponent, apiCall, routerProps, rehydData);            
         }
-        return Hoc;
     }
-    return hocFunc(Component);
 }
 
-function applyData(Component, apiCall)
+
+function applyData(Component, apiCall, props, rehydData)
 {
-    return props =>
-    {        
-        if (!process.env.IS_SERVER)
+    if (props.data)
+    {            
+        return <Component {...props} />;
+    }
+    var fetchMethod;
+    if (process.env.IS_SERVER)
+    {
+        fetchMethod = props.staticContext.fetch;
+    }
+    else
+    {
+        fetchMethod = fetch;
+    }
+    const AsyncComponent = asyncComponent(
+    {
+        resolve: async () =>
         {
-            console.info(props);
-        }
-        if (props.data)
-        {            
-            return <Component {...props} />;
-        }
-        var fetchMethod;
-        if (process.env.IS_SERVER)
-        {
-            fetchMethod = props.staticContext.fetch;
-        }
-        else
-        {
-            fetchMethod = fetch;
-        }
-        const AsyncComponent = asyncComponent(
-        {
-            resolve: async () =>
+            var data = null;
+            if (rehydData)
+            {
+                data = rehydData;
+            }
+            else
             {
                 var matchedApiUrl = apiCall;
                 if (props.match && props.match.params)
@@ -66,27 +53,27 @@ function applyData(Component, apiCall)
                     }
                 }
                 var fetchReq = await fetchMethod(matchedApiUrl, { method: 'GET' });
-                var data = await fetchReq.json();
+                data = await fetchReq.json();
                 if (process.env.IS_SERVER)
                 {
                     props.staticContext.data = data;
                 }
-                return (WrappedComponent =>
+            }
+            return (WrappedComponent =>
+            {
+                class Hoc extends React.Component // HOC ad hoc!
                 {
-                    class Hoc extends React.Component // HOC ad hoc!
+                    render()
                     {
-                        render()
-                        {
-                            return <WrappedComponent {...props} data={data} />;
-                        }
+                        return <WrappedComponent {...props} data={data} />;
                     }
-                    return Hoc;
-                })(Component);
-            },
-            LoadingComponent: () => <div style={{"textAlign":"center","fontWeight":"bold"}}>ЗОҐвантаження!</div>,
-            serverMode: "resolve",
-            env: process.env.IS_SERVER ? "node" : "browser"
-        });
-        return <AsyncComponent {...props} />
-    };
+                }
+                return Hoc;
+            })(Component);
+        },
+        LoadingComponent: () => <div style={{"textAlign":"center","fontWeight":"bold"}}>ЗОҐвантаження!</div>,
+        serverMode: "resolve",
+        env: process.env.IS_SERVER ? "node" : "browser"
+    });
+    return <AsyncComponent {...props} />
 }
