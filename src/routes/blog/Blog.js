@@ -5,6 +5,8 @@ import s from './Blog.css';
 import classnames from 'classnames';
 import { UserContext } from '../../UserContext.js';
 import FormattedText from '../../components/FormattedText/FormattedText';
+import { Helmet } from 'react-helmet';
+import withEverything from '../../withEverything';
 
 class Blog extends React.Component {
   static propTypes = {};
@@ -13,6 +15,9 @@ class Blog extends React.Component {
   {
       return (
           <div className={s.blogContainer}>
+            <Helmet>
+                <title>{this.props.data.Title}</title>
+            </Helmet>
               <div className={s.blogHeader}>
                 <div className={s.blogTitle}>
                     <h2 className={s.blogTitleH}>{this.props.data.Title}</h2>
@@ -31,4 +36,4 @@ class Blog extends React.Component {
   }
 }
 
-export default withStyles(s)(Blog);
+export default withEverything(Blog, s, '/api/getBlog/:id');

@@ -10,6 +10,8 @@ export default function withEverything(Component, styles, apiCall)
         var rehydData = context && context.rehydrateState && context.rehydrateState.resolved && context.rehydrateState.resolved.data;
         return routerProps =>
         {
+            if (!apiCall) // this is a dataless page, like Login or About
+                return <StyledComponent {...routerProps} context={context} />;
             return applyData(StyledComponent, apiCall, routerProps, rehydData);            
         }
     }
@@ -39,10 +41,7 @@ function applyData(Component, apiCall, props, rehydData)
             var matchedApiUrl = apiCall;
             if (props.match && props.match.params)
             {
-                for (var paramName in props.match.params)
-                {
-                    matchedApiUrl = matchedApiUrl.replace(':' + paramName, props.match.params[paramName]);
-                }
+                matchedApiUrl = resolveApi(matchedApiUrl, props.match.params);
             }
             if (rehydData && rehydData[matchedApiUrl])
             {
@@ -76,4 +75,26 @@ function applyData(Component, apiCall, props, rehydData)
         env: process.env.IS_SERVER ? "node" : "browser"
     });
     return <AsyncComponent {...props} />
+}
+
+function resolveApi(apiCall, matchParams)
+{
+    if (typeof apiCall === 'object' && apiCall.length)
+    {
+        for (let index = 0; index < apiCall.length; index++)
+        {
+            var apiOption = apiCall[index];
+            if (apiOption.condition && apiOption.condition(matchParams))
+                return resolveApi(apiOption.value, matchParams);
+            if (typeof apiOption === 'string')
+                return resolveApi(apiOption, matchParams);
+        }
+        return null; // no condition met
+    }
+
+    for (var paramName in matchParams)
+    {
+        apiCall = apiCall.replace(':' + paramName, matchParams[paramName]);
+    }
+    return apiCall;
 }

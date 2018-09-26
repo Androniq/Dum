@@ -484,7 +484,6 @@ app.get('*', async (req, res, next) => {
 
     const helmet = Helmet.renderStatic();
     data.helmet = helmet;
-    console.info(helmet);
 
     const html = ReactDOM.renderToStaticMarkup(<Html {...data} />)
       .replace('window.ASYNC_COMPONENTS_STATE = null', 'window.ASYNC_COMPONENTS_STATE = ' + serialize(data.asyncState));

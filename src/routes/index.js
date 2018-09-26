@@ -15,65 +15,6 @@ const routes = {
 
   // Keep in mind, routes are evaluated in order
   children: [
-    {
-      path: '',
-      load: () => import(/* webpackChunkName: 'home' */ './home'),
-    },
-    {
-      path: '/contact',
-      load: () => import(/* webpackChunkName: 'contact' */ './contact'),
-    },
-    {
-      path: '/login',
-      load: () => import(/* webpackChunkName: 'login' */ './login'),
-    },
-    {
-      path: '/register',
-      load: () => import(/* webpackChunkName: 'register' */ './register'),
-    },
-    {
-      path: '/about',
-      load: () => import(/* webpackChunkName: 'about' */ './about'),
-    },
-    {
-      path: '/privacy',
-      load: () => import(/* webpackChunkName: 'privacy' */ './privacy'),
-    },
-    {
-      path: '/admin',
-      load: () => import(/* webpackChunkName: 'admin' */ './admin'),
-    },
-
-    {
-      name: "Account",
-      path: '/account',
-      load: () => import(/* webpackChunkName: 'account' */ './account'),
-    },
-    {
-      name: "Article",
-      path: '/article/(.*)',
-      load: () => import(/* webpackChunkName: 'article' */ './article'),
-    },
-    {
-      name: "EditArticle",
-      path: '/editArticle/(.*)',
-      load: () => import(/* webpackChunkName: 'editArticle' */ './editArticle'),
-    },
-    {
-      name: "EditArgument",
-      path: '/editArgument/(.*)/(.*)',
-      load: () => import(/* webpackChunkName: 'editArgument' */ './editArgument'),
-    },
-    {
-      name: "EditArgument",
-      path: '/editArgument/(.*)',
-      load: () => import(/* webpackChunkName: 'editArgument' */ './editArgument'),
-    },
-    {
-      name: "Blog",
-      path: '/blog/(.*)',
-      load: () => import(/* webpackChunkName: 'blog' */ './blog'),
-    },
 
     // Wildcard routes, e.g. { path: '(.*)', ... } (must go last)
     {

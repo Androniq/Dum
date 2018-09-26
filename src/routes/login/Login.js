@@ -12,6 +12,8 @@ import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Login.css';
 import { UserContext } from '../../UserContext';
+import { Helmet } from 'react-helmet';
+import withEverything from '../../withEverything';
 
 class Login extends React.Component {
   static propTypes = {
@@ -28,6 +30,9 @@ class Login extends React.Component {
       <UserContext.Consumer>
         {context => (
       <div className={s.root}>
+        <Helmet>
+          <title>Увійти</title>
+        </Helmet>
         <div className={s.container}>
           <h1>{this.props.title}</h1>
           <p className={s.lead}>
@@ -135,4 +140,4 @@ class Login extends React.Component {
   }
 }
 
-export default withStyles(s)(Login);
+export default withEverything(Login, s);

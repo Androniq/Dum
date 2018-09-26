@@ -13,8 +13,12 @@ import Layout from './Layout/Layout';
 import { Switch, Route } from 'react-router';
 import Home from '../routes/home/Home';
 import Article from '../routes/article/Article';
+import Blog from '../routes/blog/Blog';
+import Login from '../routes/login/Login';
 import ErrorPage from '../routes/error/ErrorPage';
 import { Helmet } from 'react-helmet';
+import EditArticle from '../routes/editArticle/EditArticle';
+import EditArgument from '../routes/editArgument/EditArgument';
 
 const ContextType = {
   // Enables critical path CSS rendering
@@ -75,6 +79,11 @@ class App extends React.Component
         <Switch>
           <Route path='/' exact render={Home(context)} />
           <Route path='/article/:id' render={Article(context)} />
+          <Route path='/blog/:id' render={Blog(context)} />
+          <Route path='/login' render={Login(context)} />
+          <Route path='/editArticle/:id' render={EditArticle(context)} />
+          <Route path='/editArgument/:articleId/:argId' render={EditArgument(context)} />
+          <Route path='/editArgument/:argId' render={EditArgument(context)} />
           <Route component={ErrorPage} />
         </Switch>
         <Helmet titleTemplate="%s | ДУМ" />

@@ -9,6 +9,8 @@ import history from '../../history';
 import { guid, quillToolbarOptions, htmlNonEmpty, checkPrivilege, USER_LEVEL_ADMIN } from '../../utility';
 import BlueButton from '../../components/BlueButton/BlueButton';
 import Popup from "reactjs-popup";
+import { Helmet } from 'react-helmet';
+import withEverything from '../../withEverything';
 import QuillWrapper from '../../components/QuillWrapper/QuillWrapper';
 
 var urlRegex = RegExp("^([A-Za-z0-9_-]*)$");
@@ -27,6 +29,11 @@ class EditArticle extends React.Component {
     ShortB: '',
     Content: ''
   };
+
+getTitle(article)
+{
+  return article ? ('Редагування: ' + article.PageTitle) : 'Нова стаття';
+}
 
 updateTitle(value) { this.setState({Title:value, validatorTitle:null}); }
 updatePageTitle(value) { this.setState({PageTitle:value, validatorPageTitle:null}); }
@@ -158,6 +165,9 @@ async onDeleteDo()
   {    
       return (
           <div className={s.editArticleContainer}>
+            <Helmet>
+              <title>{this.getTitle(this.props.data.article)}</title>
+            </Helmet>
             <div className={s.editArticleGrid}>
               <TextInput className={classnames(s.textInput, s.grid11, this.state.validatorTitle)} placeholder="Коротка назва статті, наприклад: Вірно"
                 onSave={this.updateTitle.bind(this)} value={this.state.Title}
@@ -214,4 +224,4 @@ async onDeleteDo()
   }
 }
 
-export default withStyles(s)(EditArticle);
+export default withEverything(EditArticle, s, '/api/getArticle/:id');

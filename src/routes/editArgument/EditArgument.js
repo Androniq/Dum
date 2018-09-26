@@ -11,6 +11,8 @@ import Select from 'react-select';
 import BlueButton from '../../components/BlueButton/BlueButton';
 import FormattedText from '../../components/FormattedText/FormattedText';
 import Popup from "reactjs-popup";
+import { Helmet } from 'react-helmet';
+import withEverything from '../../withEverything';
 import QuillWrapper from '../../components/QuillWrapper/QuillWrapper';
 
 class EditArgument extends React.Component {
@@ -33,6 +35,16 @@ class EditArgument extends React.Component {
     this.state.priorityDescription = this.getPriorityDescription(this.props.data.argument.Priority);
     this.state.Content = this.props.data.argument.Content;
   }
+
+getTitle(type)
+{
+  switch (type)
+  {
+    case 'new': return 'Новий аргумент';
+    case 'proposal': return 'Пропозиція';
+    case 'edit': return 'Редагування аргументу';
+  }  
+}
 
 getPriorityDescription(id)
 {
@@ -155,6 +167,9 @@ async onDeleteDo()
   {
       return (
           <div className={s.editArgumentContainer}>
+            <Helmet>
+              <title>{this.getTitle(this.props.data.type)}</title>
+            </Helmet>
             <div className={s.tokenHeader}>
               <span className={classnames(s.tokenBase, s.tokenA)}>{this.props.data.article.TokenA}</span>
               <span className={classnames(s.tokenBase, s.tokenB)}>{this.props.data.article.TokenB}</span>
@@ -205,4 +220,4 @@ async onDeleteDo()
   }
 }
 
-export default withStyles(s)(EditArgument);
+export default withEverything(EditArgument, s, [ { condition: q => q.argId === 'new', value: '/api/getNewArgument/:articleId' }, '/api/getArgument/:argId' ]);

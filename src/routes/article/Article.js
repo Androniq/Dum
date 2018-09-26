@@ -158,94 +158,94 @@ async componentDidMount()
   {
     return (
       <React.Fragment>
-      <Helmet>
-        <title>{this.props.data.article.PageTitle}</title>
-      </Helmet>
-      <div className={s.infoArea}>
-        <div className={s.tokenHeader}
-          style={{backgroundColor: this.props.data.result.ColorCode, color: this.props.data.result.WhiteText ? "white" : "black"}}>
-          <span className={classnames(s.tokenBase, s.tokenA)}>{this.props.data.article.TokenA}</span>
-          <span className={classnames(s.tokenBase, s.tokenB)}>{this.props.data.article.TokenB}</span>
-        </div>
-        <h3 className={s.generalResult}>{this.props.data.result.Description}</h3>
-        <FormattedText html={this.props.data.article.Content} />
-        <Chart type="horizontalBar" data={this.chartData(this.props.data)} options={this.chartOptions()} />
-        <span className={s.totalVotes}>Усього голосів: {this.props.data.totalPopular}</span>
-        <UserContext.Consumer>
-          {context => context.user ? context.user.confirmed ? !context.user.blocked ? (
-            <div className={s.buttonContainer}>
-              <Popup trigger={<BlueButton>Голосувати!</BlueButton>} position="top center"
-                open={this.state.votePopupOpen} onOpen={this.onVotePopupOpen.bind(this)} onClosed={this.onVotePopupClose.bind(this)} modal>
-                <div className={s.pvContainer}>
-                  {this.voteButton('A')}
-                  {this.voteButton('AB')}
-                  {this.voteButton('EQ')}
-                  {this.voteButton('BA')}
-                  {this.voteButton('B')}
-                  {this.voteButton('S')}
-                </div>
-              </Popup>              
-              <BlueButton onClick={this.clickArgument.bind(this)}>Аргументувати...</BlueButton>
-              {checkPrivilege(context.user, USER_LEVEL_MODERATOR) ? (
-              <BlueButton onClick={this.clickEdit.bind(this)} href="">Редагувати</BlueButton>
-              ):""}
-            </div>
-          ) : (
-            <div className={s.containerNotAuthorized}>
-              <span className={s.textNotAuthorized}>Ви не маєте права голосувати</span>
-            </div>
-          ) : (
-            <div className={s.containerNotAuthorized}>
-              <span className={s.textNotAuthorized}>Щоб голосувати, потрібно підтвердити свою адресу електронної пошти</span>
-            </div>
-          ) : (
-            <div className={s.containerNotAuthorized}>
-              <span className={s.textNotAuthorized}>Щоб голосувати, потрібно авторизуватися</span>
-            </div>
-          )}
-        </UserContext.Consumer>
-        <UserContext.Consumer>
-          {context => (
-        <div className={s.prioritiesContainer}>
-          {this.props.data.priorityList.map(priority =>
-          <div key={priority.priority._id} className={s.priorityContainer}>
-            <Collapsible trigger={(
-              <PriorityHeader priorityTitle={priority.priority.Title} popularOverride={priority.priority.popularOverride}
-                voteFor={priority.voteFor} isOpen={false} />
-             )} triggerWhenOpen={(
-              <PriorityHeader priorityTitle={priority.priority.Title} popularOverride={priority.priority.popularOverride}
-                voteFor={priority.voteFor} isOpen={true} />
-            )}
-             easing="ease">
-            <div className={s.priorityArgs}>
-              {priority.arguments.length ? "" : (
-                <span className={s.priorityArgsEmpty} />
-              )}
-              {priority.arguments.map(argument =>
-                <div key={argument._id} className={s.argumentContainer}>
-                  <div className={s.argumentHeader}>
-                    <span className={s.argumentTitle}>{priority.priority.Title}</span>
-                    <span className={s.argumentVote}>{argument.voteFor}</span>     
-                    {checkPrivilege(context.user, USER_LEVEL_MODERATOR) ? (
-                      <Link to={"/editArgument/" + argument._id}>
-                        <img className={s.argumentEditButton} src="/images/edit.png" />
-                      </Link>
-                    ) : ""}             
-                  </div>
-                  <div className={s.argumentBody}>
-                    <FormattedText html={argument.Content} />
-                  </div>
-                </div>
-              )}
-            </div>
-            </Collapsible>
+        <Helmet>
+          <title>{this.props.data.article.PageTitle}</title>
+        </Helmet>
+        <div className={s.infoArea}>
+          <div className={s.tokenHeader}
+            style={{ backgroundColor: this.props.data.result.ColorCode, color: this.props.data.result.WhiteText ? "white" : "black" }}>
+            <span className={classnames(s.tokenBase, s.tokenA)}>{this.props.data.article.TokenA}</span>
+            <span className={classnames(s.tokenBase, s.tokenB)}>{this.props.data.article.TokenB}</span>
           </div>
-          )}
+          <h3 className={s.generalResult}>{this.props.data.result.Description}</h3>
+          <FormattedText html={this.props.data.article.Content} />
+          <Chart type="horizontalBar" data={this.chartData(this.props.data)} options={this.chartOptions()} />
+          <span className={s.totalVotes}>Усього голосів: {this.props.data.totalPopular}</span>
+          <UserContext.Consumer>
+            {context => context.user ? context.user.confirmed ? !context.user.blocked ? (
+              <div className={s.buttonContainer}>
+                <Popup trigger={<BlueButton>Голосувати!</BlueButton>} position="top center"
+                  open={this.state.votePopupOpen} onOpen={this.onVotePopupOpen.bind(this)} onClosed={this.onVotePopupClose.bind(this)} modal>
+                  <div className={s.pvContainer}>
+                    {this.voteButton('A')}
+                    {this.voteButton('AB')}
+                    {this.voteButton('EQ')}
+                    {this.voteButton('BA')}
+                    {this.voteButton('B')}
+                    {this.voteButton('S')}
+                  </div>
+                </Popup>
+                <BlueButton onClick={this.clickArgument.bind(this)}>Аргументувати...</BlueButton>
+                {checkPrivilege(context.user, USER_LEVEL_MODERATOR) ? (
+                  <BlueButton onClick={this.clickEdit.bind(this)} href="">Редагувати</BlueButton>
+                ) : ""}
+              </div>
+            ) : (
+                <div className={s.containerNotAuthorized}>
+                  <span className={s.textNotAuthorized}>Ви не маєте права голосувати</span>
+                </div>
+              ) : (
+                <div className={s.containerNotAuthorized}>
+                  <span className={s.textNotAuthorized}>Щоб голосувати, потрібно підтвердити свою адресу електронної пошти</span>
+                </div>
+              ) : (
+                <div className={s.containerNotAuthorized}>
+                  <span className={s.textNotAuthorized}>Щоб голосувати, потрібно авторизуватися</span>
+                </div>
+              )}
+          </UserContext.Consumer>
+          <UserContext.Consumer>
+            {context => (
+              <div className={s.prioritiesContainer}>
+                {this.props.data.priorityList.map(priority =>
+                  <div key={priority.priority._id} className={s.priorityContainer}>
+                    <Collapsible trigger={(
+                      <PriorityHeader priorityTitle={priority.priority.Title} popularOverride={priority.priority.popularOverride}
+                        voteFor={priority.voteFor} isOpen={false} />
+                    )} triggerWhenOpen={(
+                      <PriorityHeader priorityTitle={priority.priority.Title} popularOverride={priority.priority.popularOverride}
+                        voteFor={priority.voteFor} isOpen={true} />
+                    )}
+                      easing="ease">
+                      <div className={s.priorityArgs}>
+                        {priority.arguments.length ? "" : (
+                          <span className={s.priorityArgsEmpty} />
+                        )}
+                        {priority.arguments.map(argument =>
+                          <div key={argument._id} className={s.argumentContainer}>
+                            <div className={s.argumentHeader}>
+                              <span className={s.argumentTitle}>{priority.priority.Title}</span>
+                              <span className={s.argumentVote}>{argument.voteFor}</span>
+                              {checkPrivilege(context.user, USER_LEVEL_MODERATOR) ? (
+                                <Link to={"/editArgument/" + argument._id}>
+                                  <img className={s.argumentEditButton} src="/images/edit.png" />
+                                </Link>
+                              ) : ""}
+                            </div>
+                            <div className={s.argumentBody}>
+                              <FormattedText html={argument.Content} />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </Collapsible>
+                  </div>
+                )}
+              </div>
+            )}
+          </UserContext.Consumer>
         </div>
-          )}
-        </UserContext.Consumer>
-      </div>
-      <StickyMessage message={this.state.stickyText} visible={this.state.stickyShown} />
+        <StickyMessage message={this.state.stickyText} visible={this.state.stickyShown} />
       </React.Fragment>
     );
   }

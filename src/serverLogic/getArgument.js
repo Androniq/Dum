@@ -34,7 +34,7 @@ export async function getArgument(user, id)
     {
         vote.ShortDescription = vote.ShortDescriptionTemplate.replace('%A%', article.ShortA).replace('%B%', article.ShortB);
     });
-    var res = { argument: arg, article, votes, priorities };
+    var res = { argument: arg, article, votes, priorities, type: "edit" };
     return res;
 }
 
@@ -57,6 +57,6 @@ export async function getNewArgument(user, url)
     {
         vote.ShortDescription = vote.ShortDescriptionTemplate.replace('%A%', article.ShortA).replace('%B%', article.ShortB);
     });
-    var res = { argument: { Article: article.ID }, article, votes, priorities, isProposal };
+    var res = { argument: { Article: article.ID }, article, votes, priorities, isProposal, type: isProposal ? "proposal" : "new" };
     return res;
 }
