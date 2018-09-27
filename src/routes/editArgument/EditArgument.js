@@ -108,7 +108,7 @@ async onSave()
   argument.Content = this.state.Content;
   var text = JSON.stringify(argument);
 
-  var res = await this.props.fetch('/api/setArgument', {method:'POST', body: text, headers: { "Content-Type": "application/json" }});
+  var res = await this.props.context.fetch('/api/setArgument', {method:'POST', body: text, headers: { "Content-Type": "application/json" }});
   var resj = await res.json();
   if (resj.success)
   {
@@ -151,7 +151,7 @@ onCancelDeletion()
 
 async onDeleteDo()
 {
-  var res = await this.props.fetch('/api/deleteArgument/' + this.props.data.argument._id, {method:'DELETE', headers: { "Content-Type": "application/json" }});
+  var res = await this.props.context.fetch('/api/deleteArgument/' + this.props.data.argument._id, {method:'DELETE', headers: { "Content-Type": "application/json" }});
   var resj = await res.json();
   if (resj.success)
   {
