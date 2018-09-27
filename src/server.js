@@ -35,7 +35,7 @@ import session from 'express-session';
 //import MongoDBStore from 'connect-mongodb-session';
 import sendPopularVote from './serverLogic/sendPopularVote';
 import { serverReady } from './serverLogic/_common';
-import { findOrCreateUser, setUserRole, transferOwnership } from './serverLogic/auth';
+import { findOrCreateUser, setUserRole, transferOwnership, findLocalUser } from './serverLogic/auth';
 import getArticle from './serverLogic/getArticle';
 import getArticleInfo from './serverLogic/getArticleInfo';
 import getArticles from './serverLogic/getArticles';
@@ -168,6 +168,7 @@ passport.deserializeUser((user, done) => {
 
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
+const LocalStrategy = require('passport-local').Strategy;
 
 // Use the GoogleStrategy within Passport.
 //   Strategies in Passport require a `verify` function, which accept
@@ -249,7 +250,8 @@ passport.use(
         // idk what to do here ^^
         return;
       }
-      FB.api('/' + profile.id, 'GET', { fields: 'email,picture.width(150).height(150)', access_token: accessToken }, function(response) {
+      FB.api('/' + profile.id, 'GET', { fields: 'email,picture.width(150).height(150)', access_token: accessToken }, function(response)
+      {
         var picture = response.picture.data.url;
         var email = response.email;
         profile.email = email;
@@ -258,7 +260,7 @@ passport.use(
         findOrCreateUser(profile.id, 'facebook', profile).then(
           user => done(null, user),
           err => done(err, null));
-        });
+      });
     },
   ),
 );
@@ -281,9 +283,53 @@ app.get(
     const expiresIn = 60 * 60 * 24 * 180; // 180 days
     const token = jwt.sign(req.user, config.auth.jwt.secret, { expiresIn });
     res.cookie('id_token', token, { maxAge: 1000 * expiresIn, httpOnly: true });
-    res.redirect('/');
+    res.redirect(req.session.returnTo || '/');
+    req.session.returnTo = null;
   },
 );
+
+passport.use(new LocalStrategy(async (email, password, done)=>
+{
+  var user = await findLocalUser(email, password, false);
+  if (!user)
+      return done(null, false, { message: "Incorrect username or password" });
+  return done(null, user);
+}));
+
+function loginLocalSuccess(req, res, next)
+{
+  if (!req.user)
+  {
+    return;
+  }
+  const expiresIn = 60 * 60 * 24 * 180; // 180 days
+  const token = jwt.sign(req.user, config.auth.jwt.secret, { expiresIn });
+  res.cookie('id_token', token, { maxAge: 1000 * expiresIn, httpOnly: true });
+  res.send({ message:"success", user: req.user });
+  res.status(200);
+}
+
+app.post('/login/local', passport.authenticate('local'), loginLocalSuccess);
+
+app.post('/register', async (req, res, next) =>
+{
+  var email = req.body.username;
+  var pwd = req.body.password;
+  if (!email || email.length<1 || !pwd || pwd.length<1)
+  {
+    res.status(406);
+    res.send({ status: 406 });  
+    return;
+  }
+  var user = await findLocalUser(email, pwd, true);
+  if (!user)
+  {
+    res.status(406);
+    res.send({ status: 406, message: "User with such email already registered" });
+    return;
+  }
+  return next();
+}, passport.authenticate('local'), loginLocalSuccess);
 
 app.get('/logout',
   (req, res) =>
@@ -291,7 +337,7 @@ app.get('/logout',
       req.session.passport = null;
       res.clearCookie('id_token');
       res.redirect(req.query.returnTo || '/');
-  }  
+  }
 )
 
 // API

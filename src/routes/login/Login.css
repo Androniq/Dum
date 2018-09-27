@@ -154,3 +154,10 @@
   border-bottom: 1px solid #ddd;
   content: '';
 }
+
+.invalid
+{
+  border-width: 3px;
+  border-color: red;
+  border-style: solid;
+}

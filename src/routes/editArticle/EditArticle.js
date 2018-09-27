@@ -117,7 +117,7 @@ async onSave()
   var text = JSON.stringify(article);
 
   var res = await this.props.context.fetch('/api/setArticle', {method:'POST', body: text, headers: { "Content-Type": "application/json" }});
-    var resj = await res.json();
+  var resj = await res.json();
   if (resj.success)
   {
     this.props.history.push('/article/' + article.Url);

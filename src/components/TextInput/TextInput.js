@@ -7,13 +7,14 @@ const ENTER_KEY_CODE = 13;
 
 var allInstances = []; // prevent annoying opening of multiple tooltips simultaneously
 
-class TextInput extends React.Component {
-
-  constructor(props) {
+class TextInput extends React.Component
+{
+  constructor(props)
+  {
     super(props);
     this.placeholder = props.placeholder;
     this.onSave = props.onSave || (() => {});
-    this.state = {
+    this.state ={
       value: props.value || '',
       popupOpen: false
     };
@@ -23,7 +24,8 @@ class TextInput extends React.Component {
 
 static propTypes = {};
 
- async _onChange(event) {
+ async _onChange(event)
+ {
     await this.setState({
       value: event.target.value
     });
@@ -55,19 +57,27 @@ static propTypes = {};
     this.setState({popupOpen:false});
   }
 
-  render() {
+  renderInner()
+  {
+    return (
+      <input
+        className={this.props.className}
+        type={this.props.type||"text"}
+        maxLength={this.props.maxLength}
+        onChange={this._onChange.bind(this)}
+        onKeyDown={this._onKeyDown.bind(this)}
+        placeholder={this.placeholder}
+        value={this.state.value} />
+    );
+  }
+
+  render()
+  {
+    if (this.props.noPopup)
+      return this.renderInner();
     return (
         <Popup on='hover' open={this.state.popupOpen} onOpen={this.onOpen.bind(this)} contentStyle={{"width":"400px","borderRadius":"5px","textAlign":"justify"}}
-          trigger={(
-            <input
-                className={this.props.className}
-                type="text"
-                maxLength={this.props.maxLength}
-                onChange={this._onChange.bind(this)}
-                onKeyDown={this._onKeyDown.bind(this)}
-                placeholder={this.placeholder}
-                value={this.state.value} />
-        )}>
+          trigger={this.renderInner()}>
             <span>{this.props.hint}</span>
         </Popup>
     );

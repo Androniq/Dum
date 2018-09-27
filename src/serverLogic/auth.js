@@ -115,6 +115,28 @@ export async function findOrCreateUser(token, type, profile)
   return user;
 }
 
+export async function findLocalUser(email, pwd, isNew)
+{	
+	if (!pwd || pwd.length < 1 || !email || email.length < 1)
+		return null;
+	var displayName = email;
+	email = email.toLowerCase();
+	var user;
+	if (!isNew)
+	{
+		user = await mongoAsync.dbCollections.users.findOne({ email, password: pwd });
+		return user;
+	}
+	var exist = await mongoAsync.dbCollections.users.countDocuments({ email });
+	if (exist)
+	{
+		return null;
+	}
+	user = { email, displayName, password: pwd, role: "visitor", confirmed: false, blocked: false };
+	user = (await mongoInsert(mongoAsync.dbCollections.users, user)).ops[0];
+	return user;
+}
+
 export async function setUserRole(operatorUser, { operandUserId = userId, newRole = role })
 {
 	if (!checkPrivilege(operatorUser, USER_LEVEL_ADMIN))

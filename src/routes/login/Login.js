@@ -13,24 +13,103 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Login.css';
 import { UserContext } from '../../UserContext';
 import { Helmet } from 'react-helmet';
+import StickyMessage from '../../components/StickyMessage/StickyMessage';
+import { showSticky, emailRegex } from '../../utility';
 import withEverything from '../../withEverything';
+import TextInput from '../../components/TextInput/TextInput';
+import cx from 'classnames';
 
 class Login extends React.Component
-{
+{  
   static propTypes =
   {
   };
 
+  constructor(props)
+  {
+    super(props);
+    this.state = {
+    };
+  }
+
+  async flashMessage(text)
+  {
+    await this.setState({ stickyText: text });
+    showSticky(this);
+  }
+
   getReturnTo(location)
   {
-    return location && location.state && location.state.returnTo;
+    return location && location.state && location.state.returnTo || '/';
+  }
+
+  updateEmail(value) { this.setState({email:value, validatorEmail:null}); }
+  updatePwd(value) { this.setState({pwd:value, validatorPwd:null}); }
+  updatePwdConf(value) { this.setState({pwdConf:value, validatorPwdConf:null}); }
+
+  validateEmail()
+  {
+    if (!this.state.email || this.state.email.length < 1 || !emailRegex.test(this.state.email))
+    { this.setState({validatorEmail:s.invalid}); return false; }
+    return true;
+  }
+
+  validatePwd()
+  {
+    if (!this.state.pwd || this.state.pwd.length < 1)
+    { this.setState({validatorPwd:s.invalid}); return false; }
+    return true;
+  }
+
+  validatePwdConf()
+  {
+    if (!this.state.pwdConf || this.state.pwdConf.length < 1 || this.state.pwdConf !== this.state.pwd)
+    { this.setState({validatorPwdConf:s.invalid}); return false; }
+    return true;
+  }
+
+  async clickLogin()
+  {
+    var valid = this.validateEmail() && this.validatePwd();
+    if (!valid) return;
+    var reqBody = JSON.stringify({ username:this.state.email, password:this.state.pwd });
+    var answer = await this.props.context.fetch('/login/local', { method:'POST', body: reqBody, headers: { "Content-Type": "application/json" }});
+    if (answer.status === 401) // login failure
+    {
+      this.flashMessage('Немає такого користувача або хибний пароль');
+      this.setState({ validatorPwd: s.invalid, validatorEmail: s.invalid });
+      return;
+    }
+    var json = await answer.json();
+    if (json)
+    {
+      this.props.context.user = json.user;
+      this.props.history.push(this.getReturnTo(this.props.location));
+    }
+  }
+
+  async clickRegister()
+  {
+    var valid = this.validateEmail() && this.validatePwd() && this.validatePwdConf();
+    if (!valid) return;
+    var reqBody = JSON.stringify({ username:this.state.email, password:this.state.pwd });
+    var answer = await this.props.context.fetch('/register', { method:'POST', body: reqBody, headers: { "Content-Type": "application/json" }});
+    if (answer.status === 406)
+    {
+      this.flashMessage('Користувач із такою адресою вже існує');
+      return;
+    }
+    var json = await answer.json();
+    if (json)
+    {
+      this.props.context.user = json.user;
+      this.props.history.push(this.getReturnTo(this.props.location));
+    }
   }
 
   render()
   {
     return (
-      <UserContext.Consumer>
-        {context => (
       <div className={s.root}>
         <Helmet>
           <title>Увійти</title>
@@ -38,7 +117,7 @@ class Login extends React.Component
         <div className={s.container}>
           <h1>{this.props.title}</h1>
           <p className={s.lead}>
-            Log in with your username or company email address.
+            Увійдіть на сайт
           </p>
           <div className={s.formGroup}>
             <a className={s.facebook} href="/login/facebook">
@@ -51,7 +130,7 @@ class Login extends React.Component
               >
                 <path d="M22 16l1-5h-5V7c0-1.544.784-2 3-2h2V0h-4c-4.072 0-7 2.435-7 7v4H7v5h5v14h6V16h4z" />
               </svg>
-              <span>Log in with Facebook</span>
+              <span>Увійти через Facebook</span>
             </a>
           </div>
           <div className={s.formGroup}>
@@ -76,10 +155,10 @@ class Login extends React.Component
                   }
                 />
               </svg>
-              <span>Log in with Google</span>
+              <span>Увійти через Google</span>
             </a>
           </div>
-          <div className={s.formGroup}>
+          <div className={s.formGroup} style={{display: "none"}}>
             <a className={s.twitter} href="/login/twitter">
               <svg
                 className={s.icon}
@@ -103,41 +182,53 @@ class Login extends React.Component
               <span>Log in with Twitter</span>
             </a>
           </div>
-          <strong className={s.lineThrough}>OR</strong>
-          <form method="post">
+          <strong className={s.lineThrough}>АБО</strong>
             <div className={s.formGroup}>
               <label className={s.label} htmlFor="usernameOrEmail">
-                Username or email address:
-                <input
-                  className={s.input}
-                  id="usernameOrEmail"
-                  type="text"
-                  name="usernameOrEmail"
+                Електронна пошта:
+                <TextInput
+                  className={cx(s.input, this.state.validatorEmail)}
+                  onSave={this.updateEmail.bind(this)}
+                  noPopup
                   autoFocus // eslint-disable-line jsx-a11y/no-autofocus
                 />
               </label>
             </div>
             <div className={s.formGroup}>
               <label className={s.label} htmlFor="password">
-                Password:
-                <input
-                  className={s.input}
-                  id="password"
+                Пароль:
+                <TextInput
+                  className={cx(s.input, this.state.validatorPwd)}
+                  onSave={this.updatePwd.bind(this)}
                   type="password"
-                  name="password"
+                  noPopup
                 />
               </label>
             </div>
             <div className={s.formGroup}>
-              <button className={s.button} type="submit">
-                Log in
+              <button className={s.button} onClick={this.clickLogin.bind(this)}>
+                Увійти
               </button>
             </div>
-          </form>
+            <div className={s.formGroup}>
+              <label className={s.label} htmlFor="password">
+                Новий користувач? Повторіть пароль:
+                <TextInput
+                  className={cx(s.input, this.state.validatorPwdConf)}                  
+                  onSave={this.updatePwdConf.bind(this)}
+                  type="password"
+                  noPopup
+                />
+              </label>
+            </div>
+            <div className={s.formGroup}>
+              <button className={s.button} onClick={this.clickRegister.bind(this)}>
+                Зареєструватися
+              </button>
+            </div>
         </div>
+        <StickyMessage message={this.state.stickyText} visible={this.state.stickyShown} />
       </div>
-        )}
-      </UserContext.Consumer>
     );
   }
 }
