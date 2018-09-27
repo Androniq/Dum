@@ -296,114 +296,73 @@ app.get('/logout',
 
 // API
 
-app.get('/api/whoami', async (req, res) => {
-  res.send({ user: getUser(req) });
+function processApiGet(apiUrl, serverLogic)
+{
+  app.get(apiUrl, async (req, res) =>
+  {
+    await serverReady();
+    var user = getUser(req);
+    var data = await serverLogic(user, req.params, req.query);
+    if (!data.status)
+      data.status = 200;
+    data.user = user;
+    res.status(data.status);
+    res.send(data);
+  });
+}
+
+function processApiPost(apiUrl, serverLogic)
+{
+  app.post(apiUrl, async (req, res) =>
+  {
+    await serverReady();
+    var user = getUser(req);
+    var data = await serverLogic(user, req.body, req.params, req.query);
+    if (!data.status)
+      data.status = 200;
+    data.user = user;
+    res.status(data.status);
+    res.send(data);
+  });
+}
+
+function processApiDelete(apiUrl, serverLogic)
+{
+  app.delete(apiUrl, async (req, res) =>
+  {
+    await serverReady();
+    var user = getUser(req);
+    var data = await serverLogic(user, req.params, req.query);
+    if (!data.status)
+      data.status = 200;
+    data.user = user;
+    res.status(data.status);
+    res.send(data);
+  });
+}
+
+app.get('/api/whoami', async (req, res) =>
+{
+  res.send({ status: 200, user: getUser(req) });
 });
 
-app.get('/api/getArticles', async (req, res) => {
-  await serverReady();
-  const data = await getArticles(getUser(req));
-  res.send({ data });
-});
+processApiGet('/api/getArticles', getArticles);
+processApiGet('/api/article/:id', getArticleInfo);
+processApiGet('/api/getArticle/:id', getArticle);
+processApiGet('/api/getNewArgument/:id', getNewArgument);
+processApiGet('/api/getArgument/:id', getArgument);
+processApiGet('/api/checkArticleUrl/:id/:url', checkArticleUrl);
+processApiGet('/api/sendPopularVote/:articleId/:voteId', sendPopularVote);
+processApiGet('/api/getAccount', getAccount);
+processApiGet('/api/getBlog/:blogUrl', getBlogByUrl);
+processApiGet('/api/setUserRole/:userId/:role', setUserRole);
+processApiGet('/api/transferOwnership/:userId', transferOwnership);
 
-app.get('/api/article/:code', async (req, res) => {
-  await serverReady();
-  const articleData = await getArticleInfo(req.params.code, getUser(req));
-  res.send(articleData);
-});
+processApiPost('/api/setArticle', setArticle)
+processApiPost('/api/setArgument', setArgument)
 
-app.get('/api/getArticle/:code', async (req, res) => {
-  await serverReady();
-  const article = await getArticle(req.params.code, getUser(req));
-  res.send(article);
-});
-
-app.post('/api/setArticle', async (req, res) => {
-  await serverReady();
-  var resp = await setArticle(getUser(req), req.body);
-  res.send(resp);
-});
-
-app.get('/api/getNewArgument/:id', async (req, res) => {
-  await serverReady();
-  const argument = await getNewArgument(getUser(req), req.params.id);
-  res.send(argument);
-});
-
-app.get('/api/getArgument/:id', async (req, res) => {
-  await serverReady();
-  const argument = await getArgument(getUser(req), req.params.id);
-  res.send(argument);
-});
-
-app.post('/api/setArgument', async (req, res) => {
-  await serverReady();
-  var resp = await setArgument(getUser(req), req.body);
-  res.send(resp);
-});
-
-app.delete('/api/deleteArgument/:id', async (req, res) => {
-  await serverReady();
-  var resp = await deleteArgument(getUser(req), req.params.id);
-  res.send(resp);
-});
-
-app.delete('/api/deleteArticle/:id', async (req, res) => {
-  await serverReady();
-  var resp = await deleteArticle(getUser(req), req.params.id);
-  res.send(resp);
-});
-
-app.get('/api/checkArticleUrl/:id/:url', async (req, res) => {
-  await serverReady();
-  const result = await checkArticleUrl(req.params.url, req.params.id);
-  res.send(result);
-});
-
-app.get('/api/sendPopularVote/:articleId/:voteId', async (req, res) => {
-  await serverReady();
-  const result = await sendPopularVote(getUser(req), req.params.articleId, req.params.voteId);
-  res.send(result);
-});
-
-app.get('/api/getAccount', async (req, res) => {
-  await serverReady();
-  const result = await getAccount(getUser(req));
-  res.send(result);
-
-})
-
-app.get('/api/getBlog/:blogUrl', async (req, res) => {
-  await serverReady();
-  const result = await getBlogByUrl(req.params.blogUrl);
-  res.send(result);
-});
-
-app.get('/api/setUserRole/:userId/:role', async (req, res) => {
-  await serverReady();
-  const resp = await setUserRole(getUser(req), req.params.userId, req.params.role);
-  res.send(resp);
-});
-
-app.get('/api/transferOwnership/:userId', async (req, res) => {
-  await serverReady();
-  const resp = await transferOwnership(getUser(req), req.params.userId);
-  res.send(resp);
-});
-
-
-//
-// Register API middleware
-// -----------------------------------------------------------------------------
-app.use(
-  '/graphql',
-  expressGraphQL(req => ({
-    schema,
-    graphiql: __DEV__,
-    rootValue: { request: req },
-    pretty: __DEV__,
-  })),
-);
+processApiDelete('/api/deleteArgument/:id', deleteArgument);
+processApiDelete('/api/deleteArticle/:id', deleteArticle);
 
 //
 // Register server-side rendering middleware

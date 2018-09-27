@@ -17,7 +17,10 @@ import {
 	USER_LEVEL_ADMIN,
     USER_LEVEL_OWNER } from '../utility';
 
- export default async function getArticle(url, user)
+ export default async function getArticle(user, { id })
  {
-     return await mongoAsync.dbCollections.articles.findOne({ Url: url });
+     var article = await mongoAsync.dbCollections.articles.findOne({ Url: id });
+     if (!article)
+        return { status: 404 };
+    return article;
  }

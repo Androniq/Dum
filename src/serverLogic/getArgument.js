@@ -19,11 +19,11 @@ import {
 
 import { ObjectID } from 'mongodb';
     
-export async function getArgument(user, id)
+export async function getArgument(user, { id })
 {
     if (!checkPrivilege(user, USER_LEVEL_MODERATOR))
     {
-        return { success: false, message: "Insufficient privileges" };
+        return { status: 403, message: "Insufficient privileges" };
     }
 
     var arg = await mongoAsync.dbCollections.arguments.findOne({ _id: new ObjectID(id) });
@@ -38,15 +38,15 @@ export async function getArgument(user, id)
     return res;
 }
 
-export async function getNewArgument(user, url)
+export async function getNewArgument(user, { id })
 {
     if (!checkPrivilege(user, USER_LEVEL_MEMBER))
     {
-        return { success: false, message: "Insufficient privileges" };
+        return { status: 403, message: "Insufficient privileges" };
     }
 
     var isProposal = !checkPrivilege(user, USER_LEVEL_MODERATOR);
-    var article = await mongoAsync.dbCollections.articles.findOne({ Url: url });
+    var article = await mongoAsync.dbCollections.articles.findOne({ Url: id });
     if (!article)
     {
         return { success: false, message: "Article not found" };

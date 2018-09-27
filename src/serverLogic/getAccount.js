@@ -22,7 +22,7 @@ export default async function getAccount(user)
 {
     if (!user)
     {
-        return { success: false, message: "Error: you are not logged in" };
+        return { status: 403, message: "Error: you are not logged in" };
     }
     return user;
 }

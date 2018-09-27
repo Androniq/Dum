@@ -17,11 +17,11 @@ import {
 	USER_LEVEL_ADMIN,
     USER_LEVEL_OWNER } from '../utility';
 
-    export async function getBlogByUrl(url)
+    export async function getBlogByUrl(user, { blogUrl })
     {
-        var blog = await mongoAsync.dbCollections.blog.findOne({ Url: url });
+        var blog = await mongoAsync.dbCollections.blog.findOne({ Url: blogUrl });
         if (!blog)
-            return null;
+            return { status: 404, localMessage: 'Нема такого запису в блоґах' };
         var owner = await mongoAsync.dbCollections.users.findOne({ _id: blog.Owner });
         if (!owner)
         {

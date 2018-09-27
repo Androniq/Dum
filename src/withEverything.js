@@ -3,6 +3,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { asyncComponent } from 'react-async-component';
 import Layout from './components/Layout/Layout';
 import Loading from './components/Loading/Loading';
+import ErrorPage from './routes/error/ErrorPage';
 
 // This function amends top-level React Components (app routes)
 // with everything they need:
@@ -13,8 +14,9 @@ import Loading from './components/Loading/Loading';
 // 5. Router props (history, location and match)
 // 6. Rehydrated data (preloaded on SSR into HTML)
 // Context will be provided by the App, and router props by Routes.
-export default function withEverything(Component, styles, apiCall)
+export default function withEverything(Component, styles, apiCall, extraProps)
 {
+    extraProps = extraProps || {};
     var StyledComponent = withStyles(styles)(Component);
     return context =>
     {
@@ -23,7 +25,8 @@ export default function withEverything(Component, styles, apiCall)
         {
             context.pathname = routerProps.location.pathname;
 
-            var allProps = { ...routerProps };
+            var allProps = { ...routerProps, ...extraProps };
+
             allProps.context = context;
 
             if (!apiCall) // this is a dataless page, like Login or About
@@ -36,7 +39,7 @@ export default function withEverything(Component, styles, apiCall)
 function applyData(Component, apiCall, props, rehydData)
 {
     if (props.data)
-    {            
+    {
         return <Layout {...props}><Component {...props} /></Layout>;
     }
     var fetchMethod;
@@ -75,6 +78,14 @@ function applyData(Component, apiCall, props, rehydData)
                         props.staticContext.data[matchedApiUrl] = data;
                     }
                 }
+            }
+            if (data && data.status && data.status >= 400)
+            {
+                props.status = data.status;
+                props.message = data.message;
+                props.localMessage = data.localMessage;
+                props.isError = true;
+                Component = ErrorPage;
             }
             return (WrappedComponent =>
             {

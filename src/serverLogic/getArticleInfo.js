@@ -17,21 +17,22 @@ import {
 	USER_LEVEL_ADMIN,
     USER_LEVEL_OWNER } from '../utility';
 
-var counter = 1;
-
-export default async function getArticleInfo(url, user)
+export default async function getArticleInfo(user, { id })
 {
-    var localCounter = counter++;
-      const article = await mongoAsync.dbCollections.articles.findOne({ Url: url });
-      const loadData = [];
-      const voteResults = [];
-      const votes = mongoAsync.preloads.votes;
-        const priorities = mongoAsync.preloads.priorities;
+    const article = await mongoAsync.dbCollections.articles.findOne({ Url: id });
+    if (!article)
+    {
+        return { status: 404, localMessage: 'Нема такої статті' };
+    }
+    const loadData = [];
+    const voteResults = [];
+    const votes = mongoAsync.preloads.votes;
+    const priorities = mongoAsync.preloads.priorities;
         
-      let argumentList;
-      let ownVote = 'N';
-      let ownVoteInstance;
-        let isLoggedIn = user !== null;
+    let argumentList;
+    let ownVote = 'N';
+    let ownVoteInstance;
+    let isLoggedIn = user !== null;
         
       loadData.push(
         mongoAsync.dbCollections.arguments

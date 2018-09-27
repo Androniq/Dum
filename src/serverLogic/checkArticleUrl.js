@@ -19,10 +19,10 @@ import {
 
 import { ObjectID } from 'mongodb';
 
-export default async function checkArticleUrl(url, id)
+export default async function checkArticleUrl(user, { url, id })
 {
-    if (url === 'new') // reserved
-        return { success: false };
+    if (url === 'new')
+        return { status: 406, message: "Error: 'new' is reserved word - cannot be article URL" };
     var filter = { Url: url };
     if (id && id !== 'null')
         filter._id = { $ne: new ObjectID(id) };

@@ -22,7 +22,7 @@ async function deleteAllVotes(userId, articleId)
 	await mongoAsync.dbCollections.popularVote.deleteMany({ User: userId, Article: articleId });
 }
 
-export default async function sendPopularVote(user, articleId, voteId)
+export default async function sendPopularVote(user, { articleId, voteId })
 {
 	if (!user)
 	{

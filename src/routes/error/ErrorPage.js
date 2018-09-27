@@ -11,6 +11,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './ErrorPage.css';
+import withEverything from '../../withEverything';
 
 class ErrorPage extends React.Component {
   static propTypes = {
@@ -36,13 +37,25 @@ class ErrorPage extends React.Component {
     }
 
     return (
-      <div>
+      <div className={s.errorContainer}>
         <h1>Помилка</h1>
+        {this.props.status ? (
+          <h2>Код {this.props.status}</h2>
+        ) : null}
+        {this.props.message ? (
+          <h2>Повідомлення від сервера: {this.props.message}</h2>
+        ) : null}
+        {this.props.localMessage ? (
+          <span>{this.props.localMessage}</span>
+        ) : null}
         <p>Так скидаєсі, жи ви є в Закарпаттьови. Ту шо інтернету, шо української мови не є.</p>
       </div>
     );
   }
 }
 
+const withEv = withEverything(ErrorPage, s, null, { status: 404, localMessage: 'Нема такої сторінки' });
+
 export { ErrorPage as ErrorPageWithoutStyle };
+export { withEv as ErrorPageWithEverything };
 export default withStyles(s)(ErrorPage);

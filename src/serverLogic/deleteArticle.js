@@ -20,17 +20,17 @@ import {
 
 const ObjectID = require('mongodb').ObjectID;
     
-export default async function deleteArticle(user, id)
+export default async function deleteArticle(user, { id })
 {
 	if (!checkPrivilege(user, USER_LEVEL_ADMIN))
     {
-        return { success: false, message: "Insufficient privileges" };
+        return { status: 403, message: "Insufficient privileges" };
     }
     var objId = new ObjectID(id);
     var article = mongoAsync.dbCollections.articles.findOne({ _id: objId });
     if (!article)
     {
-        return { success: false, message: "Article not found" };
+        return { status: 404, message: "Article not found" };
     }
     var args = await mongoAsync.dbCollections.arguments.find({ Article: objId });
     var works = args.map(arg => mongoDelete(mongoAsync.dbCollections.arguments, arg._id));

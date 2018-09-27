@@ -21,7 +21,7 @@ export default async function setArgument(user, arg)
 {
 	if (!checkPrivilege(user, USER_LEVEL_MEMBER))
     {
-        return { success: false, message: "Insufficient privileges" };
+        return { status: 403, message: "Insufficient privileges" };
 	}
 	
 	var isProposal = !checkPrivilege(user, USER_LEVEL_MODERATOR);
@@ -29,7 +29,7 @@ export default async function setArgument(user, arg)
 
 	if (isProposal && !isNew)
 	{
-        return { success: false, message: "Insufficient privileges" };
+        return { status: 403, message: "Insufficient privileges" };
 	}
 
 	if (!isNew)

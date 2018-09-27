@@ -115,20 +115,20 @@ export async function findOrCreateUser(token, type, profile)
   return user;
 }
 
-export async function setUserRole(operatorUser, operandUserId, newRole)
+export async function setUserRole(operatorUser, { operandUserId = userId, newRole = role })
 {
 	if (!checkPrivilege(operatorUser, USER_LEVEL_ADMIN))
 	{
-		return { success: false, message: 'Insufficient privileges' };
+		return { status: 403, message: 'Insufficient privileges' };
 	}
 	var operandUser = await mongoAsync.users.findOne({ _id: operandUserId });
 	if (!operandUser)
 	{
-		return { success: false, message: 'User not found' };
+		return { status: 404, message: 'User not found' };
 	}
 	if (operandUser.role === 'owner')
 	{
-		return { success: false, message: 'You cannot change the OWNER role (use transferOwnership instead)' };
+		return { success: 422 /* Unprocessable entity */, message: 'You cannot change the OWNER role (use transferOwnership instead)' };
 	}
 	switch (newRole)
 	{
@@ -145,7 +145,7 @@ export async function setUserRole(operatorUser, operandUserId, newRole)
 			operandUser.role = 'admin';
 			break;
 		default:
-			return { success: false, message: 'Unknown newRole: ' + newRole };
+			return { status: 406, message: 'Unknown role: ' + newRole };
 	}
 	await mongoUpdate(mongoAsync.dbCollections.users, operandUser);
 	return { success: true };
@@ -155,16 +155,16 @@ export async function transferOwnership(fromUser, toUserId)
 {
 	if (!checkPrivilege(fromUser, USER_LEVEL_OWNER))
 	{
-		return { success: false, message: 'Only site owner can transfer ownership' };
+		return { status: 403, message: 'Only site owner can transfer ownership' };
 	}
 	var toUser = await mongoAsync.users.findOne({ _id: toUserId });
 	if (!toUser)
 	{
-		return { success: false, message: 'User not found' };
+		return { status: 404, message: 'User not found' };
 	}
 	if (!toUser.confirmed)
 	{
-		return { success: false, message: 'Target user did not confirm email address' };
+		return { status: 422 /* Unprocessable entity */, message: 'Target user did not confirm email address' };
 	}
 	toUser.blocked = false;
 	toUser.role = 'owner';

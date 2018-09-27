@@ -29,7 +29,7 @@ class Home extends React.Component
           <title>Головна</title>
         </Helmet>
         <div className={s.container}>
-          {this.props.data.data.map(item => (
+          {this.props.data.articles.map(item => (
             <article key={item._id} className={s.newsItem}>
               <h3 className={s.newsTitle}>
                 <Link to={`/article/${item.Url}`}>{item.PageTitle}</Link>

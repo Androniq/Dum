@@ -7,7 +7,7 @@ import Home from '../routes/home/Home';
 import Article from '../routes/article/Article';
 import Blog from '../routes/blog/Blog';
 import Login from '../routes/login/Login';
-import ErrorPage from '../routes/error/ErrorPage';
+import ErrorPage, { ErrorPageWithEverything } from '../routes/error/ErrorPage';
 import EditArticle from '../routes/editArticle/EditArticle';
 import EditArgument from '../routes/editArgument/EditArgument';
 import Account from '../routes/account/Account';
@@ -56,7 +56,7 @@ class App extends React.Component
           <Route path='/editArgument/:argId/:articleId' render={EditArgument(context)} />
           <Route path='/editArgument/:argId' render={EditArgument(context)} />
           <Route path='/account' render={Account(context)} />
-          <Route component={ErrorPage} />
+          <Route render={ErrorPageWithEverything(context)} />
         </Switch>
         <Helmet titleTemplate="%s | ДУМ" />
       </React.Fragment>

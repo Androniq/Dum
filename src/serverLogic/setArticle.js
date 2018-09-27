@@ -17,12 +17,18 @@ import {
 	USER_LEVEL_ADMIN,
 	USER_LEVEL_OWNER, 
     guid } from '../utility';
+import checkArticleUrl from './checkArticleUrl';
 
 export default async function setArticle(user, article)
 {
     if (!checkPrivilege(user, USER_LEVEL_MODERATOR))
     {
-        return { success: false, message: "Insufficient privileges" };
+        return { status: 403, message: "Insufficient privileges" };
+    }
+    var check = await checkArticleUrl(user, { url: article.Url, id: article._id });
+    if (!check.success)
+    {
+        return { status: 406, message: "Article name non-unique (check first with checkArticleUrl API)" };
     }
     var projectedArticle =
     {
@@ -40,13 +46,13 @@ export default async function setArticle(user, article)
         CreatedDate: article.CreatedDate,
         UpdatedDate: article.UpdatedDate,
         Owner: article.Owner
-    };
+    };    
     if (article._id)
     {
         var upd = await mongoUpdate(mongoAsync.dbCollections.articles, projectedArticle, user);
         if (upd.matchedCount < 1)
         {
-            return { success: false, message: "Did not find article with ID " + article._id };
+            return { status: 404, message: "Did not find article with ID " + article._id };
         }
     }
     else

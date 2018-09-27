@@ -18,11 +18,11 @@ import {
 	USER_LEVEL_ADMIN,
     USER_LEVEL_OWNER } from '../utility';
     
-export default async function deleteArgument(user, id)
+export default async function deleteArgument(user, { id })
 {
 	if (!checkPrivilege(user, USER_LEVEL_MODERATOR))
     {
-        return { success: false, message: "Insufficient privileges" };
+        return { status: 403, message: "Insufficient privileges" };
 	}
     await mongoDelete(mongoAsync.dbCollections.arguments, id);
 	return { success: true };

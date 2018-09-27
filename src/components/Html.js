@@ -18,7 +18,6 @@ import { Helmet } from 'react-helmet';
 class Html extends React.Component {
   static propTypes = {
     title: PropTypes.string,
-    description: PropTypes.string.isRequired,
     styles: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.string.isRequired,
