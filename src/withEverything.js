@@ -99,7 +99,7 @@ function applyData(Component, apiCall, props, rehydData)
                 return Hoc;
             })(Component);
         },
-        LoadingComponent: () => <Loading />,
+        LoadingComponent: () => <Loading {...props} />,
         serverMode: "resolve",
         env: process.env.IS_SERVER ? "node" : "browser"
     });

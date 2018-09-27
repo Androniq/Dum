@@ -422,7 +422,6 @@ app.get('*', async (req, res, next) => {
     data.children = ReactDOM.renderToString(reactApp);
     data.styles = [{ id: 'css', cssText: [...css].join('') }];
 
-
     const scripts = new Set();
     const addChunk = chunk => {
       if (chunks[chunk]) {
