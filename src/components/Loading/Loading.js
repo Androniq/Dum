@@ -35,6 +35,8 @@ class Loading extends React.Component
         if (process.env.IS_SERVER)
         {
             seed += Math.random(); // we're on server - initial random seed
+            if (!this.props.context.data) // test page /loading
+                this.props.context.data = {};
             this.props.context.data.seed = seed; // save to rehydrate
         }
         else
