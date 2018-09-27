@@ -26,12 +26,12 @@ export default async function sendPopularVote(user, { articleId, voteId })
 {
 	if (!user)
 	{
-		return { success: false, message: 'Error: not logged in' };
+		return { status: 401, message: 'Error: not logged in' };
 	}
 
 	if (!checkPrivilege(user, USER_LEVEL_MEMBER))
 	{
-		return { success: false, message: 'Error: not enough privileges (either email not confirmed or user banned)' };
+		return { status: 403, message: 'Error: not enough privileges (either email not confirmed or user banned)' };
 	}
 
 	var res = await mongoAsync.dbCollections.popularVote.find({ Article: articleId, User: user._id }).toArray();

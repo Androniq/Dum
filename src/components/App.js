@@ -11,6 +11,7 @@ import ErrorPage, { ErrorPageWithEverything } from '../routes/error/ErrorPage';
 import EditArticle from '../routes/editArticle/EditArticle';
 import EditArgument from '../routes/editArgument/EditArgument';
 import Account from '../routes/account/Account';
+import Loading, { LoadingWithEverything } from './Loading/Loading';
 
 const ContextType =
 {
@@ -56,6 +57,7 @@ class App extends React.Component
           <Route path='/editArgument/:argId/:articleId' render={EditArgument(context)} />
           <Route path='/editArgument/:argId' render={EditArgument(context)} />
           <Route path='/account' render={Account(context)} />
+          <Route path='/loading' render={LoadingWithEverything(context)} />
           <Route render={ErrorPageWithEverything(context)} />
         </Switch>
         <Helmet titleTemplate="%s | ДУМ" />
