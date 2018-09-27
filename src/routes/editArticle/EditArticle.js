@@ -69,7 +69,7 @@ async checkUrl(url)
   var id = 'null';
   if (this.props.data && this.props.data._id)
     id = this.props.data._id;
-  var check = await this.props.fetch('/api/checkArticleUrl/' + id +'/' + url,  {method:'GET', headers: { "Content-Type": "application/json" }});
+  var check = await this.props.context.fetch('/api/checkArticleUrl/' + id +'/' + url,  {method:'GET', headers: { "Content-Type": "application/json" }});
   var result = await check.json();
   this.setState({ urlUnique: result.success });
 }
@@ -116,7 +116,7 @@ async onSave()
   article.Content = this.state.Content;
   var text = JSON.stringify(article);
 
-  var res = await this.props.fetch('/api/setArticle', {method:'POST', body: text, headers: { "Content-Type": "application/json" }});
+  var res = await this.props.context.fetch('/api/setArticle', {method:'POST', body: text, headers: { "Content-Type": "application/json" }});
     var resj = await res.json();
   if (resj.success)
   {
@@ -150,7 +150,7 @@ onCancelDeletion()
 
 async onDeleteDo()
 {
-  var res = await this.props.fetch('/api/deleteArticle/' + this.props.data._id, {method:'DELETE', headers: { "Content-Type": "application/json" }});
+  var res = await this.props.context.fetch('/api/deleteArticle/' + this.props.data._id, {method:'DELETE', headers: { "Content-Type": "application/json" }});
   var resj = await res.json();
   if (resj.success)
   {
