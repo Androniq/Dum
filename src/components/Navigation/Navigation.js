@@ -44,7 +44,7 @@ class Navigation extends React.Component
           {this.props.context.user ? (
             <React.Fragment>
               <Link className={s.link} to="/account">
-                <img src={this.props.context.user.photo} className={s.profilePicture} />
+                <img src={this.props.context.user.photo || "/images/no_image_available.png"} className={s.profilePicture} />
               </Link>
               <div className={s.verticalPanel}>
                 <Link className={s.link} to="/account">

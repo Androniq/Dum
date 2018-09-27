@@ -25,7 +25,7 @@ import { ErrorPageWithoutStyle } from './routes/error/ErrorPage';
 import errorPageStyle from './routes/error/ErrorPage.css';
 import createFetch from './createFetch';
 import passport from './passport';
-import router from './router';
+import { emailRegex } from './utility';
 import models from './data/models';
 import schema from './data/schema';
 // import assets from './asset-manifest.json'; // eslint-disable-line import/no-unresolved
@@ -315,7 +315,7 @@ app.post('/register', async (req, res, next) =>
 {
   var email = req.body.username;
   var pwd = req.body.password;
-  if (!email || email.length<1 || !pwd || pwd.length<1)
+  if (!email || email.length<1 || !pwd || pwd.length<1 || !emailRegex.test(email))
   {
     res.status(406);
     res.send({ status: 406 });  
