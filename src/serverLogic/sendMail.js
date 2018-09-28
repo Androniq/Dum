@@ -18,8 +18,28 @@ import {
     USER_LEVEL_OWNER } from '../utility';
 
 import nodemailer from 'nodemailer';
+import sgMail from '@sendgrid/mail';
 
-export default function sendMail(to, subject, message)
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+export default function sendMail(to, subject, message, html)
+{
+    sendMailGrid(to, subject, message, html)
+}
+
+function sendMailGrid(to, subject, message, html)
+{
+    const msg = {
+        to,
+        from: '"ДУМ" <admin@dum-grammar.com>',
+        subject,
+        text: message,
+        html
+    };
+    sgMail.send(msg);
+}
+
+function sendMailRelay(to, subject, message, html)
 {
     var port = parseInt(process.env.SMTP_PORT);
     var transport = nodemailer.createTransport({
@@ -47,7 +67,7 @@ export default function sendMail(to, subject, message)
         to,
         subject,
         text: message,
-        html: message
+        html
     };
     transport.sendMail(mailOptions, (error, info) =>
     {

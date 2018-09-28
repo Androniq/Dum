@@ -76,6 +76,7 @@ function applyData(Component, apiCall, props, rehydData)
                         if (!props.staticContext.data)
                             props.staticContext.data = {};
                         props.staticContext.data[matchedApiUrl] = data;
+                        props.staticContext.data['/api/whoami'] = data.user;
                     }
                 }
             }

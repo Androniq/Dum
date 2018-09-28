@@ -72,26 +72,30 @@ async function onLocationChange(location, action) {
       return;
     }
 
-    var user = null;
+    const rehydrateState = window.ASYNC_COMPONENTS_STATE;
+    context.rehydrateState = rehydrateState;
 
-    try
+    var user = null;
+    if (rehydrateState && rehydrateState.resolved && rehydrateState.resolved.data)
+      user = rehydrateState.resolved.data["/api/whoami"];
+
+    if (!user)
     {
-      var whoami = await fetch('/api/whoami');
-      var whoamiJson = await whoami.json();
-      user = whoamiJson.user;
-    }
-    catch(error)
-    {
-      console.error(error);
+      try
+      {
+        var whoami = await fetch('/api/whoami');
+        var whoamiJson = await whoami.json();
+        user = whoamiJson.user;
+      }
+      catch(error)
+      {
+        console.error(error);
+      }
     }
     
     context.user = user;
     context.history = history;
     context.location = location;
-
-    const rehydrateState = window.ASYNC_COMPONENTS_STATE;
-
-    context.rehydrateState = rehydrateState;
 
     const renderReactApp = isInitialRender ? ReactDOM.hydrate : ReactDOM.render;
     appInstance = renderReactApp(

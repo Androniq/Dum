@@ -35,7 +35,7 @@ import session from 'express-session';
 //import MongoDBStore from 'connect-mongodb-session';
 import sendPopularVote from './serverLogic/sendPopularVote';
 import { serverReady } from './serverLogic/_common';
-import { findOrCreateUser, setUserRole, transferOwnership, findLocalUser } from './serverLogic/auth';
+import { findOrCreateUser, setUserRole, transferOwnership, findLocalUser, startConfirm, endConfirm } from './serverLogic/auth';
 import getArticle from './serverLogic/getArticle';
 import getArticleInfo from './serverLogic/getArticleInfo';
 import getArticles from './serverLogic/getArticles';
@@ -328,6 +328,7 @@ app.post('/register', async (req, res, next) =>
     res.send({ status: 406, message: "User with such email already registered" });
     return;
   }
+  startConfirm(user);
   return next();
 }, passport.authenticate('local'), loginLocalSuccess);
 
@@ -340,6 +341,14 @@ app.get('/logout',
   }
 )
 
+function getSimpleUser(user)
+{
+  if (!user)
+    return null;
+  return { displayName: user.displayName, photo: user.photo, role: user.role, confirmed: user.confirmed, blocked: user.blocked,
+    DateCreated: user.DateCreated, DateUpdated: user.DateUpdated, _id: user._id };
+}
+
 // API
 
 function processApiGet(apiUrl, serverLogic)
@@ -351,7 +360,7 @@ function processApiGet(apiUrl, serverLogic)
     var data = await serverLogic(user, req.params, req.query);
     if (!data.status)
       data.status = 200;
-    data.user = user;
+    data.user = getSimpleUser(user);
     res.status(data.status);
     res.send(data);
   });
@@ -366,7 +375,7 @@ function processApiPost(apiUrl, serverLogic)
     var data = await serverLogic(user, req.body, req.params, req.query);
     if (!data.status)
       data.status = 200;
-    data.user = user;
+    data.user = getSimpleUser(user);
     res.status(data.status);
     res.send(data);
   });
@@ -381,7 +390,7 @@ function processApiDelete(apiUrl, serverLogic)
     var data = await serverLogic(user, req.params, req.query);
     if (!data.status)
       data.status = 200;
-    data.user = user;
+    data.user = getSimpleUser(user);
     res.status(data.status);
     res.send(data);
   });
@@ -403,6 +412,7 @@ processApiGet('/api/getAccount', getAccount);
 processApiGet('/api/getBlog/:blogUrl', getBlogByUrl);
 processApiGet('/api/setUserRole/:userId/:role', setUserRole);
 processApiGet('/api/transferOwnership/:userId', transferOwnership);
+processApiGet('/api/confirm/:token', endConfirm);
 
 processApiPost('/api/setArticle', setArticle)
 processApiPost('/api/setArgument', setArgument)

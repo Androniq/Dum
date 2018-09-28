@@ -78,6 +78,7 @@ async function getDbCollections()
       const dbPopularVote = await getCollection(db, 'PopularVote');
       const dbUsers = await getCollection(db, 'Users');
       const dbBlog = await getCollection(db, 'Blog');
+      const dbEmailConfirmations = await getCollection(db, 'EmailConfirmations');
 
       mongoAsync.dbCollections = {
         serverConfig: dbServerConfig,
@@ -89,7 +90,8 @@ async function getDbCollections()
         colors: dbColors,
         popularVote: dbPopularVote,
         users: dbUsers,
-        blog: dbBlog
+        blog: dbBlog,
+        emailConfirmations: dbEmailConfirmations
       };
 
       const votesPreload = await dbVotes.find().toArray();

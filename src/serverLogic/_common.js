@@ -82,6 +82,8 @@ export function shortLabel(str)
 
 export async function mongoInsert(collection, item, user)
 {
+  if (typeof collection === 'string')
+    collection = mongoAsync.dbCollections[collection];
 	var now = new Date();
 	item.DateCreated = now;
 	item.DateUpdated = now;
@@ -92,6 +94,8 @@ export async function mongoInsert(collection, item, user)
 
 export async function mongoUpdate(collection, item)
 {
+  if (typeof collection === 'string')
+    collection = mongoAsync.dbCollections[collection];
 	var now = new Date();
   item.DateUpdated = now;
   var id = new ObjectID(item._id);
@@ -101,6 +105,8 @@ export async function mongoUpdate(collection, item)
 
 export async function mongoDelete(collection, id)
 {
+  if (typeof collection === 'string')
+    collection = mongoAsync.dbCollections[collection];
   return await collection.deleteOne({ _id: new ObjectID(id) });
 }
 

@@ -36,8 +36,14 @@ class Account extends React.Component
     super(props);
   }
 
-  userRolePanel(role)
+  userRolePanel(confirmed, role)
   {
+      if (!confirmed)
+      {
+          return (
+            <span>Гість</span>
+          );
+      }
     switch (role)
     {
         case 'member': return (
@@ -67,7 +73,7 @@ class Account extends React.Component
             <img className={s.userpic} src={user.photo} />
             <div className={s.userCard}>
             <span className={s.displayName}>{user.displayName}</span>
-            {this.userRolePanel(user.role)}
+            {this.userRolePanel(user.confirmed, user.role)}
             </div>
         </div>
       );

@@ -7,7 +7,8 @@ import {
     shortLabel,
     mongoInsert,
 	mongoUpdate,
-    setServerConfig } from './_common';
+    setServerConfig, 
+	mongoDelete} from './_common';
 
 import {
 	getLevel,
@@ -17,6 +18,8 @@ import {
 	USER_LEVEL_MODERATOR,
 	USER_LEVEL_ADMIN,
 	USER_LEVEL_OWNER } from '../utility';
+
+import sendMail from './sendMail';
 
 // Authentication
 
@@ -132,7 +135,7 @@ export async function findLocalUser(email, pwd, isNew)
 	{
 		return null;
 	}
-	user = { email, displayName, password: pwd, role: "visitor", confirmed: false, blocked: false };
+	user = { email, displayName, password: pwd, role: "member", confirmed: false, blocked: false };
 	user = (await mongoInsert(mongoAsync.dbCollections.users, user)).ops[0];
 	return user;
 }
@@ -199,5 +202,60 @@ export async function transferOwnership(fromUser, toUserId)
 	await session.commitTransaction();
 	session.endSession();
 	
+	return { success: true };
+}
+
+function generateToken()
+{
+	var r = '';
+	const arr = '0123456789ABCDEF';
+	for (let index = 0; index < 16; index++)
+	{
+		r += arr[Math.floor(Math.random() * 16)];
+	}
+	return r;
+}
+
+export async function startConfirm(user)
+{
+	if (user.confirmed)
+		return;
+	var token = generateToken();
+	var expires = new Date();
+	expires.setDate(expires.getDate() + 14);
+	await mongoInsert('emailConfirmations', { token, user: user._id, expires });
+	await sendMail(user.email, 'Підтвердження email-адреси | ДУМ', `Шановний користувачу!
+	
+Ви отримали цього листа тому, що хтось (можливо, ви) вказав вашу адресу при реєстрації на сайті Демократична Українська Мова ${process.env.SITE_URL}.
+
+Якщо це були ви – підтвердіть, будь ласка, свою адресу, перейшовши за посиланням: ${process.env.SITE_URL}confirm/${token}.
+
+Якщо ж це були не ви – нічого робити не потрібно.
+
+З повагою,
+команда ДУМ`,
+`<p>Шановний користувачу!</p>	
+<p>Ви отримали цього листа тому, що хтось (можливо, ви) вказав вашу адресу при реєстрації на сайті Демократична Українська Мова ${process.env.SITE_URL}.</p>
+<p>Якщо це були ви – підтвердіть, будь ласка, свою адресу, перейшовши за посиланням: ${process.env.SITE_URL}confirm/${token}.</p>
+<p>Якщо ж це були не ви – нічого робити не потрібно.</p>
+<p>З повагою,<br />
+команда ДУМ</p>`);
+}
+
+export async function endConfirm(user, { token })
+{
+	var confirmation = await mongoAsync.dbCollections.emailConfirmations.findOne({ token });
+	if (!confirmation || confirmation.expires < new Date())
+	{
+		return { message: "Wrong or expired confirmation token", localMessage: "Хибне або застаріле посилання для підтвердження електронної пошти" };
+	}
+	var user = await mongoAsync.dbCollections.users.findOne({ _id: confirmation.user });
+	if (!user)
+	{
+		return { message: "User not found for this confirmation token", localMessage: "Користувача, який підтверджує свою електронну пошту, не знайдено в базі" };
+	}
+	user.confirmed = true;
+	await mongoUpdate('users', { _id: user._id, confirmed: true });
+	await mongoDelete('emailConfirmations', confirmation._id);
 	return { success: true };
 }
