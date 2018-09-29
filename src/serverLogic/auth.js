@@ -17,7 +17,8 @@ import {
 	USER_LEVEL_MEMBER,
 	USER_LEVEL_MODERATOR,
 	USER_LEVEL_ADMIN,
-	USER_LEVEL_OWNER } from '../utility';
+	USER_LEVEL_OWNER, 
+	emailRegex} from '../utility';
 
 import sendMail from './sendMail';
 const ObjectID = require('mongodb').ObjectID;
@@ -217,14 +218,24 @@ function generateToken()
 	return r;
 }
 
-export async function startConfirm(user)
+export async function startConfirm(user, params, { update })
 {
-	if (user.confirmed)
+	if (!update && user.confirmed)
 		return { message: "User already confirmed" };
+	if (update)
+	{
+		if (typeof update !== "string")
+			return { status: 401, message: "Email must be a string" };
+		update = update.toLowerCase();
+		if (!emailRegex.test(update))
+			return { status: 401, message: "Invalid email address" };
+		if (await mongoAsync.dbCollections.users.countDocuments({ email: update }))
+			return { message: "User with such email already registered", localMessage: "Користувач із такою адресою вже зареєстрований" };
+	}
 	var token = generateToken();
 	var expires = new Date();
 	expires.setDate(expires.getDate() + 14);
-	await mongoInsert('emailConfirmations', { token, user: user._id, expires });
+	await mongoInsert('emailConfirmations', { token, user: user._id, expires, type: update ? "update" : "new", email: update });
 	await sendMail(user.email, 'Підтвердження email-адреси | ДУМ', `Шановний користувачу!
 	
 Ви отримали цього листа тому, що хтось (можливо, ви) вказав вашу адресу при реєстрації на сайті Демократична Українська Мова ${process.env.SITE_URL}.
@@ -256,12 +267,16 @@ export async function endConfirm(user, { token })
 	{
 		return { message: "User not found for this confirmation token", localMessage: "Користувача, який підтверджує свою електронну пошту, не знайдено в базі" };
 	}
-	if (user.confirmed)
+	if (confirmation.type === "new" && user.confirmed)
 	{
 		return { message: "User already confirmed", localMessage: "Ваша адреса вже підтверджена!" };
 	}
-	user.confirmed = true;
-	await mongoUpdate('users', { _id: user._id, confirmed: true });
+	var updateDoc = { _id: user._id, confirmed: true };
+	if (confirmation.type === "update")
+	{
+		updateDoc.email = confirmation.email;
+	}
+	await mongoUpdate('users', updateDoc);
 	await mongoDelete('emailConfirmations', confirmation._id);
 	return { success: true };
 }

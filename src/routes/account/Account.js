@@ -17,7 +17,8 @@ import {
 	USER_LEVEL_ADMIN,
     USER_LEVEL_OWNER, 
     showSticky,
-    totalRecall} from '../../utility';
+    totalRecall,
+    emailRegex} from '../../utility';
 import history from '../../history';
 import BlueButton from '../../components/BlueButton/BlueButton';
 import FormattedText from '../../components/FormattedText/FormattedText';
@@ -32,7 +33,8 @@ class Account extends React.Component
   static propTypes = {};
 
   state = {
-      usernameOpen: false
+      usernameOpen: false,
+      emailOpen: false
   };
 
   constructor(props)
@@ -41,6 +43,7 @@ class Account extends React.Component
     var user = this.props.context.user;
     if (!user) return;
     this.state.username = user.displayName;
+    this.state.email = user.email;
   }
 
   userRolePanel(role)
@@ -88,9 +91,12 @@ class Account extends React.Component
   }
 
   updateUsername(value) { this.setState({ username: value }); }
-
   onUsernameOpen() { this.setState({ usernameOpen: true }); }
   onUsernameClose() { this.setState({ usernameOpen: false }); }
+
+  updateEmail(value) { this.setState({ email: value }); }
+  onEmailOpen() { this.setState({ emailOpen: true }); }
+  onEmailClose() { this.setState({ emailOpen: false }); }
   
     async saveUsername()
     {
@@ -109,6 +115,33 @@ class Account extends React.Component
         }
         this.props.context.user = json.user;
         this.onUsernameClose();
+    }
+
+    async saveEmail()
+    {
+        var email = this.state.email;
+        if (!email || email.length < 1 || !emailRegex.test(email))
+        {
+            showSticky(this, 'Введіть правильну адресу електронної пошти!');
+            return;
+        }
+        if (email === this.props.context.user.email)
+        {
+            showSticky(this, 'Це і є ваша поточна адреса електронної пошти!');
+            return;
+        }
+        var resp = await this.props.context.fetch('/api/startConfirm?update=' + email, { method: 'GET' });
+        var json = await resp.json();
+        if (!json.success)
+        {
+            if (json.localMessage)
+                showSticky(this, json.localMessage);
+            else
+                console.error(json.message);
+            return;
+        }
+        showSticky(this, 'Адресу електронної пошти буде оновлено після отримання підтвердження');
+        this.onEmailClose();
     }
 
   render()
@@ -139,7 +172,22 @@ class Account extends React.Component
                 <div className={cx(s.grid, s.right)}>
                     <span className={cx(s.row1, s.column1)}>Ваш email:</span>
                     <span className={cx(s.row1, s.column2)}>{user.email}</span>
-                    <BlueButton className={cx(s.row1, s.column3)} onClick={this.requestArticle.bind(this)}>Змінити</BlueButton>
+                    <Popup modal open={this.state.emailOpen} onOpen={this.onEmailOpen.bind(this)} onClosed={this.onEmailClose.bind(this)}
+                        trigger={(
+                            <BlueButton className={cx(s.row1, s.column3)}>Змінити</BlueButton>
+                    )}>
+                        <div className={s.grid}>
+                            <div className={cx(s.flex, s.innerRow1)}>
+                                <span className={s.label}>Введіть адресу електронної пошти:</span>
+                                <TextInput noPopup className={s.inputField} value={this.props.context.user.email}
+                                    onSave={this.updateEmail.bind(this)} />
+                            </div>
+                            <div className={cx(s.flex, s.innerRow2)}>
+                                <BlueButton onClick={this.saveEmail.bind(this)}>Гаразд</BlueButton>
+                                <BlueButton onClick={this.onEmailClose.bind(this)}>Скасувати</BlueButton>
+                            </div>
+                        </div>
+                    </Popup>                    
                     <span className={cx(s.row2, s.column1)}>Ваше ім’я:</span>
                     <span className={cx(s.row2, s.column2)}>{user.displayName}</span>
                     <Popup modal open={this.state.usernameOpen} onOpen={this.onUsernameOpen.bind(this)} onClosed={this.onUsernameClose.bind(this)}
