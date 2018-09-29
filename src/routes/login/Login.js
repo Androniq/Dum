@@ -11,13 +11,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Login.css';
-import { UserContext } from '../../UserContext';
 import { Helmet } from 'react-helmet';
-import StickyMessage from '../../components/StickyMessage/StickyMessage';
 import { showSticky, emailRegex } from '../../utility';
 import withEverything from '../../withEverything';
 import TextInput from '../../components/TextInput/TextInput';
 import cx from 'classnames';
+import { Redirect } from 'react-router-dom';
 
 class Login extends React.Component
 {  
