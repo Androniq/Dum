@@ -16,10 +16,15 @@ class UploadImage extends React.Component
             return;
         }
         var file = acceptedFiles[0];
-        var ext = getExtension(file.name);
+        var ext = getExtension(file.name);        
         if (!acceptedExtensions.includes(ext))
         {
             showSticky(this, 'Неприпустимий формат зображення. Варіанти: '+acceptedExtensions.join(', '));
+            return;
+        }
+        if (file.size > 256 * 1024)
+        {
+            showSticky(this, 'Майте совість! База даних коштує $15 за гігабайт на місяць! Максимальний розмір аватарки – 256 КБ!');
             return;
         }
         var reader = new FileReader();
@@ -39,7 +44,6 @@ class UploadImage extends React.Component
                 {
                     window.location.reload();
                 }
-                //this.props.history.push(this.props.location.pathname);
             }
         };
         reader.onabort = () => console.log('file reading was aborted');
@@ -51,7 +55,7 @@ class UploadImage extends React.Component
     {
         return (
             <div>
-                <Dropzone disablePreview onDrop={this.onDrop.bind(this)}>Перетягніть файли сюди</Dropzone>
+                <Dropzone disablePreview onDrop={this.onDrop.bind(this)}>Перетягніть файли сюди. Припустимі формати: {acceptedExtensions.join(', ')}. Максимальний розмір файлу: 256 КБ</Dropzone>
             </div>
         );
     }
