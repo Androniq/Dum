@@ -25,7 +25,7 @@ import FormattedText from '../../components/FormattedText/FormattedText';
 import { Link } from 'react-router-dom';
 import withEverything from '../../withEverything';
 import { Helmet } from 'react-helmet';
-import { Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router';
 import TextInput from '../../components/TextInput/TextInput';
 import UploadImage from '../../components/UploadImage/UploadImage';
 
