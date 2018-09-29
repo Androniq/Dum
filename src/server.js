@@ -55,6 +55,8 @@ import { AsyncComponentProvider, createAsyncContext } from 'react-async-componen
 import asyncBootstrapper from 'react-async-bootstrapper';
 import serialize from 'serialize-javascript';
 import { Helmet } from 'react-helmet';
+import { setMe } from './serverLogic/users';
+import { mongoAsync } from './serverStartup';
 
 process.env.IS_SERVER=true;
 
@@ -115,6 +117,24 @@ function getUser(req) // this is Mongo-specific user getter (common one is simpl
     return req.session.passport.user;
   }
   return null;
+}
+
+function setUser(req, newValue)
+{
+  if (!req)
+    return;
+  if (req.user)
+  {
+    req.user = newValue;
+  }
+  if (req.session)
+  {
+    req.session.user = newValue;
+  }
+  if (req.session && req.session.passport)
+  {
+    req.session.passport.user = newValue;
+  }
 }
 
 store.on('connected', function() {
@@ -184,11 +204,6 @@ passport.use(
       passReqToCallback: false,
     },
     (accessToken, refreshToken, profile, done) => {
-      if (!profile) {
-        // if we are here, it means that passReqToCallback is set to true
-        // idk what to do here ^^
-        return;
-      }
       if (profile.photos)
       {
         var photo = null;
@@ -245,11 +260,6 @@ passport.use(
       passReqToCallback: false
     },
     (accessToken, refreshToken, profile, done) => {
-      if (!profile) {
-        // if we are here, it means that passReqToCallback is set to true
-        // idk what to do here ^^
-        return;
-      }
       FB.api('/' + profile.id, 'GET', { fields: 'email,picture.width(150).height(150)', access_token: accessToken }, function(response)
       {
         var picture = response.picture.data.url;
@@ -305,7 +315,7 @@ function loginLocalSuccess(req, res, next)
   const expiresIn = 60 * 60 * 24 * 180; // 180 days
   const token = jwt.sign(req.user, config.auth.jwt.secret, { expiresIn });
   res.cookie('id_token', token, { maxAge: 1000 * expiresIn, httpOnly: true });
-  res.send({ message:"success", user: req.user });
+  res.send({ message: "success", user: req.user });
   res.status(200);
 }
 
@@ -346,12 +356,24 @@ function getSimpleUser(user)
   if (!user)
     return null;
   return { displayName: user.displayName, photo: user.photo, role: user.role, confirmed: user.confirmed, blocked: user.blocked,
-    DateCreated: user.DateCreated, DateUpdated: user.DateUpdated, _id: user._id };
+    email: user.email, DateCreated: user.DateCreated, DateUpdated: user.DateUpdated, _id: user._id };
+}
+
+const ObjectID = require('mongodb').ObjectID;
+
+async function updateUser(req)
+{
+  var user = getUser(req);
+  if (!user)
+    return;
+  var updatedUser = await mongoAsync.dbCollections.users.findOne({ _id: new ObjectID(user._id) });  
+  setUser(req, updatedUser);
+  console.info(getUser(req));
 }
 
 // API
 
-function processApiGet(apiUrl, serverLogic)
+function processApiGet(apiUrl, serverLogic, options)
 {
   app.get(apiUrl, async (req, res) =>
   {
@@ -360,13 +382,18 @@ function processApiGet(apiUrl, serverLogic)
     var data = await serverLogic(user, req.params, req.query);
     if (!data.status)
       data.status = 200;
+    if (options && options.userUpdated)
+    {
+      await updateUser(req);
+      user = getUser(req);
+    }
     data.user = getSimpleUser(user);
     res.status(data.status);
     res.send(data);
   });
 }
 
-function processApiPost(apiUrl, serverLogic)
+function processApiPost(apiUrl, serverLogic, options)
 {
   app.post(apiUrl, async (req, res) =>
   {
@@ -375,6 +402,11 @@ function processApiPost(apiUrl, serverLogic)
     var data = await serverLogic(user, req.body, req.params, req.query);
     if (!data.status)
       data.status = 200;
+    if (options && options.userUpdated)
+    {
+      await updateUser(req);
+      user = getUser(req);
+    }
     data.user = getSimpleUser(user);
     res.status(data.status);
     res.send(data);
@@ -413,10 +445,11 @@ processApiGet('/api/getBlog/:blogUrl', getBlogByUrl);
 processApiGet('/api/setUserRole/:userId/:role', setUserRole);
 processApiGet('/api/transferOwnership/:userId', transferOwnership);
 processApiGet('/api/startConfirm', startConfirm);
-processApiGet('/api/confirm/:token', endConfirm);
+processApiGet('/api/confirm/:token', endConfirm, { userUpdated: true });
 
-processApiPost('/api/setArticle', setArticle)
-processApiPost('/api/setArgument', setArgument)
+processApiPost('/api/setArticle', setArticle);
+processApiPost('/api/setArgument', setArgument);
+processApiPost('/api/setMe', setMe, { userUpdated: true });
 
 processApiDelete('/api/deleteArgument/:id', deleteArgument);
 processApiDelete('/api/deleteArticle/:id', deleteArticle);

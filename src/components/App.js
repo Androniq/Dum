@@ -28,7 +28,9 @@ const ContextType =
   history: PropTypes.object,
   data: PropTypes.object,
   rehydrateState: PropTypes.object,
-  setLayoutState: PropTypes.func
+  setLayoutState: PropTypes.func,
+  action: PropTypes.func,
+  url: PropTypes.string
 };
 
 class App extends React.Component

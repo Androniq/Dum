@@ -13,8 +13,7 @@ class Confirm extends React.Component
     {
         if (this.props.data.success)
         {
-            if (this.props.context.user)
-                this.props.context.user.confirmed = true;
+            this.props.context.user = this.props.data.user;
         }
     }    
     

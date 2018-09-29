@@ -105,3 +105,15 @@ export const quillToolbarOptions = [
 		  );
 	  }, 1000);
   }
+
+  export async function totalRecall(context) // reloads current user from server session
+  {
+	var whoami = await context.fetch('/api/whoami', { method: 'GET' });
+	if (whoami.status !== 200)
+		return;
+	var whoamiJson = await whoami.json();
+	if (whoamiJson.status !== 200)
+		return;
+	context.user = whoamiJson.user;
+	context.setLayoutState({dummy:Math.random()});
+}

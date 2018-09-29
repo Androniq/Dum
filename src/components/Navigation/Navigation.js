@@ -61,10 +61,6 @@ class Navigation extends React.Component
               <Link className={s.link} to={{ pathname: "/login", state: { returnTo: this.props.context.pathname } }}>
                 Увійти
               </Link>
-              <span className={s.spacer}>чи</span>
-              <Link className={cx(s.link, s.highlight)} to="/register">
-                Зареєструватися
-              </Link>
             </React.Fragment>
             )}
         </div>

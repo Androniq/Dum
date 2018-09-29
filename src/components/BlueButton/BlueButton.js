@@ -13,7 +13,7 @@ class BlueButton extends React.Component {
 
   render() {
     return (
-        <button className={s.blueButton} onClick={this.props.onClick}>{this.props.children}</button>
+        <button className={cx(s.blueButton, this.props.className)} onClick={this.props.onClick}>{this.props.children}</button>
     );
   }
 }
