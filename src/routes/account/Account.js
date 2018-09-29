@@ -27,6 +27,7 @@ import withEverything from '../../withEverything';
 import { Helmet } from 'react-helmet';
 import { Redirect } from 'react-router-dom';
 import TextInput from '../../components/TextInput/TextInput';
+import UploadImage from '../../components/UploadImage/UploadImage';
 
 class Account extends React.Component
 {
@@ -35,7 +36,9 @@ class Account extends React.Component
   state = {
       usernameOpen: false,
       emailOpen: false,
-      passwordOpen: false
+      passwordOpen: false,
+      deleteUserpicOpen: false,
+      uploadUserpicOpen: false
   };
 
   constructor(props)
@@ -105,6 +108,12 @@ class Account extends React.Component
   updatePasswordN2(value) { this.setState({ passwordN2: value }); }
   onPasswordOpen() { this.setState({ passwordOpen: true }); }
   onPasswordClose() { this.setState({ passwordOpen: false }); }
+
+  onDeleteUserpicOpen() { this.setState({ deleteUserpicOpen: true }); }
+  onDeleteUserpicClose() { this.setState({ deleteUserpicOpen: false }); }
+
+  onUploadUserpicOpen() { this.setState({ uploadUserpicOpen: true }); }
+  onUploadUserpicClose() { this.setState({ uploadUserpicOpen: false }); }
   
     async saveUsername()
     {
@@ -181,13 +190,32 @@ class Account extends React.Component
         this.onPasswordClose();
     }
 
+    async uploadPhoto()
+    {
+
+    }
+
+    async removePhoto()
+    {
+        var resp = await this.props.context.fetch('/api/setMe', { method: 'POST', body: JSON.stringify({ 'photo': "/images/no_image_available.png" }) });
+        var json = await resp.json();
+        if (!json.success)
+        {
+            console.error(json.message);
+            return;
+        }
+        this.props.context.user = json.user;
+        this.onDeleteUserpicClose();
+    }
+
   render()
   {
     var user = this.props.context.user;
     if (!user) // not an error - could click Logout while staying on this page
         return <Redirect to='/' />;
+    
+    var hasAvatar = user.photo && user.photo !==  "/images/no_image_available.png";
 
-    console.info(this.state.password);
     var role = user.confirmed ? user.role : 'visitor';
     return (
         <div className={s.container}>
@@ -272,8 +300,39 @@ class Account extends React.Component
                         </div>
                     </Popup>
                     <span className={cx(s.row4, s.column1)}>Світлина:</span>
-                    <BlueButton className={cx(s.row4, s.column2)} onClick={this.requestArticle.bind(this)}>Змінити</BlueButton>
-                    <BlueButton className={cx(s.row4, s.column3)} onClick={this.requestArticle.bind(this)}>Видалити</BlueButton>
+                    {hasAvatar?(
+                        <React.Fragment>
+                            <Popup modal open={this.state.uploadUserpicOpen} onOpen={this.onUploadUserpicOpen.bind(this)}
+                                onClosed={this.onUploadUserpicClose.bind(this)} trigger={(
+                                    <BlueButton className={cx(s.row4, s.column2)} onClick={this.requestArticle.bind(this)}>Змінити</BlueButton>
+                                )}>
+                                <UploadImage />
+                            </Popup>
+                            <Popup modal open={this.state.deleteUserpicOpen} onOpen={this.onDeleteUserpicOpen.bind(this)}
+                                onClosed={this.onDeleteUserpicClose.bind(this)} trigger={(
+                                <BlueButton className={cx(s.row4, s.column3)} onClick={this.requestArticle.bind(this)}>Видалити</BlueButton>
+                            )}>
+                                <div className={s.grid}>
+                                    <div className={s.innerRow1}>
+                                        <span className={s.label}>Видалити світлину профілю?</span>
+                                    </div>
+                                    <div className={cx(s.flex, s.innerRow2)}>
+                                        <BlueButton onClick={this.removePhoto.bind(this)}>Так, видалити</BlueButton>
+                                        <BlueButton onClick={this.onDeleteUserpicClose.bind(this)}>Ні, не треба</BlueButton>
+                                    </div>
+                                </div>
+                            </Popup>
+                        </React.Fragment>
+                    ):(
+                        <React.Fragment>
+                            <Popup modal open={this.state.uploadUserpicOpen} onOpen={this.onUploadUserpicOpen.bind(this)}
+                                onClosed={this.onUploadUserpicClose.bind(this)} trigger={(
+                                    <BlueButton className={cx(s.row4, s.column23)} onClick={this.requestArticle.bind(this)}>Завантажити</BlueButton>
+                                )}>
+                                <UploadImage />
+                            </Popup>
+                        </React.Fragment>
+                    )}
                 </div>
                 )}
             </div>

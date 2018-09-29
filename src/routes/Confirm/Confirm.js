@@ -28,7 +28,7 @@ class Confirm extends React.Component
                 {this.props.data.success ? (
                     <div>Вітаємо! Ви успішно підтвердили свою адресу електронної пошти.</div>
                 ) : (
-                    <div>{this.props.data.message !== 'User already confirmed'?"Щось пішло не так...":""} {this.props.data.localMessage}</div>
+                    <div>{this.props.data.message !== 'User already confirmed'?"Щось пішло не так... ":""}{this.props.data.localMessage}</div>
                 )}
             </div>
         );

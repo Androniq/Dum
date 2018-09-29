@@ -29,6 +29,10 @@ export async function setMe(user, setters)
     {
         projection.displayName = setters.displayName;
     }
+    if (setters.photo)
+    {
+        projection.photo = setters.photo;
+    }
     if (setters.password)
     {
         var oldpwd = setters.oldPassword;
