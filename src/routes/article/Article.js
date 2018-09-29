@@ -23,7 +23,6 @@ import VoteButton from '../../components/VoteButton/VoteButton';
 import FormattedText from '../../components/FormattedText/FormattedText';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import StickyMessage from '../../components/StickyMessage/StickyMessage';
 import withEverything from '../../withEverything';
 
 class Article extends React.Component {
@@ -117,9 +116,8 @@ async clickVoteDo(code, optionId)
   var message = await resp.json();
   if (message.success)
   {
-    await this.setState({ ownVote: code, votePopupOpen: false,
-      stickyText: message.message === "Success (vote undone)" ? "Ви відкликали свій голос" : "Ваш голос враховано!" });
-    showSticky(this);
+    await this.setState({ ownVote: code, votePopupOpen: false });
+    showSticky(this, message.message === "Success (vote undone)" ? "Ви відкликали свій голос" : "Ваш голос враховано!");
   }
 }
 
@@ -149,8 +147,7 @@ async componentDidMount()
   var state = history.location.state;
   if (state && state.initMessage)
   {
-    await this.setState({ stickyText: state.initMessage });
-    showSticky(this);
+    showSticky(this, state.initMessage);
   }
 }
 
@@ -245,7 +242,6 @@ async componentDidMount()
             )}
           </UserContext.Consumer>
         </div>
-        <StickyMessage message={this.state.stickyText} visible={this.state.stickyShown} />
       </React.Fragment>
     );
   }

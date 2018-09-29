@@ -23,3 +23,17 @@
 {
     font-weight: 600;
 }
+
+.column
+{
+    display: flex;
+    flex-direction: column;
+    
+    justify-items: center;
+}
+
+.columnItem
+{
+    text-align: center;    
+    flex: 1;
+}

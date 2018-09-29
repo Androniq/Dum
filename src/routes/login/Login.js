@@ -32,12 +32,6 @@ class Login extends React.Component
     };
   }
 
-  async flashMessage(text)
-  {
-    await this.setState({ stickyText: text });
-    showSticky(this);
-  }
-
   getReturnTo(location)
   {
     return location && location.state && location.state.returnTo || '/';
@@ -76,7 +70,7 @@ class Login extends React.Component
     var answer = await this.props.context.fetch('/login/local', { method:'POST', body: reqBody, headers: { "Content-Type": "application/json" }});
     if (answer.status === 401) // login failure
     {
-      this.flashMessage('Немає такого користувача або хибний пароль');
+      showSticky(this, 'Немає такого користувача або хибний пароль');
       this.setState({ validatorPwd: s.invalid, validatorEmail: s.invalid });
       return;
     }
@@ -96,7 +90,7 @@ class Login extends React.Component
     var answer = await this.props.context.fetch('/register', { method:'POST', body: reqBody, headers: { "Content-Type": "application/json" }});
     if (answer.status === 406)
     {
-      this.flashMessage('Користувач із такою адресою вже існує');
+      showSticky(this, 'Користувач із такою адресою вже існує');
       return;
     }
     var json = await answer.json();
@@ -227,7 +221,6 @@ class Login extends React.Component
               </button>
             </div>
         </div>
-        <StickyMessage message={this.state.stickyText} visible={this.state.stickyShown} />
       </div>
     );
   }

@@ -83,20 +83,24 @@ export const quillToolbarOptions = [
   var currentStickyTimeout;
   var currentStickyTimeoutInner;
 
-  export function showSticky(component)
+  export function showSticky(component, message)
   {
-	  if (!component)
+	  if (!component || !message)
 	  {
-		throw { message: "No component given to showSticky method. Usage: showSticky(this)." };
+		throw { message: "No component or no message given to showSticky method. Usage: showSticky(this, message)." };
+	  }
+	  if (!component.props || !component.props.context || !component.props.context.setLayoutState)
+	  {
+		  throw { message: "Could not bind to layout state" };
 	  }
 	  if (currentStickyTimeout) { clearTimeout(currentStickyTimeout); }
 	  if (currentStickyTimeoutInner) { clearTimeout(currentStickyTimeoutInner); }
-	  component.setState({ stickyShown: 2 });
+	  component.props.context.setLayoutState({ stickyText: message, stickyShown: 2 });
 	  currentStickyTimeout = setTimeout(async function()
 	  {
-		  await component.setState({ stickyShown: 1 });
+		  await component.props.context.setLayoutState({ stickyShown: 1 });
 		  currentStickyTimeoutInner = setTimeout(
-			function() { component.setState({ stickyShown: 0 }); },
+			function() { component.props.context.setLayoutState({ stickyShown: 0 }); },
 			2000
 		  );
 	  }, 1000);

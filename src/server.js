@@ -412,6 +412,7 @@ processApiGet('/api/getAccount', getAccount);
 processApiGet('/api/getBlog/:blogUrl', getBlogByUrl);
 processApiGet('/api/setUserRole/:userId/:role', setUserRole);
 processApiGet('/api/transferOwnership/:userId', transferOwnership);
+processApiGet('/api/startConfirm', startConfirm);
 processApiGet('/api/confirm/:token', endConfirm);
 
 processApiPost('/api/setArticle', setArticle)

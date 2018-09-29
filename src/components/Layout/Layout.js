@@ -17,19 +17,23 @@ import s from './Layout.css';
 import Header from '../Header';
 import Feedback from '../Feedback';
 import Footer from '../Footer';
+import StickyMessage from '../StickyMessage/StickyMessage';
 
 class Layout extends React.Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
   };
 
+  state = {};
+
   render() {
+    this.props.context.setLayoutState = this.setState.bind(this);
     return (
       <div>
         <Header context={this.props.context} />
         {this.props.children}
-        <Feedback context={this.props.context} />
         <Footer context={this.props.context} />
+        <StickyMessage message={this.state && this.state.stickyText} visible={this.state && this.state.stickyShown} />
       </div>
     );
   }

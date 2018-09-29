@@ -36,16 +36,13 @@ class Account extends React.Component
     super(props);
   }
 
-  userRolePanel(confirmed, role)
+  userRolePanel(role)
   {
-      if (!confirmed)
-      {
-          return (
-            <span>Гість</span>
-          );
-      }
     switch (role)
     {
+        case 'visitor': return (
+            <span>Гість</span>
+        );
         case 'member': return (
             <span>Учасник</span>
         );
@@ -62,19 +59,44 @@ class Account extends React.Component
     return null;
   }
 
+  async resendConfirm()
+  {
+      var ans = await this.props.context.fetch('/api/startConfirm', { method:'GET' });
+      if (ans.status !== 200)
+      {
+          console.error(ans.status);
+          return;
+      }
+      var json = await ans.json();
+      if (!json.success)
+      {
+          console.error(json.message);
+          return;
+      }
+      showSticky(this, "Лист із посиланням висланий на " + this.props.context.user.email);
+  }
+
   render()
   {
       var user = this.props.context.user;
+      var role = user.confirmed ? user.role : 'visitor';
       return (
         <div className={s.container}>
             <Helmet>
                 <title>{user.displayName}</title>
             </Helmet>
-            <img className={s.userpic} src={user.photo} />
+            <img className={s.userpic} src={user.photo || "/images/no_image_available.png"} />
             <div className={s.userCard}>
             <span className={s.displayName}>{user.displayName}</span>
-            {this.userRolePanel(user.confirmed, user.role)}
+            {this.userRolePanel(role)}
             </div>
+            {user.confirmed?null:(
+                <div className={s.column}>
+                    <span className={s.columnItem}>Вам потрібно підтвердити свою адресу електронної пошти. Лист із посиланням був висланий на адресу {user.email} (перевірте теку «Спам»).</span>
+                    <BlueButton className={s.columnItem} onClick={this.resendConfirm.bind(this)}>Вислати знову</BlueButton>
+                    <div className={s.columnItem} />
+                </div>
+            )}
         </div>
       );
   }

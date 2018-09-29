@@ -20,6 +20,7 @@ import {
 	USER_LEVEL_OWNER } from '../utility';
 
 import sendMail from './sendMail';
+const ObjectID = require('mongodb').ObjectID;
 
 // Authentication
 
@@ -219,7 +220,7 @@ function generateToken()
 export async function startConfirm(user)
 {
 	if (user.confirmed)
-		return;
+		return { message: "User already confirmed" };
 	var token = generateToken();
 	var expires = new Date();
 	expires.setDate(expires.getDate() + 14);
@@ -240,6 +241,7 @@ export async function startConfirm(user)
 <p>Якщо ж це були не ви – нічого робити не потрібно.</p>
 <p>З повагою,<br />
 команда ДУМ</p>`);
+	return { success: true };
 }
 
 export async function endConfirm(user, { token })
@@ -249,10 +251,14 @@ export async function endConfirm(user, { token })
 	{
 		return { message: "Wrong or expired confirmation token", localMessage: "Хибне або застаріле посилання для підтвердження електронної пошти" };
 	}
-	var user = await mongoAsync.dbCollections.users.findOne({ _id: confirmation.user });
+	var user = await mongoAsync.dbCollections.users.findOne({ _id: new ObjectID(confirmation.user) });
 	if (!user)
 	{
 		return { message: "User not found for this confirmation token", localMessage: "Користувача, який підтверджує свою електронну пошту, не знайдено в базі" };
+	}
+	if (user.confirmed)
+	{
+		return { message: "User already confirmed", localMessage: "Ваша адреса вже підтверджена!" };
 	}
 	user.confirmed = true;
 	await mongoUpdate('users', { _id: user._id, confirmed: true });
