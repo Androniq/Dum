@@ -18,7 +18,8 @@ import {
 	USER_LEVEL_MODERATOR,
 	USER_LEVEL_ADMIN,
 	USER_LEVEL_OWNER, 
-	emailRegex} from '../utility';
+	emailRegex,
+	generateToken} from '../utility';
 
 import sendMail from './sendMail';
 const ObjectID = require('mongodb').ObjectID;
@@ -205,17 +206,6 @@ export async function transferOwnership(fromUser, toUserId)
 	session.endSession();
 	
 	return { success: true };
-}
-
-function generateToken()
-{
-	var r = '';
-	const arr = '0123456789ABCDEF';
-	for (let index = 0; index < 16; index++)
-	{
-		r += arr[Math.floor(Math.random() * 16)];
-	}
-	return r;
 }
 
 export async function startConfirm(user, params, { update })

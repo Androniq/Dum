@@ -1,4 +1,6 @@
-export const mongoClient = require('mongodb').MongoClient;
+import mongodb from 'mongodb';
+
+export const mongoClient = mongodb.MongoClient;
 
 export var mongoAsyncInternal = {};
 
@@ -47,6 +49,7 @@ async function getDbCollections()
   {
     require('dotenv').config();
   }
+
   // Connection url
   const url = process.env.MONGODB_URI;
   // Database Name
@@ -79,6 +82,7 @@ async function getDbCollections()
       const dbUsers = await getCollection(db, 'Users');
       const dbBlog = await getCollection(db, 'Blog');
       const dbEmailConfirmations = await getCollection(db, 'EmailConfirmations');
+      const gridFS = new mongodb.GridFSBucket(db);
 
       mongoAsync.dbCollections = {
         serverConfig: dbServerConfig,
@@ -91,8 +95,11 @@ async function getDbCollections()
         popularVote: dbPopularVote,
         users: dbUsers,
         blog: dbBlog,
-        emailConfirmations: dbEmailConfirmations
+        emailConfirmations: dbEmailConfirmations,
       };
+
+      mongoAsync.db = db;
+      mongoAsync.fs = gridFS;
 
       const votesPreload = await dbVotes.find().toArray();
       const prioritiesPreload = await dbPriorities.find().toArray();

@@ -306,7 +306,7 @@ class Account extends React.Component
                                 onClosed={this.onUploadUserpicClose.bind(this)} trigger={(
                                     <BlueButton className={cx(s.row4, s.column2)} onClick={this.requestArticle.bind(this)}>Змінити</BlueButton>
                                 )}>
-                                <UploadImage />
+                                <UploadImage {...this.props} onSuccess={this.onUploadUserpicClose.bind(this)} />
                             </Popup>
                             <Popup modal open={this.state.deleteUserpicOpen} onOpen={this.onDeleteUserpicOpen.bind(this)}
                                 onClosed={this.onDeleteUserpicClose.bind(this)} trigger={(
@@ -329,7 +329,7 @@ class Account extends React.Component
                                 onClosed={this.onUploadUserpicClose.bind(this)} trigger={(
                                     <BlueButton className={cx(s.row4, s.column23)} onClick={this.requestArticle.bind(this)}>Завантажити</BlueButton>
                                 )}>
-                                <UploadImage />
+                                <UploadImage {...this.props} onSuccess={this.onUploadUserpicClose.bind(this)} />
                             </Popup>
                         </React.Fragment>
                     )}

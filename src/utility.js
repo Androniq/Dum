@@ -117,3 +117,22 @@ export const quillToolbarOptions = [
 	context.user = whoamiJson.user;
 	context.setLayoutState({dummy:Math.random()});
 }
+
+export function generateToken()
+{
+	var r = '';
+	const arr = '0123456789abcdef';
+	for (let index = 0; index < 32; index++)
+	{
+		r += arr[Math.floor(Math.random() * 16)];
+	}
+	return r;
+}
+
+export const acceptedExtensions = ['png','jpg','jpeg','tiff'];
+
+export function getExtension(filename)
+{
+    filename = filename.toLowerCase();
+    return filename.substring(filename.lastIndexOf('.')+1, filename.length) || filename;
+}

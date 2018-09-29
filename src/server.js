@@ -13,7 +13,6 @@ import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import expressJwt, { UnauthorizedError as Jwt401Error } from 'express-jwt';
 import { graphql } from 'graphql';
-import expressGraphQL from 'express-graphql';
 import jwt from 'jsonwebtoken';
 import nodeFetch from 'node-fetch';
 import React from 'react';
@@ -32,7 +31,6 @@ import schema from './data/schema';
 import chunks from './chunk-manifest.json'; // eslint-disable-line import/no-unresolved
 import config from './config';
 import session from 'express-session';
-//import MongoDBStore from 'connect-mongodb-session';
 import sendPopularVote from './serverLogic/sendPopularVote';
 import { serverReady } from './serverLogic/_common';
 import { findOrCreateUser, setUserRole, transferOwnership, findLocalUser, startConfirm, endConfirm } from './serverLogic/auth';
@@ -57,6 +55,8 @@ import serialize from 'serialize-javascript';
 import { Helmet } from 'react-helmet';
 import { setMe } from './serverLogic/users';
 import { mongoAsync } from './serverStartup';
+import { upload } from './serverLogic/upload';
+import mongodb from 'mongodb';
 
 process.env.IS_SERVER=true;
 
@@ -88,6 +88,12 @@ app.use(express.static(path.resolve(__dirname, 'public')));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(bodyParser.raw(
+  {
+    inflate: true,
+    limit: '100kb',
+    type: 'image/*'
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -126,10 +132,6 @@ function setUser(req, newValue)
   if (req.user)
   {
     req.user = newValue;
-  }
-  if (req.session)
-  {
-    req.session.user = newValue;
   }
   if (req.session && req.session.passport)
   {
@@ -398,7 +400,10 @@ function processApiPost(apiUrl, serverLogic, options)
   {
     await serverReady();
     var user = getUser(req);
-    var data = await serverLogic(user, req.body, req.params, req.query);
+    var body = req.body;
+    if (options && options.file)
+      body = req;
+    var data = await serverLogic(user, body, req.params, req.query);
     if (!data.status)
       data.status = 200;
     if (options && options.userUpdated)
@@ -449,9 +454,29 @@ processApiGet('/api/confirm/:token', endConfirm, { userUpdated: true });
 processApiPost('/api/setArticle', setArticle);
 processApiPost('/api/setArgument', setArgument);
 processApiPost('/api/setMe', setMe, { userUpdated: true });
+processApiPost('/api/upload', upload, { file: true, userUpdated: true });
 
 processApiDelete('/api/deleteArgument/:id', deleteArgument);
 processApiDelete('/api/deleteArticle/:id', deleteArticle);
+
+// Serve files from Mongo
+
+app.get('/upload/:filename', async (req, res) =>
+{
+  mongodb.GridStore.exist(mongoAsync.db, req.params.filename, (err, exists)=>
+  {
+    if (!err && exists)
+    {
+      var stream = mongoAsync.fs.openDownloadStream(req.params.filename);
+      stream.pipe(res);
+    }
+    else
+    {
+      res.status(404);
+      res.end();
+    }
+  });
+});
 
 //
 // Register server-side rendering middleware
