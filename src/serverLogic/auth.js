@@ -137,7 +137,7 @@ export async function findLocalUser(email, pwd, isNew)
 	{
 		return null;
 	}
-	user = { email, displayName, password: pwd, role: "member", confirmed: false, blocked: false };
+	user = { email, displayName, password: pwd, passMask: "*".repeat(pwd.length), role: "member", confirmed: false, blocked: false };
 	user = (await mongoInsert(mongoAsync.dbCollections.users, user)).ops[0];
 	return user;
 }

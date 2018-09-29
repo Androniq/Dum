@@ -133,6 +133,11 @@
     grid-row: 2;
 }
 
+.innerRow3
+{
+    grid-row: 3;
+}
+
 .label
 {
     font-weight: bold;
@@ -142,6 +147,7 @@
 .inputField
 {
     flex-grow: 1;
+    margin: 2px;
 }
 
 .right

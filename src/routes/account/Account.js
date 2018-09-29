@@ -34,7 +34,8 @@ class Account extends React.Component
 
   state = {
       usernameOpen: false,
-      emailOpen: false
+      emailOpen: false,
+      passwordOpen: false
   };
 
   constructor(props)
@@ -44,6 +45,7 @@ class Account extends React.Component
     if (!user) return;
     this.state.username = user.displayName;
     this.state.email = user.email;
+    this.state.password = user.password;
   }
 
   userRolePanel(role)
@@ -97,6 +99,12 @@ class Account extends React.Component
   updateEmail(value) { this.setState({ email: value }); }
   onEmailOpen() { this.setState({ emailOpen: true }); }
   onEmailClose() { this.setState({ emailOpen: false }); }
+
+  updatePassword(value) { this.setState({ password: value }); }
+  updatePasswordN1(value) { this.setState({ passwordN1: value }); }
+  updatePasswordN2(value) { this.setState({ passwordN2: value }); }
+  onPasswordOpen() { this.setState({ passwordOpen: true }); }
+  onPasswordClose() { this.setState({ passwordOpen: false }); }
   
     async saveUsername()
     {
@@ -144,12 +152,42 @@ class Account extends React.Component
         this.onEmailClose();
     }
 
+    async savePassword()
+    {
+        var oldpwd = this.state.password;
+        var newpwd = this.state.passwordN1;
+        var user = this.props.context.user;
+        if (user.password && user.password.length && (!oldpwd || !oldpwd.length))
+        {
+            showSticky(this, 'Введіть свій поточний пароль!');
+            return;
+        }
+        if (newpwd !== this.state.passwordN2)
+        {
+            showSticky(this, 'Паролі не збігаються!');
+            return;
+        }
+        var resp = await this.props.context.fetch('/api/setMe', { method: 'POST', body: JSON.stringify({ password: newpwd, oldPassword: oldpwd }) });
+        var json = await resp.json();
+        if (!json.success)
+        {
+            if (json.localMessage)
+                showSticky(this, json.localMessage);
+            else
+                console.error(json.message);
+            return;
+        }
+        showSticky(this, 'Пароль змінено');
+        this.onPasswordClose();
+    }
+
   render()
   {
     var user = this.props.context.user;
     if (!user) // not an error - could click Logout while staying on this page
         return <Redirect to='/' />;
 
+    console.info(this.state.password);
     var role = user.confirmed ? user.role : 'visitor';
     return (
         <div className={s.container}>
@@ -192,7 +230,7 @@ class Account extends React.Component
                     <span className={cx(s.row2, s.column2)}>{user.displayName}</span>
                     <Popup modal open={this.state.usernameOpen} onOpen={this.onUsernameOpen.bind(this)} onClosed={this.onUsernameClose.bind(this)}
                         trigger={(
-                        <BlueButton className={cx(s.row2, s.column3)} onClick={this.requestArticle.bind(this)}>Змінити</BlueButton>
+                        <BlueButton className={cx(s.row2, s.column3)}>Змінити</BlueButton>
                     )}>
                         <div className={s.grid}>
                             <div className={cx(s.flex, s.innerRow1)}>
@@ -207,7 +245,32 @@ class Account extends React.Component
                         </div>
                     </Popup>
                     <span className={cx(s.row3, s.column1)}>Безпека:</span>
-                    <BlueButton className={cx(s.row3, s.column23)} onClick={this.requestArticle.bind(this)}>Змінити пароль</BlueButton>
+                    <Popup modal open={this.state.passwordOpen} onOpen={this.onPasswordOpen.bind(this)} onClosed={this.onPasswordClose.bind(this)}
+                        trigger={(
+                            <BlueButton className={cx(s.row3, s.column23)}>Змінити пароль</BlueButton>
+                        )}>
+                        <div className={s.grid}>
+                            <div className={cx(s.grid, s.innerRow1)}>
+                                {user.password && user.password.length ? (
+                                    <React.Fragment>
+                                        <span className={cx(s.label, s.innerRow1, s.column1)}>Поточний пароль:</span>
+                                        <TextInput noPopup className={cx(s.inputField, s.innerRow1, s.column2)} type="password"
+                                            onSave={this.updatePassword.bind(this)} />
+                                    </React.Fragment>
+                                ) : null}
+                                <span className={cx(s.label, s.innerRow2, s.column1)}>Новий пароль:</span>
+                                <TextInput noPopup className={cx(s.inputField, s.innerRow2, s.column2)} type="password"
+                                    onSave={this.updatePasswordN1.bind(this)} />
+                                <span className={cx(s.label, s.innerRow3, s.column1)}>Повторіть новий пароль:</span>
+                                <TextInput noPopup className={cx(s.inputField, s.innerRow3, s.column2)} type="password"
+                                    onSave={this.updatePasswordN2.bind(this)} />
+                            </div>
+                            <div className={cx(s.flex, s.innerRow2)}>
+                                <BlueButton onClick={this.savePassword.bind(this)}>Гаразд</BlueButton>
+                                <BlueButton onClick={this.onPasswordClose.bind(this)}>Скасувати</BlueButton>
+                            </div>
+                        </div>
+                    </Popup>
                     <span className={cx(s.row4, s.column1)}>Світлина:</span>
                     <BlueButton className={cx(s.row4, s.column2)} onClick={this.requestArticle.bind(this)}>Змінити</BlueButton>
                     <BlueButton className={cx(s.row4, s.column3)} onClick={this.requestArticle.bind(this)}>Видалити</BlueButton>

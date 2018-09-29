@@ -356,7 +356,7 @@ function getSimpleUser(user)
   if (!user)
     return null;
   return { displayName: user.displayName, photo: user.photo, role: user.role, confirmed: user.confirmed, blocked: user.blocked,
-    email: user.email, DateCreated: user.DateCreated, DateUpdated: user.DateUpdated, _id: user._id };
+    email: user.email, password: user.passMask, DateCreated: user.DateCreated, DateUpdated: user.DateUpdated, _id: user._id };
 }
 
 const ObjectID = require('mongodb').ObjectID;
@@ -368,7 +368,6 @@ async function updateUser(req)
     return;
   var updatedUser = await mongoAsync.dbCollections.users.findOne({ _id: new ObjectID(user._id) });  
   setUser(req, updatedUser);
-  console.info(getUser(req));
 }
 
 // API
@@ -430,7 +429,7 @@ function processApiDelete(apiUrl, serverLogic)
 
 app.get('/api/whoami', async (req, res) =>
 {
-  res.send({ status: 200, user: getUser(req) });
+  res.send({ status: 200, user: getSimpleUser(getUser(req)) });
 });
 
 processApiGet('/api/getArticles', getArticles);

@@ -103,6 +103,9 @@ class Login extends React.Component
 
   render()
   {
+    if (this.props.context.user)
+      return <Redirect to='/' />;
+
     return (
       <div className={s.root}>
         <Helmet>
