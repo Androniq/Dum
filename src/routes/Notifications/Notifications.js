@@ -12,6 +12,34 @@ import { Helmet } from 'react-helmet';
 
 class Notifications extends React.Component
 {
+    state = {
+        selectedIds: []
+    };
+    
+    itemSelectionChanged(item)
+    {
+        return (evt) =>
+        {
+            console.info(evt);
+            return;
+            item.isSelected = !item.isSelected;
+            if (item.isSelected)
+                this.state.selectedIds.push(item._id);
+            else
+                this.state.selectedIds.splice(this.state.selectedIds.indexOf(item._id), 1);
+        };
+    }
+
+    selectAll()
+    {
+        this.setState({ selectedIds: this.props.data.notifications.map(it => it._id) });
+    }
+    
+    selectNone()
+    {
+        this.setState({ selectedIds: [] });
+    }
+    
     render()
     {
         var users = this.props.data.users;
@@ -27,15 +55,16 @@ class Notifications extends React.Component
                 <h2>Сповіщення</h2>
                 <div className={s.managementPanel}>
                     <BlueButton>Позначити все як прочитане</BlueButton>
-                    <BlueButton>Виділити все</BlueButton>
-                    <BlueButton>Зняти виділення</BlueButton>
+                    <BlueButton onClick={this.selectAll.bind(this)}>Виділити все</BlueButton>
+                    <BlueButton onClick={this.selectNone.bind(this)}>Зняти виділення</BlueButton>
                     <BlueButton>Видалити</BlueButton>
                 </div>
                 <div className={s.notifList}>
                 {this.props.data.notifications.map(item => (
                     <div key={item._id} className={s.notifContainer}>
                         <div className={cx(s.notifUnread, item.unread ? s.visible : s.hidden)} />
-                        <input type="checkbox" className={s.selected} value={item.isSelected} />
+                        <input type="checkbox" className={s.selected} checked={this.state.selectedIds.includes(item._id)}
+                            onChange={this.itemSelectionChanged(item).bind(this)} />
                         <div className={s.sender}>
                             <img src={item.sender.photo || DEFAULT_USERPIC} className={s.senderUserpic} />
                             <span className={s.senderName}>{item.sender.displayName}</span>
