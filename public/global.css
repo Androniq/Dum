@@ -11,3 +11,10 @@ li { font-style: normal; }
     margin-left: auto;
     margin-right: auto;
 }
+
+.userpic
+{
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}

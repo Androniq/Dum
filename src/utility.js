@@ -218,3 +218,16 @@ function feminineCaseEnding(number)
 }
 
 export const DEFAULT_USERPIC = "/images/no_image_available.png";
+
+export function userRoleToLocal(role)
+{
+	switch (role)
+	{
+		case "visitor": return "Гість";
+		case "member": return "Учасник";
+		case "moderator": return "Модератор";
+		case "admin": return "Адміністратор";
+		case "owner": return "Власник сайту";
+	}
+	return "Гість";
+}

@@ -1,0 +1,28 @@
+.list
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.listItem
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.userpicContainer
+{
+    margin: 3px;
+}
+
+.userName
+{
+    flex: 1;
+    margin: 0 6px;
+}
+
+.itsYou
+{
+    margin: 0 6px;
+}
