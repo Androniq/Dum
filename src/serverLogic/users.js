@@ -62,7 +62,7 @@ export async function getUserList(user)
     {
         return { status: 403 };
     }
-    var users = await mongoAsync.dbCollections.users.find({}).toArray();
+    var users = await mongoAsync.dbCollections.users.find({}, { projection: { "displayName": 1, "photo": 1, "role": 1 } }).toArray();
     var resp =
     {
         users

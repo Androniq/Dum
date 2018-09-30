@@ -22,10 +22,11 @@ import {
         var blog = await mongoAsync.dbCollections.blog.findOne({ Url: blogUrl });
         if (!blog)
             return { status: 404, localMessage: 'Нема такого запису в блоґах' };
-        var owner = await mongoAsync.dbCollections.users.findOne({ _id: blog.Owner });
+        var owner = await mongoAsync.dbCollections.users.findOne({ _id: blog.Owner }, { projection: { "displayName": 1, "photo": 1 } });
         if (!owner)
         {
-            owner = await mongoAsync.dbCollections.users.findOne() || { displayName: "ТОЙ-КОГО-НЕ-МОЖНА-НАЗИВАТИ" };
+            owner = await mongoAsync.dbCollections.users.findOne({ projection: { "displayName": 1, "photo": 1 } })
+                || { displayName: "ТОЙ-КОГО-НЕ-МОЖНА-НАЗИВАТИ" };
         }
         blog.Owner = owner;
         return blog;
