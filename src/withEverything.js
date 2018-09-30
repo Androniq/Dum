@@ -3,7 +3,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { asyncComponent } from 'react-async-component';
 import Layout from './components/Layout/Layout';
 import Loading from './components/Loading/Loading';
-import ErrorPage from './routes/error/ErrorPage';
+import ErrorPage from './routes/Error/ErrorPage';
 
 // This function amends top-level React Components (app routes)
 // with everything they need:
