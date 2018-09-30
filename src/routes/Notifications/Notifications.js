@@ -18,15 +18,13 @@ class Notifications extends React.Component
     
     itemSelectionChanged(item)
     {
-        return (evt) =>
+        return () =>
         {
-            console.info(evt);
-            return;
-            item.isSelected = !item.isSelected;
-            if (item.isSelected)
-                this.state.selectedIds.push(item._id);
+            var isSelected = this.state.selectedIds.includes(item._id);
+            if (isSelected)
+                this.setState({ selectedIds: this.state.selectedIds.filter(it => it != item._id) });
             else
-                this.state.selectedIds.splice(this.state.selectedIds.indexOf(item._id), 1);
+                this.setState({ selectedIds: [...this.state.selectedIds, item._id] });
         };
     }
 
@@ -64,7 +62,7 @@ class Notifications extends React.Component
                     <div key={item._id} className={s.notifContainer}>
                         <div className={cx(s.notifUnread, item.unread ? s.visible : s.hidden)} />
                         <input type="checkbox" className={s.selected} checked={this.state.selectedIds.includes(item._id)}
-                            onChange={this.itemSelectionChanged(item).bind(this)} />
+                            onInput={this.itemSelectionChanged(item).bind(this)} />
                         <div className={s.sender}>
                             <img src={item.sender.photo || DEFAULT_USERPIC} className={s.senderUserpic} />
                             <span className={s.senderName}>{item.sender.displayName}</span>
