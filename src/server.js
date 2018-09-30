@@ -57,6 +57,7 @@ import { setMe } from './serverLogic/users';
 import { mongoAsync } from './serverStartup';
 import { upload } from './serverLogic/upload';
 import mongodb from 'mongodb';
+import getNotifications from './serverLogic/getNotifications';
 
 process.env.IS_SERVER=true;
 
@@ -450,6 +451,7 @@ processApiGet('/api/setUserRole/:userId/:role', setUserRole);
 processApiGet('/api/transferOwnership/:userId', transferOwnership);
 processApiGet('/api/startConfirm', startConfirm);
 processApiGet('/api/confirm/:token', endConfirm, { userUpdated: true });
+processApiGet('/api/getNotifications', getNotifications);
 
 processApiPost('/api/setArticle', setArticle);
 processApiPost('/api/setArgument', setArgument);

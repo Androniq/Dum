@@ -18,7 +18,8 @@ import {
     USER_LEVEL_OWNER, 
     showSticky,
     totalRecall,
-    emailRegex} from '../../utility';
+    emailRegex,
+    DEFAULT_USERPIC} from '../../utility';
 import history from '../../history';
 import BlueButton from '../../components/BlueButton/BlueButton';
 import FormattedText from '../../components/FormattedText/FormattedText';
@@ -197,7 +198,7 @@ class Account extends React.Component
 
     async removePhoto()
     {
-        var resp = await this.props.context.fetch('/api/setMe', { method: 'POST', body: JSON.stringify({ 'photo': "/images/no_image_available.png" }) });
+        var resp = await this.props.context.fetch('/api/setMe', { method: 'POST', body: JSON.stringify({ 'photo': DEFAULT_USERPIC }) });
         var json = await resp.json();
         if (!json.success)
         {
@@ -219,7 +220,7 @@ class Account extends React.Component
         if (!user) // not an error - could click Logout while staying on this page
             return <Redirect to='/' />;
     
-        var hasAvatar = user.photo && user.photo !==  "/images/no_image_available.png";
+        var hasAvatar = user.photo && user.photo !== DEFAULT_USERPIC;
 
         var role = user.confirmed ? user.role : 'visitor';
         return (
@@ -228,7 +229,7 @@ class Account extends React.Component
                 <title>{user.displayName}</title>
             </Helmet>
             <div className={s.topRow}>
-                <img className={s.userpic} src={user.photo || "/images/no_image_available.png"} />
+                <img className={s.userpic} src={user.photo || DEFAULT_USERPIC} />
                 <div className={s.userCard}>
                     <span className={s.displayName}>{user.displayName}</span>
                     {this.userRolePanel(role)}

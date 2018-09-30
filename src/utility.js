@@ -216,3 +216,5 @@ function feminineCaseEnding(number)
 		return "";
 	return feminineCaseEnding(number % 10);
 }
+
+export const DEFAULT_USERPIC = "/images/no_image_available.png";

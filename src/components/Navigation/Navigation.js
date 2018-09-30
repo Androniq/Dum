@@ -12,7 +12,7 @@ import cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Navigation.css';
 import { Link } from 'react-router-dom';
-import { checkPrivilege, USER_LEVEL_MODERATOR } from '../../utility';
+import { checkPrivilege, USER_LEVEL_MODERATOR, DEFAULT_USERPIC } from '../../utility';
 
 class Navigation extends React.Component
 {
@@ -44,7 +44,7 @@ class Navigation extends React.Component
           {this.props.context.user ? (
             <React.Fragment>
               <Link className={s.link} to="/account">
-                <img src={this.props.context.user.photo || "/images/no_image_available.png"} className={s.profilePicture} />
+                <img src={this.props.context.user.photo || DEFAULT_USERPIC} className={s.profilePicture} />
               </Link>
               <div className={s.verticalPanel}>
                 <Link className={s.link} to="/account">

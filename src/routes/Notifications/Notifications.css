@@ -55,14 +55,20 @@
 
 .sender
 {
-    width: 40px;
+    width: 150px;
     height: 32px;
     margin: auto 0;
+}
+
+.senderName
+{
+    margin: auto 6px;
 }
 
 .senderUserpic
 {
     width: 32px;
     height: 32px;
+    margin: auto 6px;
     border-radius: 50%;
 }
