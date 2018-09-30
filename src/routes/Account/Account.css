@@ -154,3 +154,32 @@
 {
     margin-left: auto;
 }
+
+.linkedAccounts
+{
+    display: flex;
+    flex-direction: row;    
+}
+
+.linkedGoogle
+{
+    flex: 1;
+}
+
+.linkedFb
+{
+    flex: 1;
+}
+
+.navButtons
+{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.navButton
+{
+    flex: 1;
+    min-width: 200px;
+}

@@ -1,3 +1,13 @@
 /* make bold bold and unmake list items italic :) */
 strong { font-weight: bold !important; }
 li { font-style: normal; }
+
+.container
+{
+    display: flex;
+    flex-direction: column;
+    max-width: 980px;
+    min-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}

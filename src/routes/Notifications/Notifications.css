@@ -1,0 +1,68 @@
+.managementPanel
+{
+    display: flex;
+    flex-direction: row;    
+}
+
+.notifList
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.notifContainer
+{
+    display: flex;
+    flex-direction: row;
+}
+
+.notifUnread
+{
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: red;
+    margin: auto 6px;
+}
+
+.visible
+{
+    visibility: visible;
+}
+
+.hidden
+{
+    visibility: hidden;
+}
+
+.selected
+{
+    width: 20px;
+    height: 20px;
+    margin: auto 6px;
+}
+
+.date
+{
+    width: 120px;
+    margin: auto 6px;
+}
+
+.text
+{
+    margin: auto 6px;
+}
+
+.sender
+{
+    width: 40px;
+    height: 32px;
+    margin: auto 0;
+}
+
+.senderUserpic
+{
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}

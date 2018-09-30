@@ -1,6 +1,7 @@
 .blueButton
 {
-    flex: 1;    
+    position: relative;
+    flex: 1;
     margin: 5px;
     padding: 5px;
     border-radius: 20px;
@@ -28,4 +29,16 @@
 {
     box-shadow: 0 0 2pt 1pt cyan;
     outline: none;
+}
+
+.redDot
+{
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    border-radius: 50%;
+    background: red;
+    width: 10px;
+    height: 10px;
+    transform: translate(-5px, -5px);
 }

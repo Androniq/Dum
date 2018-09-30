@@ -13,6 +13,7 @@ import Account from '../routes/Account/Account';
 import Confirm from '../routes/Confirm/Confirm';
 import Loading, { LoadingWithEverything } from './Loading/Loading';
 import ErrorPage, { ErrorPageWithEverything } from '../routes/Error/ErrorPage';
+import Notifications from '../routes/Notifications/Notifications';
 
 const ContextType =
 {
@@ -62,6 +63,7 @@ class App extends React.Component
           <Route path='/editArgument/:argId' render={EditArgument(context)} />
           <Route path='/account' render={Account(context)} />
           <Route path='/confirm/:token' render={Confirm(context)} />
+          <Route path='/notifications' render={Notifications(context)} />
           <Route path='/loading' render={LoadingWithEverything(context)} />
           <Route render={ErrorPageWithEverything(context)} />
         </Switch>

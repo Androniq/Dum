@@ -24,5 +24,14 @@ export default async function getAccount(user)
     {
         return { status: 403, message: "Error: you are not logged in" };
     }
-    return user;
+    var notifications = await mongoAsync.dbCollections.notifications.find({ to: user._id }).toArray();
+    var proposals = await mongoAsync.dbCollections.proposedArguments.find({ owner: user._id }).toArray();
+    var data =
+    {
+        notifications,
+        proposals,
+        googleProfile: user.googleProfile,
+        facebookProfile: user.facebookProfile
+    };
+    return data;
 }

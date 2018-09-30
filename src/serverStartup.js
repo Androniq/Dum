@@ -82,6 +82,7 @@ async function getDbCollections()
       const dbUsers = await getCollection(db, 'Users');
       const dbBlog = await getCollection(db, 'Blog');
       const dbEmailConfirmations = await getCollection(db, 'EmailConfirmations');
+      const dbNotifications = await getCollection(db, 'Notifications');
       const gridFS = new mongodb.GridFSBucket(db);
 
       mongoAsync.dbCollections = {
@@ -96,6 +97,7 @@ async function getDbCollections()
         users: dbUsers,
         blog: dbBlog,
         emailConfirmations: dbEmailConfirmations,
+        notifications: dbNotifications
       };
 
       mongoAsync.db = db;

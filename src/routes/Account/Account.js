@@ -208,16 +208,21 @@ class Account extends React.Component
         this.onDeleteUserpicClose();
     }
 
-  render()
-  {
-    var user = this.props.context.user;
-    if (!user) // not an error - could click Logout while staying on this page
-        return <Redirect to='/' />;
-    
-    var hasAvatar = user.photo && user.photo !==  "/images/no_image_available.png";
+    async gotoNotif()
+    {
+        this.props.history.push('/notifications');
+    }
 
-    var role = user.confirmed ? user.role : 'visitor';
-    return (
+    render()
+    {
+        var user = this.props.context.user;
+        if (!user) // not an error - could click Logout while staying on this page
+            return <Redirect to='/' />;
+    
+        var hasAvatar = user.photo && user.photo !==  "/images/no_image_available.png";
+
+        var role = user.confirmed ? user.role : 'visitor';
+        return (
         <div className={s.container}>
             <Helmet>
                 <title>{user.displayName}</title>
@@ -336,9 +341,37 @@ class Account extends React.Component
                 </div>
                 )}
             </div>
+            <div className={s.linkedAccounts}>
+                <div className={s.linkedGoogle}>
+                </div>
+                <div className={s.linkedFb}>
+                </div>
+            </div>
+            <div className={s.navButtons}>
+                {checkPrivilege(user, USER_LEVEL_MEMBER) ? (
+                    <BlueButton className={s.navButton} onClick={this.gotoNotif.bind(this)} redDot={this.props.data.notifications.length}>
+                        Сповіщення
+                    </BlueButton>
+                ):null}
+                {checkPrivilege(user, USER_LEVEL_MODERATOR) ? (
+                    <BlueButton className={s.navButton}>Переглянути пропозиції</BlueButton>
+                ):null}
+                {checkPrivilege(user, USER_LEVEL_ADMIN) ? (
+                    <BlueButton className={s.navButton}>Список користувачів</BlueButton>
+                ):null}
+                {checkPrivilege(user, USER_LEVEL_ADMIN) ? (
+                    <BlueButton className={s.navButton}>Написати в блоґ</BlueButton>
+                ):null}
+                {checkPrivilege(user, USER_LEVEL_OWNER) ? (
+                    <BlueButton className={s.navButton}>Журнал подій</BlueButton>
+                ):null}
+                {checkPrivilege(user, USER_LEVEL_OWNER) ? (
+                    <BlueButton className={s.navButton}>Передати сайт</BlueButton>
+                ):null}
+            </div>
         </div>
       );
   }
 }
 
-export default withEverything(Account, s);
+export default withEverything(Account, s, '/api/getAccount');

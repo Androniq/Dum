@@ -136,3 +136,83 @@ export function getExtension(filename)
     filename = filename.toLowerCase();
     return filename.substring(filename.lastIndexOf('.')+1, filename.length) || filename;
 }
+
+export function dateToRelative(date)
+{
+	if (typeof date === 'string') date = new Date(date);
+	var now = new Date();
+	var diff = now - date;
+	if (diff === 0) return "Просто зараз!!!";
+	if (diff > 0) return dateToRelativePast(diff*0.001) || date.toLocaleDateString('uk-UA');
+	if (diff < 0) return dateToRelativeFuture(-diff*0.001) || date.toLocaleDateString('uk-UA');
+	return "Скажіть Андронікові, що трапилась якась фігня";	
+}
+
+function dateToRelativePast(seconds)
+{
+	if (seconds < 60)
+		return "щойно";
+	if (seconds < 3600)
+	{
+		var minutes = Math.floor(seconds / 60);
+		return minutes + ` хвилин${feminineCaseEnding(minutes)} тому`;
+	}
+	if (seconds < 86400)
+	{
+		var hours = Math.floor(seconds / 3600);
+		return hours + ` год тому`;
+	}
+	var days = Math.floor(seconds / 86400);
+	switch (days)
+	{
+		case 1: return "вчора";
+		case 2: return "позавчора";
+		case 3: return "3 дні тому";
+	}
+	return null;
+}
+
+function dateToRelativeFuture(seconds)
+{
+	if (seconds < 60)
+		return "зараз";
+	if (seconds < 3600)
+	{
+		var minutes = Math.floor(seconds / 60);
+		return `через ${minutes} хвилин${feminineCaseEnding(minutes)}`;
+	}
+	if (seconds < 86400)
+	{
+		var hours = Math.floor(seconds / 3600);
+		return `через ${hours} год`;
+	}
+	var days = Math.floor(seconds / 86400);
+	switch (days)
+	{
+		case 1: return "завтра";
+		case 2: return "післязавтра";
+		case 3: return "через 3 дні";
+	}
+	return null;
+}
+
+function feminineCaseEnding(number)
+{
+	number = Math.floor(number) % 100;
+	if (number >= 10 && number <= 20)
+	{
+		return "";
+	}
+	switch (number)
+	{
+		case 1:
+			return "у";
+		case 2:
+		case 3:
+		case 4:
+			return "и";		
+	}
+	if (number <= 9)
+		return "";
+	return feminineCaseEnding(number % 10);
+}
