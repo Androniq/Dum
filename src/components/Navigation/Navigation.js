@@ -56,12 +56,9 @@ class Navigation extends React.Component
               </div>
             </React.Fragment>
           ) : (
-            <React.Fragment>
-              <span className={s.spacer}> | </span>
-              <Link className={s.link} to={{ pathname: "/login", state: { returnTo: this.props.context.pathname } }}>
-                Увійти
-              </Link>
-            </React.Fragment>
+            <Link className={s.link} to={{ pathname: "/login", state: { returnTo: this.props.context.pathname } }}>
+              Увійти
+            </Link>
             )}
         </div>
       </div>

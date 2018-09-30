@@ -48,7 +48,7 @@ class ErrorPage extends React.Component {
         {this.props.localMessage ? (
           <span>{this.props.localMessage}</span>
         ) : null}
-        <p>Так скидаєсі, жи ви є в Закарпаттьови. Ту шо інтернету, шо української мови не є.</p>
+        <p>Гой! Думаву, йсе Закарпаттє. Туй шо інтернету не є, шо літературної української мови.</p>
       </div>
     );
   }

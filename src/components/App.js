@@ -3,16 +3,16 @@ import PropTypes from 'prop-types';
 import { Switch, Route } from 'react-router';
 import { Helmet } from 'react-helmet';
 
-import Home from '../routes/home/Home';
-import Article from '../routes/article/Article';
-import Blog from '../routes/blog/Blog';
-import Login from '../routes/login/Login';
-import ErrorPage, { ErrorPageWithEverything } from '../routes/error/ErrorPage';
-import EditArticle from '../routes/editArticle/EditArticle';
-import EditArgument from '../routes/editArgument/EditArgument';
-import Account from '../routes/account/Account';
-import Loading, { LoadingWithEverything } from './Loading/Loading';
+import Home from '../routes/Home/Home';
+import Article from '../routes/Article/Article';
+import Blog from '../routes/Blog/Blog';
+import Login from '../routes/Login/Login';
+import EditArticle from '../routes/EditArticle/EditArticle';
+import EditArgument from '../routes/EditArgument/EditArgument';
+import Account from '../routes/Account/Account';
 import Confirm from '../routes/Confirm/Confirm';
+import Loading, { LoadingWithEverything } from './Loading/Loading';
+import ErrorPage, { ErrorPageWithEverything } from '../routes/Error/ErrorPage';
 
 const ContextType =
 {
