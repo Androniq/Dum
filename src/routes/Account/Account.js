@@ -32,48 +32,49 @@ import UploadImage from '../../components/UploadImage/UploadImage';
 
 class Account extends React.Component
 {
-  static propTypes = {};
+    static propTypes = {};
 
-  state = {
-      usernameOpen: false,
-      emailOpen: false,
-      passwordOpen: false,
-      deleteUserpicOpen: false,
-      uploadUserpicOpen: false
-  };
-
-  constructor(props)
-  {
-    super(props);
-    var user = this.props.context.user;
-    if (!user) return;
-    this.state.username = user.displayName;
-    this.state.email = user.email;
-    this.state.password = user.password;
-  }
-
-  userRolePanel(role)
-  {
-    switch (role)
+    state =
     {
-        case 'visitor': return (
-            <span>Гість</span>
-        );
-        case 'member': return (
-            <span>Учасник</span>
-        );
-        case 'moderator': return (
-            <span>Модератор</span>
-        );
-        case 'admin': return (
-            <span>Адміністратор</span>
-        );
-        case 'owner': return (
-            <span>Власник сайту</span>
-        );
+        usernameOpen: false,
+        emailOpen: false,
+        passwordOpen: false,
+        deleteUserpicOpen: false,
+        uploadUserpicOpen: false
+    };
+
+    constructor(props)
+    {
+        super(props);
+        var user = this.props.context.user;
+        if (!user) return;
+        this.state.username = user.displayName;
+        this.state.email = user.email;
+        this.state.password = user.password;
     }
-    return null;
-  }
+
+    userRolePanel(role)
+    {
+        switch (role)
+        {
+            case 'visitor': return (
+                <span>Гість</span>
+            );
+            case 'member': return (
+                <span>Учасник</span>
+            );
+            case 'moderator': return (
+                <span>Модератор</span>
+            );
+            case 'admin': return (
+                <span>Адміністратор</span>
+            );
+            case 'owner': return (
+                <span>Власник сайту</span>
+            );
+        }
+        return null;
+    }
 
   async resendConfirm()
   {
@@ -214,6 +215,26 @@ class Account extends React.Component
         this.props.history.push('/notifications');
     }
 
+    async gotoEventLog()
+    {
+        this.props.history.push('/eventLog');
+    }
+
+    async gotoEditBlog()
+    {
+        this.props.history.push('/editBlog');
+    }
+
+    async gotoApprovals()
+    {
+        this.props.history.push('/approvals');
+    }
+
+    async gotoUserList()
+    {
+        this.props.history.push('/userList');
+    }
+
     render()
     {
         var user = this.props.context.user;
@@ -350,21 +371,21 @@ class Account extends React.Component
             </div>
             <div className={s.navButtons}>
                 {checkPrivilege(user, USER_LEVEL_MEMBER) ? (
-                    <BlueButton className={s.navButton} onClick={this.gotoNotif.bind(this)} redDot={this.props.data.notifications.length}>
+                    <BlueButton className={s.navButton} onClick={this.gotoNotif.bind(this)} redDot={this.props.data.unreadNotifCount}>
                         Сповіщення
                     </BlueButton>
                 ):null}
                 {checkPrivilege(user, USER_LEVEL_MODERATOR) ? (
-                    <BlueButton className={s.navButton}>Переглянути пропозиції</BlueButton>
+                    <BlueButton className={s.navButton} onClick={this.gotoApprovals.bind(this)}>Переглянути пропозиції</BlueButton>
                 ):null}
                 {checkPrivilege(user, USER_LEVEL_ADMIN) ? (
-                    <BlueButton className={s.navButton}>Список користувачів</BlueButton>
+                    <BlueButton className={s.navButton} onClick={this.gotoUserList.bind(this)}>Список користувачів</BlueButton>
                 ):null}
                 {checkPrivilege(user, USER_LEVEL_ADMIN) ? (
-                    <BlueButton className={s.navButton}>Написати в блоґ</BlueButton>
+                    <BlueButton className={s.navButton} onClick={this.gotoEditBlog.bind(this)}>Написати в блоґ</BlueButton>
                 ):null}
                 {checkPrivilege(user, USER_LEVEL_OWNER) ? (
-                    <BlueButton className={s.navButton}>Журнал подій</BlueButton>
+                    <BlueButton className={s.navButton} onClick={this.gotoEventLog.bind(this)}>Журнал подій</BlueButton>
                 ):null}
                 {checkPrivilege(user, USER_LEVEL_OWNER) ? (
                     <BlueButton className={s.navButton}>Передати сайт</BlueButton>

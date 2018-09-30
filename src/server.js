@@ -53,7 +53,7 @@ import { AsyncComponentProvider, createAsyncContext } from 'react-async-componen
 import asyncBootstrapper from 'react-async-bootstrapper';
 import serialize from 'serialize-javascript';
 import { Helmet } from 'react-helmet';
-import { setMe } from './serverLogic/users';
+import { setMe, getUserList } from './serverLogic/users';
 import { mongoAsync } from './serverStartup';
 import { upload } from './serverLogic/upload';
 import mongodb from 'mongodb';
@@ -452,6 +452,7 @@ processApiGet('/api/transferOwnership/:userId', transferOwnership);
 processApiGet('/api/startConfirm', startConfirm);
 processApiGet('/api/confirm/:token', endConfirm, { userUpdated: true });
 processApiGet('/api/getNotifications', getNotifications);
+processApiGet('/api/getUserList', getUserList);
 
 processApiPost('/api/setArticle', setArticle);
 processApiPost('/api/setArgument', setArgument);

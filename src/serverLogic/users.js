@@ -38,7 +38,7 @@ export async function setMe(user, setters)
         var oldpwd = setters.oldPassword;
         if (user.password !== oldpwd)
         {
-            return { status: 402, message: "Old password wrong", localMessage: "Неправильний поточний пароль" };
+            return { status: 402, message: "Current password wrong", localMessage: "Неправильний поточний пароль" };
         }
         if (!setters.password.length)
         {
@@ -54,4 +54,18 @@ export async function setMe(user, setters)
     }
     await mongoUpdate(mongoAsync.dbCollections.users, projection);
     return { success: true };
+}
+
+export async function getUserList(user)
+{
+    if (!checkPrivilege(user, USER_LEVEL_MODERATOR))
+    {
+        return { status: 403 };
+    }
+    var users = await mongoAsync.dbCollections.users.find({}).toArray();
+    var resp =
+    {
+        users
+    };
+    return resp;
 }
