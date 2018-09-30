@@ -142,15 +142,6 @@ clickArgument()
   this.props.history.push('/editArgument/new/' + this.props.data.article.Url);
 }
 
-async componentDidMount()
-{
-  var state = history.location.state;
-  if (state && state.initMessage)
-  {
-    showSticky(this, state.initMessage);
-  }
-}
-
   render()
   {
     return (

@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import { UserContext } from '../../UserContext';
 import TextInput from '../../components/TextInput/TextInput';
 import history from '../../history';
-import { guid, quillToolbarOptions, htmlNonEmpty } from '../../utility';
+import { guid, quillToolbarOptions, htmlNonEmpty, showSticky } from '../../utility';
 import Select from 'react-select';
 import BlueButton from '../../components/BlueButton/BlueButton';
 import FormattedText from '../../components/FormattedText/FormattedText';
@@ -115,7 +115,7 @@ async onSave()
     var redirect = { pathname: '/article/' + this.props.data.article.Url };
     if (this.props.data.isProposal)
     {
-      redirect.state = { initMessage: "Ваш аргумент прийнято до розгляду!" };
+      showSticky(this, "Ваш аргумент прийнято до розгляду!");
     }
     this.props.history.push(redirect);
   }
