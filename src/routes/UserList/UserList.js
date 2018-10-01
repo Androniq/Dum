@@ -13,7 +13,7 @@ class UserList extends React.Component
         return (
             <div className="container">
                 <Helmet>
-                    <title>UserList</title>
+                    <title>Список користувачів</title>
                 </Helmet>
                 <div className={s.list}>
                     {this.props.data.users.map(item => (
