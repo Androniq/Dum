@@ -54,9 +54,9 @@ class UploadImage extends React.Component
     render()
     {
         return (
-            <div>
-                <Dropzone disablePreview onDrop={this.onDrop.bind(this)}>Перетягніть файли сюди. Припустимі формати: {acceptedExtensions.join(', ')}. Максимальний розмір файлу: 256 КБ</Dropzone>
-            </div>
+                <Dropzone className={s.dropzone} disablePreview onDrop={this.onDrop.bind(this)}>
+                    Перетягніть файли сюди. Припустимі формати: {acceptedExtensions.join(', ')}. Максимальний розмір файлу: 256 КБ
+                </Dropzone>
         );
     }
 }
