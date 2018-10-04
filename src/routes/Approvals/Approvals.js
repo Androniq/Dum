@@ -12,8 +12,15 @@ class Approvals extends React.Component
         return (
             <div className="container">
                 <Helmet>
-                    <title>Approvals</title>
+                    <title>Пропозиції</title>
                 </Helmet>
+                <div className={s.itemList}>
+                    {this.props.data.proposedArgs.map(item => (
+                        <div key={item._id} className={s.itemContainer}>
+                            <span>{item.Content}</span>
+                        </div>
+                    ))}
+                </div>
             </div>
         );
     }

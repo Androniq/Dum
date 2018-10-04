@@ -68,7 +68,7 @@ class App extends React.Component
           <Route path='/account' render={Account(context)} />
           <Route path='/confirm/:token' render={Confirm(context)} />
           <Route path='/notifications' render={Notifications(context)} />
-          <Route path='/aprovals' render={Approvals(context)} />
+          <Route path='/approvals' render={Approvals(context)} />
           <Route path='/editBlog' render={EditBlog(context)} />
           <Route path='/eventLog' render={EventLog(context)} />
           <Route path='/userList' render={UserList(context)} />

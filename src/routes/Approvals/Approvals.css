@@ -1,0 +1,13 @@
+.itemList
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.itemContainer
+{
+    min-height: 40px;
+    min-width: 120px;
+    border-radius: 20px;
+    background: green;
+}

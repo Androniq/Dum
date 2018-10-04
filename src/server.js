@@ -58,6 +58,7 @@ import { mongoAsync } from './serverStartup';
 import { upload } from './serverLogic/upload';
 import mongodb from 'mongodb';
 import getNotifications from './serverLogic/getNotifications';
+import getApprovals from './serverLogic/getApprovals';
 
 process.env.IS_SERVER=true;
 
@@ -453,6 +454,7 @@ processApiGet('/api/startConfirm', startConfirm);
 processApiGet('/api/confirm/:token', endConfirm, { userUpdated: true });
 processApiGet('/api/getNotifications', getNotifications);
 processApiGet('/api/getUserList', getUserList);
+processApiGet('/api/getApprovals', getApprovals);
 
 processApiPost('/api/setArticle', setArticle);
 processApiPost('/api/setArgument', setArgument);
