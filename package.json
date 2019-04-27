@@ -15,6 +15,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.0.0-beta.51",
     "@sendgrid/mail": "^6.3.1",
+    "archiver": "^3.0.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "chart.js": "^2.7.2",
@@ -30,6 +31,7 @@
     "graphql": "^0.13.2",
     "history": "^4.7.2",
     "isomorphic-style-loader": "^4.0.0",
+    "js-file-download": "^0.4.5",
     "jsonwebtoken": "^8.3.0",
     "mongodb": "^3.1.4",
     "mongodb-core": "^3.1.3",

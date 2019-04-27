@@ -235,6 +235,15 @@ class Account extends React.Component
         this.props.history.push('/userList');
     }
 
+    async getBackup()
+    {
+        var fileDownload = require('js-file-download');
+        var resp = await this.props.context.fetch('/api/getBackup', { method: 'GET' });
+        var reader = resp.body.getReader();
+        var data = await reader.read();
+        fileDownload(data.value, 'backup.zip', 'application/zip');
+    }
+
     render()
     {
         var user = this.props.context.user;
@@ -386,6 +395,9 @@ class Account extends React.Component
                 ):null}
                 {checkPrivilege(user, USER_LEVEL_OWNER) ? (
                     <BlueButton className={s.navButton} onClick={this.gotoEventLog.bind(this)}>Журнал подій</BlueButton>
+                ):null}
+                {checkPrivilege(user, USER_LEVEL_OWNER) ? (
+                    <BlueButton className={s.navButton} onClick={this.getBackup.bind(this)}>Бекап</BlueButton>
                 ):null}
                 {checkPrivilege(user, USER_LEVEL_OWNER) ? (
                     <BlueButton className={s.navButton}>Передати сайт</BlueButton>

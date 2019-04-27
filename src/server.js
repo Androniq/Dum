@@ -62,6 +62,7 @@ import getApprovals from './serverLogic/getApprovals';
 import approveProposal from './serverLogic/approveProposal';
 import rejectProposal from './serverLogic/rejectProposal';
 import proposeCounterArgument from './serverLogic/proposeCounterArgument';
+import getBackup from './serverLogic/getBackup';
 
 process.env.IS_SERVER=true;
 
@@ -395,6 +396,12 @@ function processApiGet(apiUrl, serverLogic, options)
     }
     data.user = getSimpleUser(user);
     res.status(data.status);
+    if (options && options.download)
+    {
+      var filename = data.filename;
+      res.download(filename);
+      return;
+    }
     res.send(data);
   });
 }
@@ -458,6 +465,7 @@ processApiGet('/api/confirm/:token', endConfirm, { userUpdated: true });
 processApiGet('/api/getNotifications', getNotifications);
 processApiGet('/api/getUserList', getUserList);
 processApiGet('/api/getApprovals', getApprovals);
+processApiGet('/api/getBackup', getBackup, { download: true });
 
 processApiPost('/api/approveProposal/:id', approveProposal);
 processApiPost('/api/setArticle', setArticle);
