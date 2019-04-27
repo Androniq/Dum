@@ -36,7 +36,7 @@ class Argument extends React.Component
                     </div>
                     {counters.map(counter =>
                         <div key={counter._id} className={s.childCounter}>
-                            <CounterArgument argument={counter} user={this.props.user} />
+                            <CounterArgument argument={counter} user={this.props.user} idChain={[counter._id]} rootId={this.props.argument._id} />
                         </div>
                     )}
                 </div>

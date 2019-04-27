@@ -24,7 +24,7 @@ class CounterArgument extends React.Component
                     <div className={cx(s.argumentHeader, validity ? null : s.argumentHeaderInvalid)}>
                         <span className={s.argumentTitle}>Контраргумент</span>
                         {checkPrivilege(this.props.user, USER_LEVEL_MODERATOR) ? (
-                            <Link to={"/editCounterArgument/" + this.props.argument._id}>
+                            <Link to={"/editCounterArgument/" + this.props.rootId + "/" + this.props.idChain.join('.')}>
                                 <img className={s.argumentEditButton} src="/images/edit.png" />
                             </Link>
                         ) : ""}
@@ -34,7 +34,8 @@ class CounterArgument extends React.Component
                     </div>
                     {counters.map(counter =>
                             <div key={counter._id} className={s.childCounter}>
-                                <CounterArgument argument={counter} user={this.props.user} />
+                                <CounterArgument argument={counter} user={this.props.user}
+                                    idChain={this.props.idChain.concat(counter._id)} rootId={this.props.rootId} />
                             </div>
                         )}
                 </>

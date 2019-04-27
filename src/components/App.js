@@ -18,6 +18,7 @@ import EditBlog from '../routes/EditBlog/EditBlog';
 import EventLog from '../routes/EventLog/EventLog';
 import UserList from '../routes/UserList/UserList';
 import Approvals from '../routes/Approvals/Approvals';
+import EditCounterArgument from '../routes/EditCounterArgument/EditCounterArgument';
 
 const ContextType =
 {
@@ -65,6 +66,7 @@ class App extends React.Component
           <Route path='/editArticle/:id' render={EditArticle(context)} />
           <Route path='/editArgument/:argId/:articleId' render={EditArgument(context)} />
           <Route path='/editArgument/:argId' render={EditArgument(context)} />
+          <Route path='/editCounterArgument/:argId/:idChain' render={EditCounterArgument(context)} />
           <Route path='/account' render={Account(context)} />
           <Route path='/confirm/:token' render={Confirm(context)} />
           <Route path='/notifications' render={Notifications(context)} />

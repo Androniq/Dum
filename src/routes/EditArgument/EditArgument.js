@@ -64,10 +64,13 @@ updateContent(value) { this.setState({Content:value}); }
 
 componentWillMount()
 {
-  var argument = this.props.data;
+  var argument = this.props.data && this.props.data.argument;
   if (argument)
   {
-    this.setState(argument);
+    this.setState({
+      Vote: {value:argument.Vote},
+      Priority: {value:argument.Priority}
+    });
   }
 }
 
