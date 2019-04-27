@@ -61,6 +61,7 @@ import getNotifications from './serverLogic/getNotifications';
 import getApprovals from './serverLogic/getApprovals';
 import approveProposal from './serverLogic/approveProposal';
 import rejectProposal from './serverLogic/rejectProposal';
+import proposeCounterArgument from './serverLogic/proposeCounterArgument';
 
 process.env.IS_SERVER=true;
 
@@ -344,7 +345,7 @@ app.post('/register', async (req, res, next) =>
     res.send({ status: 406, message: "User with such email already registered" });
     return;
   }
-  startConfirm(user);
+  startConfirm(user, null, { update: false });
   return next();
 }, passport.authenticate('local'), loginLocalSuccess);
 
@@ -461,6 +462,7 @@ processApiGet('/api/getApprovals', getApprovals);
 processApiPost('/api/approveProposal/:id', approveProposal);
 processApiPost('/api/setArticle', setArticle);
 processApiPost('/api/setArgument', setArgument);
+processApiPost('/api/proposeCounterArgument', proposeCounterArgument);
 processApiPost('/api/setMe', setMe, { userUpdated: true });
 processApiPost('/api/upload', upload, { file: true, userUpdated: true });
 

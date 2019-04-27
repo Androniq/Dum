@@ -64,6 +64,19 @@ class Approvals extends React.Component
                 var userId = proposedArg.Owner;
                 var user = this.props.data.users.find(it => it._id === userId);
                 proposedArg.User = user;
+
+                if (proposedArg.RootId)
+                {
+                    var rootArg = this.props.data.contestedArgs.find(it => it._id === proposedArg.RootId);
+                    proposedArg.RootArg = rootArg;
+                    var current = rootArg;
+                    for (let index = 0; index < proposedArg.IdChain.length; index++)
+                    {
+                        var counterId = proposedArg.IdChain[index];
+                        current = current.Counters.find(it => it._id === counterId);
+                    }
+                    proposedArg.Contested = current;
+                }
             });
         return (
             <div className="container">
@@ -71,7 +84,7 @@ class Approvals extends React.Component
                     <title>Пропозиції</title>
                 </Helmet>
                 <div className={s.itemList}>
-                    {this.props.data.proposedArgs.count ? "" : 
+                    {this.props.data.proposedArgs.length ? "" : 
                         <span className={s.noNewProposals}>Нових пропозицій немає</span>
                     }
                     {this.props.data.proposedArgs.map(item => (
@@ -84,6 +97,14 @@ class Approvals extends React.Component
                                 <span className={cx(s.labelBase, s.labelVote)}>{item.voteDescription}</span>
                                 <span className={cx(s.labelBase, s.labelPriority)}>{item.PriorityInst.Title}</span>
                             </div>
+                            {item.RootId ? (
+                                <div className={s.counterContainer}>
+                                    <span className={s.counterHeader}>Контраргумент до:</span>
+                                    <div className={s.contentContainer}>
+                                        <FormattedText html={item.Contested.Content} />
+                                    </div>
+                                </div>
+                            ) : null}
                             <div className={s.contentContainer}>
                                 <FormattedText html={item.Content} />
                             </div>

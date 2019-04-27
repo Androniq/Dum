@@ -54,6 +54,7 @@ class EditCounterArgument extends React.Component {
     this.state.Parent = parent;
     this.state.Current = current;
     this.state.Type = type;
+    this.state.IdChain = idChain;
   }
 
 getTitle()
@@ -73,6 +74,33 @@ onContentChanged(content)
   this.setState({ Content: content, contentValidator: null });
 }
 
+async sendProposal()
+{
+    var argument = this.props.data.argument;
+    this.state.Current.Content = this.state.Content;
+    var cargument = this.state.Current;
+    cargument.IdChain = this.state.IdChain;
+    cargument.IdChain.pop();
+    cargument.RootId = argument._id;
+    cargument.Vote = argument.Vote;
+    cargument.Priority = argument.Priority;
+    cargument.Article = argument.Article;
+    var text = JSON.stringify(cargument);
+  
+    var res = await this.props.context.fetch('/api/proposeCounterArgument', {method:'POST', body: text, headers: { "Content-Type": "application/json" }});
+    var resj = await res.json();
+    if (resj.success)
+    {
+      var redirect = { pathname: '/article/' + this.props.data.article.Url };
+      this.props.history.push(redirect);
+    }
+    else
+    {
+      console.error(resj.message);
+    }
+    showSticky(this, "Ваш контраргумент прийнято до розгляду!");
+}
+
 async onSave()
 {
   var valid = true;
@@ -89,8 +117,8 @@ async onSave()
 
   if (this.props.data.isProposal)
   {
-    showSticky(this, "Ваш контраргумент прийнято до розгляду!");
-    return;
+      await this.sendProposal();
+      return;
   }
 
   var argument = this.props.data.argument;

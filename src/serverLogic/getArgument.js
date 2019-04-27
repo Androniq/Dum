@@ -21,9 +21,16 @@ import { ObjectID } from 'mongodb';
     
 export async function getArgument(user, { id })
 {
-    if (!checkPrivilege(user, USER_LEVEL_MODERATOR))
+    if (!checkPrivilege(user, USER_LEVEL_MEMBER))
     {
         return { status: 403, message: "Insufficient privileges" };
+    }
+    var type = "edit";
+    var isProposal = false;
+    if (!checkPrivilege(user, USER_LEVEL_MODERATOR))
+    {
+        type = "proposal";
+        isProposal = true;
     }
 
     var arg = await mongoAsync.dbCollections.arguments.findOne({ _id: new ObjectID(id) });
@@ -34,7 +41,7 @@ export async function getArgument(user, { id })
     {
         vote.ShortDescription = vote.ShortDescriptionTemplate.replace('%A%', article.ShortA).replace('%B%', article.ShortB);
     });
-    var res = { argument: arg, article, votes, priorities, type: "edit" };
+    var res = { argument: arg, article, votes, priorities, type, isProposal };
     return res;
 }
 

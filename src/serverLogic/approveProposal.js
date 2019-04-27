@@ -34,6 +34,33 @@ export default async function approveProposal(user, body, { id })
         return { status: 404, message: "Proposal with provided ID not found" };
     }
 
+    if (proposal.RootId)
+    {
+        var rootArgument = await mongoAsync.dbCollections.arguments.findOne({ _id: new ObjectID(proposal.RootId) });
+        var current = rootArgument;
+        for (let index = 0; index < proposal.IdChain.length; index++)
+        {
+            current = current.Counters.find(it => it._id === proposal.IdChain[index]);
+        }
+
+        if (!current.Counters)
+            current.Counters = [];
+        current.Counters.push({
+            _id: guid(),
+            Content: proposal.Content,
+            Owner: proposal.Owner
+        });
+
+        var t = await mongoUpdate(mongoAsync.dbCollections.arguments, rootArgument, null);
+        if (t && t.result && t.result.ok)
+        {
+            await mongoDelete(mongoAsync.dbCollections.proposedArguments, id);
+
+            return { success: true };
+        }
+        return { status: 500, message: "Database error" };
+    }
+
     var argument = {
         Vote: proposal.Vote,
         Content: proposal.Content,
