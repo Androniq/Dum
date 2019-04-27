@@ -10,12 +10,28 @@ import BlueButton from '../../components/BlueButton/BlueButton';
 
 class Approvals extends React.Component
 {
-    clickApprove(item)
+    async clickApprove(item)
     {
+        var url = "/api/approveProposal/" + item._id;
+        var resp = await this.props.context.fetch(url, { method: 'POST' });
+        if (!resp.ok)
+        {
+            console.error(resp.message);
+            return;
+        }
+        window.location.reload();
     }
 
-    clickDeny(item)
+    async clickReject(item)
     {
+        var url = "/api/rejectProposal/" + item._id;
+        var resp = await this.props.context.fetch(url, { method: 'DELETE' });
+        if (!resp.ok)
+        {
+            console.error(resp.message);
+            return;
+        }
+        window.location.reload();
     }
 
     clickViewUser(item)
@@ -24,6 +40,7 @@ class Approvals extends React.Component
 
     clickViewArticle(item)
     {
+        window.open("/article/" + item.ArticleInst.Url, "_blank");
     }
 
     clickBan(item)
@@ -54,6 +71,9 @@ class Approvals extends React.Component
                     <title>Пропозиції</title>
                 </Helmet>
                 <div className={s.itemList}>
+                    {this.props.data.proposedArgs.count ? "" : 
+                        <span className={s.noNewProposals}>Нових пропозицій немає</span>
+                    }
                     {this.props.data.proposedArgs.map(item => (
                         <div key={item._id} className={s.itemContainer}>
                             <div className={s.labelContainer}>
@@ -79,7 +99,7 @@ class Approvals extends React.Component
                             </div>
                             <div className={s.panel}>
                                 <BlueButton onClick={(()=>this.clickApprove(item)).bind(this)}>Схвалити</BlueButton>
-                                <BlueButton onClick={(()=>this.clickDeny(item)).bind(this)}>Відхилити</BlueButton>
+                                <BlueButton onClick={(()=>this.clickReject(item)).bind(this)}>Відхилити</BlueButton>
                                 <BlueButton onClick={(()=>this.clickBan(item)).bind(this)}>БАН!</BlueButton>
                             </div>
                         </div>

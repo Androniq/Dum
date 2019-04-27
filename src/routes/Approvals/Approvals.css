@@ -70,5 +70,11 @@
 {
     font-weight: bold;
     color: white;
-    
+}
+
+.noNewProposals
+{
+    text-align: center;
+    font-weight: bold;
+    align-self: center;
 }

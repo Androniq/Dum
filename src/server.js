@@ -59,6 +59,8 @@ import { upload } from './serverLogic/upload';
 import mongodb from 'mongodb';
 import getNotifications from './serverLogic/getNotifications';
 import getApprovals from './serverLogic/getApprovals';
+import approveProposal from './serverLogic/approveProposal';
+import rejectProposal from './serverLogic/rejectProposal';
 
 process.env.IS_SERVER=true;
 
@@ -456,11 +458,13 @@ processApiGet('/api/getNotifications', getNotifications);
 processApiGet('/api/getUserList', getUserList);
 processApiGet('/api/getApprovals', getApprovals);
 
+processApiPost('/api/approveProposal/:id', approveProposal);
 processApiPost('/api/setArticle', setArticle);
 processApiPost('/api/setArgument', setArgument);
 processApiPost('/api/setMe', setMe, { userUpdated: true });
 processApiPost('/api/upload', upload, { file: true, userUpdated: true });
 
+processApiDelete('/api/rejectProposal/:id', rejectProposal);
 processApiDelete('/api/deleteArgument/:id', deleteArgument);
 processApiDelete('/api/deleteArticle/:id', deleteArticle);
 
