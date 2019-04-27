@@ -21,9 +21,9 @@ import history from '../../history';
 import BlueButton from '../../components/BlueButton/BlueButton';
 import VoteButton from '../../components/VoteButton/VoteButton';
 import FormattedText from '../../components/FormattedText/FormattedText';
-import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import withEverything from '../../withEverything';
+import Argument from '../../components/Argument/Argument';
 
 class Article extends React.Component {
   static propTypes = {};
@@ -210,20 +210,7 @@ clickArgument()
                           <span className={s.priorityArgsEmpty} />
                         )}
                         {priority.arguments.map(argument =>
-                          <div key={argument._id} className={s.argumentContainer}>
-                            <div className={s.argumentHeader}>
-                              <span className={s.argumentTitle}>{priority.priority.Title}</span>
-                              <span className={s.argumentVote}>{argument.voteFor}</span>
-                              {checkPrivilege(context.user, USER_LEVEL_MODERATOR) ? (
-                                <Link to={"/editArgument/" + argument._id}>
-                                  <img className={s.argumentEditButton} src="/images/edit.png" />
-                                </Link>
-                              ) : ""}
-                            </div>
-                            <div className={s.argumentBody}>
-                              <FormattedText html={argument.Content} />
-                            </div>
-                          </div>
+                          <Argument key={argument._id} argument={argument} priority={priority} user={context.user} />
                         )}
                       </div>
                     </Collapsible>

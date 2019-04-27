@@ -15,7 +15,8 @@ import {
 	USER_LEVEL_MEMBER,
 	USER_LEVEL_MODERATOR,
 	USER_LEVEL_ADMIN,
-    USER_LEVEL_OWNER } from '../utility';
+    USER_LEVEL_OWNER, 
+    isValidArgument} from '../utility';
 
 export default async function getArticleInfo(user, { id })
 {
@@ -113,7 +114,7 @@ export default async function getArticleInfo(user, { id })
             for (let voteIndex = 0; voteIndex < voteResults.length; voteIndex++)
             {
                 voteCounter.push(0); // initialize the counter with zero for each vote option
-        }
+            }
         
             // for each argument...
             for (let argumentIndex = 0; argumentIndex < argumentList.length; argumentIndex++)
@@ -130,7 +131,8 @@ export default async function getArticleInfo(user, { id })
                         if (vote.ID === argument.Vote) // find the vote option it favors
                         {
                             argument.voteFor = vote.ShortDescription; // store short description here for client's convenience (redundant but handy data)
-                            voteCounter[voteIndex]++; // update the counter
+                            if (isValidArgument(argument))
+                                voteCounter[voteIndex]++; // update the counter
                         }
                     }
                 }

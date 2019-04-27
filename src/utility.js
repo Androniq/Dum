@@ -231,3 +231,17 @@ export function userRoleToLocal(role)
 	}
 	return "Гість";
 }
+
+export function isValidArgument(argument)
+{
+  if (!argument)
+    return false;
+  if (!argument.Counters)
+		return true;
+  for (let index = 0; index < argument.Counters.length; index++)
+  {
+    if (isValidArgument(argument.Counters[index]))
+				return false;
+  }
+  return true;
+}
