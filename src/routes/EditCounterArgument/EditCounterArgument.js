@@ -25,13 +25,40 @@ class EditCounterArgument extends React.Component {
   constructor(props)
   {
     super(props);
-    this.state.Content = "";
-    this.state.Parent = "";
+
+    var idChainString = this.props.match.params.idChain;
+    var idChain = idChainString.split('.');
+    console.info(idChain);
+    var current = this.props.data.argument;
+    var parent = current;
+    var type = 'edit';
+    for (let index = 0; index < idChain.length; index++)
+    {
+        parent = current;
+        var id = idChain[index];
+        if (id === 'new')
+        {
+            type = this.props.data.isProposal ? 'proposal' : 'new';
+            if (!current.Counters)
+                current.Counters = [];
+            let newCounter = { _id: guid(), Content: "<p></p>" };
+            current.Counters.push(newCounter);
+            current = newCounter;
+        }   
+        else
+        {         
+            current = current.Counters.find(it => it._id === idChain[index]);
+        }
+    }
+    this.state.Content = current.Content;
+    this.state.Parent = parent;
+    this.state.Current = current;
+    this.state.Type = type;
   }
 
-getTitle(type)
+getTitle()
 {
-  switch (type)
+  switch (this.state.Type)
   {
     case 'new': return 'Новий контраргумент';
     case 'proposal': return 'Пропозиція';
@@ -44,33 +71,6 @@ updateContent(value) { this.setState({ Content:value }); }
 onContentChanged(content)
 {
   this.setState({ Content: content, contentValidator: null });
-}
-
-componentWillMount()
-{
-    var idChainString = this.props.match.params.idChain;
-    var idChain = idChainString.split('.');
-    console.info(idChain);
-    var current = this.props.data.argument;
-    var parent = current;
-    for (let index = 0; index < idChain.length; index++)
-    {
-        parent = current;
-        var id = idChain[index];
-        if (id === 'new')
-        {
-            if (!current.Counters)
-                current.Counters = [];
-            let newCounter = { Content: "<p></p>" };
-            current.Counters.push(newCounter);
-            current = newCounter;
-        }   
-        else
-        {         
-            current = current.Counters.find(it => it._id === idChain[index]);
-        }
-    }
-    this.setState({ Content: current.Content, Parent: parent, Current: current });
 }
 
 async onSave()
@@ -157,7 +157,7 @@ async onDeleteDo()
       return (
           <div className={s.editArgumentContainer}>
             <Helmet>
-              <title>{this.getTitle(this.props.data.type)}</title>
+              <title>{this.getTitle()}</title>
             </Helmet>
             <div className={s.tokenHeader}>
               <span className={classnames(s.tokenBase, s.tokenA)}>{this.props.data.article.TokenA}</span>
@@ -173,7 +173,7 @@ async onDeleteDo()
             <div className={s.buttonsContainer}>
               <BlueButton onClick={this.onSave.bind(this)}>{this.props.data.isProposal ? "Запропонувати" : "Зберегти"}</BlueButton>
               <BlueButton onClick={this.onCancel.bind(this)}>Повернутися</BlueButton>
-              {this.props.data.argument && this.props.data.argument._id ? (
+              {this.state.Type === "edit" ? (
                 <BlueButton onClick={this.onDelete.bind(this)}>Видалити контраргумент</BlueButton>
               ) : ""}
             </div>
