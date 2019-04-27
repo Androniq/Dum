@@ -23,6 +23,8 @@ const defaultCollections = [
   'blog'
 ];
 
+const ObjectID = require('mongodb').ObjectID;
+
 async function getCollection(db, name) {
   const r = db.collection(name);
   const nameLower = name.toLowerCase();
@@ -31,6 +33,11 @@ async function getCollection(db, name) {
     if (rCount === 0)
     {
       const jsonInitialDataFile = require(`./initialData/${nameLower}.json`);
+      jsonInitialDataFile.forEach(item =>
+        {
+          if (item._id)
+            item._id = new ObjectID(item._id);
+        })
       //await r.drop();
       r.insertMany(jsonInitialDataFile);
     }
