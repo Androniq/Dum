@@ -104,7 +104,7 @@ async onSave()
     return;
   }
 
-  var article = this.props.data;
+  var article = this.props.data || {};
   article.Title = this.state.Title;
   article.PageTitle = this.state.PageTitle;
   article.Keywords = this.state.Keywords;
