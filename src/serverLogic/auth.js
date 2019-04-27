@@ -116,7 +116,8 @@ export async function findOrCreateUser(token, type, profile)
 	}
 	if (noOwner)
 	{
-		await setServerConfig({ owner: user._id });
+		if (user)
+			await setServerConfig({ owner: user._id });
 	}
   return user;
 }
@@ -138,8 +139,18 @@ export async function findLocalUser(email, pwd, isNew)
 	{
 		return null;
 	}
+	var noOwner = !mongoAsync.serverConfig.owner;
 	user = { email, displayName, password: pwd, passMask: "*".repeat(pwd.length), role: "member", confirmed: false, blocked: false };
+	if (noOwner)
+	{
+		user.role = "owner";
+		user.confirmed = true;
+	}
 	user = (await mongoInsert(mongoAsync.dbCollections.users, user)).ops[0];
+	if (noOwner)
+	{
+		await setServerConfig({ owner: user._id });
+	}
 	return user;
 }
 
