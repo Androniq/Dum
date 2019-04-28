@@ -42,6 +42,10 @@ function downloadUserpic(path)
 		operator = https;
 	const request = operator.get(path, function(response)
 	{
+		response.on('close', ()=>
+		{
+			file.close();
+		})
 		response.pipe(file);
 	});
 	return '/upload/' + filename;

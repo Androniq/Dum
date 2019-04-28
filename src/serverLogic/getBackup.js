@@ -33,7 +33,7 @@ async function writeTable(tableName)
 async function downloadFile(filename)
 {
     var stream = mongoAsync.fs.openDownloadStreamByName(filename);
-    var ws = fs.createWriteStream("temp/files/" + filename);
+    var ws = fs.createWriteStream("temp\\files\\" + filename);
     var resolver;
     var promise = new Promise((resolve, reject) =>
     {
