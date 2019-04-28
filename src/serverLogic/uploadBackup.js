@@ -7,6 +7,7 @@ import {
     shortLabel,
     mongoInsert,
     mongoUpdate,
+    clearTempFolder,
     setServerConfig } from './_common';
 
 import {
@@ -21,7 +22,6 @@ import {
     generateToken} from '../utility';
 
 import fs from 'fs';
-const rimraf = require("rimraf");
 const extract = require('extract-zip');
 const ObjectID = require('mongodb').ObjectID;
 
@@ -89,11 +89,7 @@ export async function uploadBackup(user, req, params, { ext })
         return { status: 406, message: "Wrong backup extension, should be zip" };
     }
     
-    if (fs.existsSync("temp"))
-    {
-        rimraf.sync("temp");
-    }
-    fs.mkdirSync("temp");
+    clearTempFolder();
 
     var stream = fs.createWriteStream("temp/backup.zip");
     stream.on('close', applyBackup);

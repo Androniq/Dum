@@ -35,7 +35,7 @@ export async function upload(user, req, params, { ext })
     if (user.photo && user.photo.startsWith('/upload/'))
     {
         // delete the old userpic
-        mongoAsync.fs.delete(user.photo.substring(8),err => { if (err) console.error(err); });
+        mongoAsync.fs.delete(user.photo.substring(8), err => { if (err) console.error(err); });
     }
     var name = generateToken() + '.' + ext;
     var path = '/upload/' + name;

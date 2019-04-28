@@ -35,7 +35,7 @@ class UploadArchive extends React.Component
             var resp = await this.props.context.fetch('/api/uploadBackup?ext='+ext, { method: 'POST', body: fileAsArrayBuffer,
                 headers: { "Content-Type": "application/octet-stream" }});
             var rj = await resp.json();
-            if (rj.ok)
+            if (rj.success)
             {
                 showSticky(this, 'Завантаження успішне');
                 if (this.props.onSuccess)

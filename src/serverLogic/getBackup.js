@@ -7,7 +7,8 @@ import {
     shortLabel,
     mongoInsert,
 	mongoUpdate, 
-    tableNames} from './_common';
+    tableNames,
+    clearTempFolder} from './_common';
 
 import {
 	getLevel,
@@ -36,17 +37,14 @@ export default async function getBackup(user)
         return { status: 403, message: "You must be the OWNER to get the backup." };
     }
 
-    if (!fs.existsSync('temp'))
-    {
-        fs.mkdirSync('temp');
-    }
+    clearTempFolder();
 
     var writeTasks = [];
     tableNames.forEach(it => writeTasks.push(writeTable(it)));
 
     await Promise.all(writeTasks);
 
-    var output = fs.createWriteStream('public\\backup.zip');
+    var output = fs.createWriteStream('temp\\backup.zip');
     var archive = archiver('zip');
 
     var resolver;
@@ -69,11 +67,13 @@ export default async function getBackup(user)
     });
 
     archive.pipe(output);
+
     tableNames.forEach(it => archive.file('temp\\' + it + '.json'));
+    
     archive.finalize();
 
     if (!ready)
         await semaphore;
 
-    return { success: true, filename: 'public\\backup.zip' };
+    return { success: true, filename: 'temp\\backup.zip' };
 }

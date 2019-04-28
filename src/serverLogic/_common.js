@@ -20,6 +20,8 @@ export const tableNames = [
 ];
 
 const ObjectID = require('mongodb').ObjectID;
+const fs = require('fs');
+const rimraf = require("rimraf");
 
 // local utilities
 
@@ -173,4 +175,13 @@ async function setSiteOwner(collection, id)
     items[index].Owner = id;
     await collection.updateOne({ _id: items[index]._id }, { $set: items[index] });
   }
+}
+
+export function clearTempFolder()
+{
+  if (fs.existsSync("temp"))
+  {
+      rimraf.sync("temp");
+  }
+  fs.mkdirSync("temp");
 }
