@@ -1,0 +1,40 @@
+.container
+{
+    max-width: 980px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.topRow
+{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.userpic
+{
+    width: 150px;
+    height: 150px;
+}
+
+.userCard
+{
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.displayName
+{
+    font-weight: 600;
+}
+
+.adminControls
+{
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+}

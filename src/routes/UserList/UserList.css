@@ -26,3 +26,8 @@
 {
     margin: 0 6px;
 }
+
+.viewButton
+{
+    max-width: 140px;
+}

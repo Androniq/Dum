@@ -12,6 +12,16 @@ import PropTypes from 'prop-types';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './ErrorPage.css';
 import withEverything from '../../withEverything';
+import seedrandom from '../../serverLogic/thirdParty/seedrandom';
+
+const messages = [
+"Ceci n'est pas une page",
+"Скажитє, пожалуйста, как пройті в бібліотєку?",
+"Вуйку, то не та полонина",
+"Ґандж ся трафив",
+"Ви, возміжно, ошиблися страницьою",
+"Закон аб дзяржаўнай мове падтрымалі 278 з 347 народных дэпутатаў, зарэгістраваных у сэсійнай залі."
+];
 
 class ErrorPage extends React.Component {
   static propTypes = {
@@ -26,7 +36,37 @@ class ErrorPage extends React.Component {
     error: null,
   };
 
+  tryResolve(object, propNames)
+  {
+      if (!object)
+          return null;
+      propNames.forEach(propName =>
+      {
+          var next = object[propName];
+          if (!next) return null;
+          object = next;
+      });
+      return object;
+  }
+
   render() {
+    var seed = 'default'; // sync random so client uses same seed as server and no SSR warnings are produced
+    if (process.env.IS_SERVER)
+    {
+        seed += Math.random(); // we're on server - initial random seed
+        if (this.props.context)
+        {
+          if (!this.props.context.data) // test page /loading
+              this.props.context.data = {};
+          this.props.context.data.seed = seed; // save to rehydrate
+        }
+    }
+    else
+    {
+        // load from rehydrate, if it fails - means that SSR is broken at the moment, so just generate new value
+        seed = this.tryResolve(this.props, ['context', 'rehydrateState', 'resolved', 'data', 'seed']) || ('client'+Math.random());
+    }
+    var rnd = new seedrandom(seed);
     if (__DEV__ && this.props.error) {
       return (
         <div>
@@ -48,7 +88,7 @@ class ErrorPage extends React.Component {
         {this.props.localMessage ? (
           <span>{this.props.localMessage}</span>
         ) : null}
-        <p>Гой! Думаву, йсе Закарпаттє. Туй шо інтернету не є, шо літературної української мови.</p>
+        <p>{messages[Math.floor(rnd() * messages.length)]}</p>
       </div>
     );
   }

@@ -33,7 +33,7 @@ import config from './config';
 import session from 'express-session';
 import sendPopularVote from './serverLogic/sendPopularVote';
 import { serverReady, mongoFind } from './serverLogic/_common';
-import { findOrCreateUser, setUserRole, transferOwnership, findLocalUser, startConfirm, endConfirm } from './serverLogic/auth';
+import { findOrCreateUser, transferOwnership, findLocalUser, startConfirm, endConfirm } from './serverLogic/auth';
 import getArticle from './serverLogic/getArticle';
 import getArticleInfo from './serverLogic/getArticleInfo';
 import getArticles from './serverLogic/getArticles';
@@ -64,6 +64,8 @@ import rejectProposal from './serverLogic/rejectProposal';
 import proposeCounterArgument from './serverLogic/proposeCounterArgument';
 import getBackup from './serverLogic/getBackup';
 import { uploadBackup } from './serverLogic/uploadBackup';
+import getProfile from './serverLogic/getProfile';
+import setRole from './serverLogic/setRole';
 
 process.env.IS_SERVER=true;
 
@@ -459,12 +461,12 @@ processApiGet('/api/checkArticleUrl/:id/:url', checkArticleUrl);
 processApiGet('/api/sendPopularVote/:articleId/:voteId', sendPopularVote);
 processApiGet('/api/getAccount', getAccount);
 processApiGet('/api/getBlog/:blogUrl', getBlogByUrl);
-processApiGet('/api/setUserRole/:userId/:role', setUserRole);
 processApiGet('/api/transferOwnership/:userId', transferOwnership);
 processApiGet('/api/startConfirm', startConfirm);
 processApiGet('/api/confirm/:token', endConfirm, { userUpdated: true });
 processApiGet('/api/getNotifications', getNotifications);
 processApiGet('/api/getUserList', getUserList);
+processApiGet('/api/getProfile/:id', getProfile);
 processApiGet('/api/getApprovals', getApprovals);
 processApiGet('/api/getBackup', getBackup, { download: true });
 
@@ -473,6 +475,7 @@ processApiPost('/api/setArticle', setArticle);
 processApiPost('/api/setArgument', setArgument);
 processApiPost('/api/proposeCounterArgument', proposeCounterArgument);
 processApiPost('/api/setMe', setMe, { userUpdated: true });
+processApiPost('/api/setRole', setRole);
 processApiPost('/api/upload', upload, { file: true, userUpdated: true });
 processApiPost('/api/uploadBackup', uploadBackup, { file: true, userUpdated: true });
 
