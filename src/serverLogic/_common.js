@@ -12,6 +12,7 @@ export const tableNames = [
   "users",
   "votes",
   "priorities",
+  "history",
   "proposedArguments",
   "popularVote",
   "notifications",

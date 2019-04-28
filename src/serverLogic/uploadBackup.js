@@ -70,7 +70,7 @@ async function applyBackup()
                             var owner = jsonDataFile.find(it => it.role === 'owner');
                             if (owner)
                             {
-                                await setServerConfig({ isOperational: true, owner: owner._id });
+                                await mongoAsync.dbCollections.serverConfig.insertOne({ isOperational: true, owner: owner._id });
                             }
                         }
                     }
