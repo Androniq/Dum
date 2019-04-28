@@ -5,6 +5,7 @@ import cx from 'classnames';
 import { Helmet } from 'react-helmet';
 import withEverything from '../../withEverything';
 import BlueButton from '../../components/BlueButton/BlueButton';
+import { goToLink } from '../../utility';
 
 class EventLog extends React.Component
 {
@@ -55,7 +56,7 @@ class EventLog extends React.Component
 
     async gotoChange(id)
     {
-        this.props.history.push('/viewChange/' + id);
+        goToLink(this, '/viewChange/' + id);
     }
 
     getPhoto(id, list)

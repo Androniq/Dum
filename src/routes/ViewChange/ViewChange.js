@@ -4,7 +4,7 @@ import s from './ViewChange.css';
 import cx from 'classnames';
 import { Helmet } from 'react-helmet';
 import withEverything from '../../withEverything';
-import { DEFAULT_USERPIC, userRoleToLocal, checkPrivilege, USER_LEVEL_ADMIN, USER_LEVEL_MEMBER, USER_LEVEL_MODERATOR, showSticky } from '../../utility';
+import { DEFAULT_USERPIC, userRoleToLocal, checkPrivilege, USER_LEVEL_ADMIN, USER_LEVEL_MEMBER, USER_LEVEL_MODERATOR, showSticky, goToLink } from '../../utility';
 import BlueButton from '../../components/BlueButton/BlueButton';
 
 class ViewChange extends React.Component
@@ -51,17 +51,17 @@ class ViewChange extends React.Component
 
     async gotoUser()
     {
-        window.open("/viewProfile/" + this.props.data.theUser._id, "_blank");
+        goToLink(this, "/viewProfile/" + this.props.data.theUser._id);
     }
 
     async gotoArticle()
     {
-        window.open("/article/" + this.props.data.articleUrl, "_blank");
+        goToLink(this, "/article/" + this.props.data.articleUrl);
     }
 
     async gotoHistory()
     {
-        window.open("/viewHistory/" + this.props.data.articleId, "_blank");
+        goToLink(this, "/viewHistory/" + this.props.data.articleId);
     }
 
     copyStringToClipboard(str)

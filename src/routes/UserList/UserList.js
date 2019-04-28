@@ -4,14 +4,14 @@ import s from './UserList.css';
 import cx from 'classnames';
 import { Helmet } from 'react-helmet';
 import withEverything from '../../withEverything';
-import { DEFAULT_USERPIC, userRoleToLocal } from '../../utility';
+import { DEFAULT_USERPIC, userRoleToLocal, goToLink } from '../../utility';
 import BlueButton from '../../components/BlueButton/BlueButton';
 
 class UserList extends React.Component
 {
     async viewUser(id)
     {
-        this.props.history.push('/viewProfile/' + id);
+        goToLink(this, '/viewProfile/' + id);
     }
 
     render()

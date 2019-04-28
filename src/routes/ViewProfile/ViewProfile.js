@@ -4,7 +4,7 @@ import s from './ViewProfile.css';
 import cx from 'classnames';
 import { Helmet } from 'react-helmet';
 import withEverything from '../../withEverything';
-import { DEFAULT_USERPIC, userRoleToLocal, checkPrivilege, USER_LEVEL_ADMIN, USER_LEVEL_MEMBER, USER_LEVEL_MODERATOR, showSticky } from '../../utility';
+import { DEFAULT_USERPIC, userRoleToLocal, checkPrivilege, USER_LEVEL_ADMIN, USER_LEVEL_MEMBER, USER_LEVEL_MODERATOR, showSticky, goToLink } from '../../utility';
 import BlueButton from '../../components/BlueButton/BlueButton';
 
 class ViewProfile extends React.Component
@@ -115,7 +115,7 @@ class ViewProfile extends React.Component
     
     async gotoChange(id)
     {
-        this.props.history.push('/viewChange/' + id);
+        goToLink(this, '/viewChange/' + id);
     }
 
     render()

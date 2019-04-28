@@ -19,7 +19,8 @@ import {
     showSticky,
     totalRecall,
     emailRegex,
-    DEFAULT_USERPIC} from '../../utility';
+    DEFAULT_USERPIC,
+    goToLink} from '../../utility';
 import history from '../../history';
 import BlueButton from '../../components/BlueButton/BlueButton';
 import FormattedText from '../../components/FormattedText/FormattedText';
@@ -217,27 +218,27 @@ class Account extends React.Component
 
     async gotoNotif()
     {
-        this.props.history.push('/notifications');
+        goToLink(this, '/notifications');
     }
 
     async gotoEventLog()
     {
-        this.props.history.push('/eventLog');
+        goToLink(this, '/eventLog');
     }
 
     async gotoEditBlog()
     {
-        this.props.history.push('/editBlog');
+        goToLink(this, '/editBlog');
     }
 
     async gotoApprovals()
     {
-        this.props.history.push('/approvals');
+        goToLink(this, '/approvals');
     }
 
     async gotoUserList()
     {
-        this.props.history.push('/userList');
+        goToLink(this, '/userList');
     }
 
     constructArray(buffer)

@@ -4,7 +4,7 @@ import s from './ViewHistory.css';
 import cx from 'classnames';
 import { Helmet } from 'react-helmet';
 import withEverything from '../../withEverything';
-import { DEFAULT_USERPIC, userRoleToLocal, checkPrivilege, USER_LEVEL_ADMIN, USER_LEVEL_MEMBER, USER_LEVEL_MODERATOR, showSticky } from '../../utility';
+import { DEFAULT_USERPIC, userRoleToLocal, checkPrivilege, USER_LEVEL_ADMIN, USER_LEVEL_MEMBER, USER_LEVEL_MODERATOR, showSticky, goToLink } from '../../utility';
 import BlueButton from '../../components/BlueButton/BlueButton';
 
 class ViewHistory extends React.Component
@@ -56,12 +56,12 @@ class ViewHistory extends React.Component
 
     async gotoChange(id)
     {
-        this.props.history.push('/viewChange/' + id);
+        goToLink(this, '/viewChange/' + id);
     }
 
     async gotoArticle()
     {
-        this.props.history.push('/article/' + this.props.data.articleUrl);
+        goToLink(this, '/article/' + this.props.data.articleUrl);
     }
 
     getPhoto(id, list)

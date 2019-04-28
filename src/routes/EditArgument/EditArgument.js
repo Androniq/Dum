@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import { UserContext } from '../../UserContext';
 import TextInput from '../../components/TextInput/TextInput';
 import history from '../../history';
-import { guid, quillToolbarOptions, htmlNonEmpty, showSticky } from '../../utility';
+import { guid, quillToolbarOptions, htmlNonEmpty, showSticky, goToLink } from '../../utility';
 import Select from 'react-select';
 import BlueButton from '../../components/BlueButton/BlueButton';
 import FormattedText from '../../components/FormattedText/FormattedText';
@@ -139,7 +139,7 @@ placeholderApplyStyle(style)
 
 onCancel()
 {
-  this.props.history.push('/article/' + this.props.data.article.Url);
+  goToLink(this, '/article/' + this.props.data.article.Url);
 }
 
 onDelete()

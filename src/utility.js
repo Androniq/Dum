@@ -106,8 +106,30 @@ export const quillToolbarOptions = [
 			2000
 		  );
 	  }, 1000);
-  }
+	}
+	
+	export const keyboardOptions = { ctrl: false };
 
+	export function goToLink(component, url)
+  {
+	  if (!component || !url)
+	  {
+			throw { message: "No component or no URL given to goToLink method. Usage: goToLink(this, url)." };
+	  }
+	  if (!component.props || !component.props.history)
+	  {
+		  throw { message: "Could not find history prop" };
+		}
+		if (keyboardOptions.ctrl)
+		{
+			window.open(url, "_blank");
+		}
+		else
+		{
+			component.props.history.push(url);
+		}
+  }
+	
   export async function totalRecall(context) // reloads current user from server session
   {
 	var whoami = await context.fetch('/api/whoami', { method: 'GET' });

@@ -16,7 +16,8 @@ import {
 	USER_LEVEL_MODERATOR,
 	USER_LEVEL_ADMIN,
   USER_LEVEL_OWNER, 
-  showSticky} from '../../utility';
+  showSticky,
+  goToLink} from '../../utility';
 import history from '../../history';
 import BlueButton from '../../components/BlueButton/BlueButton';
 import VoteButton from '../../components/VoteButton/VoteButton';
@@ -134,16 +135,16 @@ voteButton(code)
 
 clickEdit()
 {
-  this.props.history.push('/editArticle/' + this.props.data.article.Url);
+  goToLink(this, '/editArticle/' + this.props.data.article.Url);
 }
 
 clickArgument()
 {
-  this.props.history.push('/editArgument/new/' + this.props.data.article.Url);
+  goToLink(this, '/editArgument/new/' + this.props.data.article.Url);
 }
   async gotoHistory()
   {
-      window.open("/viewHistory/" + this.props.data.article._id, "_blank");
+      goToLink(this, "/viewHistory/" + this.props.data.article._id);
   }
 
   render()
@@ -179,10 +180,10 @@ clickArgument()
                 </Popup>
                 <BlueButton onClick={this.clickArgument.bind(this)}>Аргументувати...</BlueButton>
                 {checkPrivilege(context.user, USER_LEVEL_MODERATOR) ? (
-                  <BlueButton onClick={this.clickEdit.bind(this)} href="">Редагувати</BlueButton>
+                  <BlueButton onClick={this.clickEdit.bind(this)}>Редагувати</BlueButton>
                 ) : ""}
                 {checkPrivilege(context.user, USER_LEVEL_ADMIN) ? (
-                  <BlueButton onClick={this.gotoHistory.bind(this)} href="">Історія змін</BlueButton>
+                  <BlueButton onClick={this.gotoHistory.bind(this)}>Історія змін</BlueButton>
                 ) : ""}
               </div>
             ) : (
