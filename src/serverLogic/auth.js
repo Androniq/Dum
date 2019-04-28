@@ -24,6 +24,28 @@ import {
 
 import sendMail from './sendMail';
 const ObjectID = require('mongodb').ObjectID;
+const fs = require('fs');
+const http = require('http');
+const https = require('https');
+
+function downloadUserpic(path)
+{
+	if (!path)
+		return null;
+	if (path.startsWith('/upload/'))
+		return path;
+	var token = generateToken();
+	var filename = token + '.jpg';
+	var file = mongoAsync.fs.openUploadStreamWithId(filename, filename);
+	var operator = http;
+	if (path.startsWith('https'))
+		operator = https;
+	const request = operator.get(path, function(response)
+	{
+		response.pipe(file);
+	});
+	return '/upload/' + filename;
+}
 
 // Authentication
 
@@ -61,7 +83,7 @@ export async function findOrCreateUser(token, type, profile)
 			}
 			if (profile.photo)
 			{
-				newUser.photo = profile.photo;
+				newUser.photo = downloadUserpic(profile.photo);
 			}
 			if (profile.displayName)
 			{
@@ -92,7 +114,7 @@ export async function findOrCreateUser(token, type, profile)
 			}
 			if (profile.photo)
 			{
-				newUser.photo = profile.photo;
+				newUser.photo = downloadUserpic(profile.photo);
 			}
 			if (profile.displayName)
 			{
