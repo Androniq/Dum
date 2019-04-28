@@ -59,6 +59,11 @@ class ViewHistory extends React.Component
         this.props.history.push('/viewChange/' + id);
     }
 
+    async gotoArticle()
+    {
+        this.props.history.push('/article/' + this.props.data.articleUrl);
+    }
+
     getPhoto(id, list)
     {
         var user = list.find(it => it._id === id);
@@ -82,6 +87,11 @@ class ViewHistory extends React.Component
                 <div>
                     <span>Це перегляд історії змін статті «{this.props.data.articleName}».</span>
                 </div>
+                {this.props.data.articleUrl ? (
+                    <div>
+                        <BlueButton className={s.adminButton} onClick={this.gotoArticle.bind(this)}>Переглянути статтю</BlueButton>
+                    </div>
+                ) : null}
                 <div className={s.historyView}>
                     {this.props.data.history.map(item => (
                         <div key={item._id} className={s.historyItem}>

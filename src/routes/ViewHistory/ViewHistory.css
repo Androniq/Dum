@@ -35,16 +35,9 @@
     font-weight: 600;
 }
 
-.adminControls
-{
-    margin: 10px;
-    display: flex;
-    flex-direction: row;
-}
-
 .adminButton
 {
-
+    min-width: 200px;
 }
 
 .historyView
