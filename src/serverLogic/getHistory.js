@@ -26,13 +26,9 @@ export default async function getHistory(user, { id })
     }
 
     var history = await mongoAsync.dbCollections.history.find({ Article: id }).sort({ Time: -1 }).toArray();    
-    if (!history.length)
-    {
-        return { status: 404, message: "No records found" };
-    }
     var article;
     var articleUrl;
-    if (history[0].Action === "DeleteArticle")
+    if (history.length && history[0].Action === "DeleteArticle")
     {
         article = history[0].Change.article;
     }
