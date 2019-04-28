@@ -7,7 +7,8 @@ import {
     shortLabel,
     mongoInsert,
     mongoUpdate,
-    mongoDelete } from './_common';
+    mongoDelete, 
+    mongoFind} from './_common';
 
 import {
 	getLevel,
@@ -25,9 +26,8 @@ export default async function getNotifications(user)
         return { status: 401, message: "Error: you are not logged in" };
     }
     var notifications = await mongoAsync.dbCollections.notifications.find({ to: user._id }).toArray();
-    var userIds = [...new Set(notifications.map(it => it.from))];
-    var users = await mongoAsync.dbCollections.users.find({ _id: { $in: userIds } },
-        { projection: { "photo": 1, "displayName": 1 } }).toArray();
+    var userIds = [...new Set(notifications.map(it => it.from))];    
+    var users = await mongoFind(mongoAsync.dbCollections.users, userIds, { projection: { "photo": 1, "displayName": 1 } });
     var resp = 
     {
         notifications,

@@ -32,7 +32,7 @@ import chunks from './chunk-manifest.json'; // eslint-disable-line import/no-unr
 import config from './config';
 import session from 'express-session';
 import sendPopularVote from './serverLogic/sendPopularVote';
-import { serverReady } from './serverLogic/_common';
+import { serverReady, mongoFind } from './serverLogic/_common';
 import { findOrCreateUser, setUserRole, transferOwnership, findLocalUser, startConfirm, endConfirm } from './serverLogic/auth';
 import getArticle from './serverLogic/getArticle';
 import getArticleInfo from './serverLogic/getArticleInfo';
@@ -373,8 +373,8 @@ async function updateUser(req)
 {
   var user = getUser(req);
   if (!user)
-    return;
-  var updatedUser = await mongoAsync.dbCollections.users.findOne({ _id: new ObjectID(user._id) });  
+    return;    
+  var updatedUser = await mongoFind(mongoAsync.dbCollections.users, user._id);
   setUser(req, updatedUser);
 }
 

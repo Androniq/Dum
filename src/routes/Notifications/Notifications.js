@@ -43,7 +43,7 @@ class Notifications extends React.Component
         var users = this.props.data.users;
         this.props.data.notifications.forEach(item =>
         {
-            item.sender = users.find(it => it._id === item.from) || {};
+            item.sender = users.find(it => it._id.toString() === item.from) || {};
         });    
         return (
             <div className="container">

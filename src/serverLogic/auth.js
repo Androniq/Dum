@@ -8,7 +8,8 @@ import {
     mongoInsert,
 	mongoUpdate,
     setServerConfig, 
-	mongoDelete} from './_common';
+	mongoDelete,
+	mongoFind} from './_common';
 
 import {
 	getLevel,
@@ -160,7 +161,7 @@ export async function setUserRole(operatorUser, { operandUserId = userId, newRol
 	{
 		return { status: 403, message: 'Insufficient privileges' };
 	}
-	var operandUser = await mongoAsync.users.findOne({ _id: operandUserId });
+	var operandUser = await mongoFind(mongoAsync.dbCollections.users, operandUserId);
 	if (!operandUser)
 	{
 		return { status: 404, message: 'User not found' };
@@ -263,7 +264,7 @@ export async function endConfirm(user, { token })
 	{
 		return { message: "Wrong or expired confirmation token", localMessage: "Хибне або застаріле посилання для підтвердження електронної пошти" };
 	}
-	var user = await mongoAsync.dbCollections.users.findOne({ _id: new ObjectID(confirmation.user) });
+	var user = await mongoFind(mongoAsync.dbCollections.users, confirmation.user);
 	if (!user)
 	{
 		return { message: "User not found for this confirmation token", localMessage: "Користувача, який підтверджує свою електронну пошту, не знайдено в базі" };

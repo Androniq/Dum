@@ -47,7 +47,7 @@ class EditCounterArgument extends React.Component {
         }   
         else
         {         
-            current = current.Counters.find(it => it._id === idChain[index]);
+            current = current.Counters.find(it => it._id.toString() === idChain[index]);
         }
     }
     this.state.Content = current.Content;

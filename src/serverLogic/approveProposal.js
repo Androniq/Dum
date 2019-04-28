@@ -7,7 +7,8 @@ import {
     shortLabel,
     mongoInsert,
 	mongoUpdate, 
-    mongoDelete} from './_common';
+    mongoDelete,
+    mongoFind} from './_common';
 
 import {
 	getLevel,
@@ -28,7 +29,7 @@ export default async function approveProposal(user, body, { id })
         return { status: 403, message: "Insufficient privileges" };
     }
 
-    var proposal = await mongoAsync.dbCollections.proposedArguments.findOne({ _id: new ObjectID(id) });
+    var proposal = await mongoFind(mongoAsync.dbCollections.proposedArguments, id);
     if (!proposal)
     {
         return { status: 404, message: "Proposal with provided ID not found" };
@@ -36,11 +37,11 @@ export default async function approveProposal(user, body, { id })
 
     if (proposal.RootId)
     {
-        var rootArgument = await mongoAsync.dbCollections.arguments.findOne({ _id: new ObjectID(proposal.RootId) });
+        var rootArgument = await mongoFind(mongoAsync.dbCollections.arguments, proposal.RootId);
         var current = rootArgument;
         for (let index = 0; index < proposal.IdChain.length; index++)
         {
-            current = current.Counters.find(it => it._id === proposal.IdChain[index]);
+            current = current.Counters.find(it => it._id.toString() === proposal.IdChain[index]);
         }
 
         if (!current.Counters)

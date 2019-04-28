@@ -29,8 +29,8 @@ class EditArgument extends React.Component {
   constructor(props)
   {
     super(props);
-    this.props.data.priorityItems = this.props.data.priorities.map(it => { return { value: it.ID, label: it.Title }; });
-    this.props.data.voteItems = this.props.data.votes.map(it => { return { value: it.ID, label: it.ShortDescription }; });
+    this.props.data.priorityItems = this.props.data.priorities.map(it => { return { value: it._id, label: it.Title }; });
+    this.props.data.voteItems = this.props.data.votes.map(it => { return { value: it._id, label: it.ShortDescription }; });
     this.state.voteDescription = this.getVoteDescription(this.props.data.argument.Vote);
     this.state.priorityDescription = this.getPriorityDescription(this.props.data.argument.Priority);
     this.state.Content = this.props.data.argument.Content;
@@ -48,13 +48,13 @@ getTitle(type)
 
 getPriorityDescription(id)
 {
-  var item = this.props.data.priorities.find(it => it.ID === id);
+  var item = this.props.data.priorities.find(it => it._id.toString() === id);
   return item && item.Description;
 }
   
 getVoteDescription(id)
 {
-  var item = this.props.data.votes.find(it => it.ID === id);
+  var item = this.props.data.votes.find(it => it._id.toString() === id);
   return item && item.Description;
 }
 

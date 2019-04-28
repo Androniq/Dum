@@ -6,7 +6,8 @@ import {
     getMiddleGround,
     shortLabel,
     mongoInsert,
-	mongoUpdate } from './_common';
+	mongoUpdate, 
+    mongoFind} from './_common';
 
 import {
 	getLevel,
@@ -32,9 +33,9 @@ export async function getArgument(user, { id })
         type = "proposal";
         isProposal = true;
     }
-
-    var arg = await mongoAsync.dbCollections.arguments.findOne({ _id: new ObjectID(id) });
-    var article = await mongoAsync.dbCollections.articles.findOne({ ID: arg.Article });
+    
+    var arg = await mongoFind(mongoAsync.dbCollections.arguments, id);    
+    var article = await mongoFind(mongoAsync.dbCollections.articles, arg.Article);
     var votes = mongoAsync.preloads.votes;
     var priorities = mongoAsync.preloads.priorities;
     votes.forEach(vote =>
@@ -64,6 +65,6 @@ export async function getNewArgument(user, { id })
     {
         vote.ShortDescription = vote.ShortDescriptionTemplate.replace('%A%', article.ShortA).replace('%B%', article.ShortB);
     });
-    var res = { argument: { Article: article.ID }, article, votes, priorities, isProposal, type: isProposal ? "proposal" : "new" };
+    var res = { argument: { Article: article._id }, article, votes, priorities, isProposal, type: isProposal ? "proposal" : "new" };
     return res;
 }

@@ -80,6 +80,26 @@ export function shortLabel(str)
 
 // Database operations
 
+export async function mongoFind(collection, id, projection)
+{
+  if (typeof collection === 'string')
+    collection = mongoAsync.dbCollections[collection];
+  if (typeof id === 'string')
+    id = new ObjectID(id);
+  if (Array.isArray(id))
+  {
+    if (!id.length)
+      return [];
+    for (let index = 0; index < id.length; index++)
+    {
+      if (typeof id[index] === 'string')
+        id[index] = new ObjectID(id[index]);
+    }
+    return await collection.find({ _id: { $in: id } }, projection).toArray();
+  }
+	return await collection.findOne({ _id: id }, projection);
+}
+
 export async function mongoInsert(collection, item, user)
 {
   if (typeof collection === 'string')
@@ -107,7 +127,9 @@ export async function mongoDelete(collection, id)
 {
   if (typeof collection === 'string')
     collection = mongoAsync.dbCollections[collection];
-  return await collection.deleteOne({ _id: new ObjectID(id) });
+  if (typeof id === 'string')
+    id = new ObjectID(id);
+  return await collection.deleteOne({ _id: id });
 }
 
 export async function setServerConfig(config)
@@ -117,4 +139,24 @@ export async function setServerConfig(config)
     mongoAsync.serverConfig[propName] = config[propName];
   }
   await mongoAsync.dbCollections.serverConfig.updateOne({ _id: mongoAsync.serverConfig._id }, { $set: config });
+  if (config.owner)
+  {
+    var id = config.owner.toString();
+    await setSiteOwner(mongoAsync.dbCollections.votes, id);
+    await setSiteOwner(mongoAsync.dbCollections.priorities, id);
+    await setSiteOwner(mongoAsync.dbCollections.articles, id);
+    await setSiteOwner(mongoAsync.dbCollections.arguments, id);
+    await setSiteOwner(mongoAsync.dbCollections.colors, id);
+    await setSiteOwner(mongoAsync.dbCollections.blog, id);
+  }
 };
+
+async function setSiteOwner(collection, id)
+{
+  var items = await collection.find({ Owner: "SITEOWNER" }).toArray();
+  for (let index = 0; index < items.length; index++)
+  {
+    items[index].Owner = id;
+    await collection.updateOne({ _id: items[index]._id }, { $set: items[index] });
+  }
+}

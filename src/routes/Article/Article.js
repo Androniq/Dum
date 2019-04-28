@@ -101,7 +101,7 @@ onVotePopupClose()
 
 clickVote(code)
 {
-  let optionId = this.getVoteOption(code).vote.ID;
+  let optionId = this.getVoteOption(code).vote._id;
   if (code === this.state.ownVote)
   {
     optionId = 'null';
@@ -112,7 +112,7 @@ clickVote(code)
 
 async clickVoteDo(code, optionId)
 {
-  var resp = await fetch(`/api/sendPopularVote/${this.props.data.article.ID}/${optionId}`);
+  var resp = await fetch(`/api/sendPopularVote/${this.props.data.article._id}/${optionId}`);
   var message = await resp.json();
   if (message.success)
   {

@@ -7,7 +7,8 @@ import {
     shortLabel,
     mongoInsert,
     mongoUpdate,
-    mongoDelete } from './_common';
+    mongoDelete, 
+    mongoFind} from './_common';
 
 import {
 	getLevel,
@@ -45,14 +46,14 @@ export default async function getApprovals(user)
                 if (!contestedArgIds.some(item => item === proposedArg.RootId))
                     contestedArgIds.push(proposedArg.RootId);
             }
-        });
-    var articles = await mongoAsync.dbCollections.articles.find({ ID: { $in: articleIds }}).toArray();
-    var contestedArgs = await mongoAsync.dbCollections.arguments.find({ _id: { $in: contestedArgIds.map(it => new ObjectID(it)) }}).toArray();
+        });    
+    var articles = await mongoFind(mongoAsync.dbCollections.articles, articleIds);
+    console.info(articleIds);
+    var contestedArgs = await mongoFind(mongoAsync.dbCollections.arguments, contestedArgIds);
     articles.forEach(article => {
         article.Content = null;
-    });
-    var users = await mongoAsync.dbCollections.users.find({ _id: { $in: userIds.map(it => new ObjectID(it)) }},
-        { projection: { "photo": 1, "displayName": 1 } }).toArray();
+    });    
+    var users = await mongoFind(mongoAsync.dbCollections.users, userIds, { projection: { "photo": 1, "displayName": 1 } });
     var votes = mongoAsync.preloads.votes;
     var priorities = mongoAsync.preloads.priorities;
     votes.forEach(vote =>

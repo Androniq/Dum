@@ -52,28 +52,28 @@ class Approvals extends React.Component
         this.props.data.proposedArgs.forEach(proposedArg =>
             {
                 var articleId = proposedArg.Article;
-                var article = this.props.data.articles.find(it => it.ID === articleId);
+                var article = this.props.data.articles.find(it => it._id.toString() === articleId);
                 proposedArg.ArticleInst = article;
                 var voteId = proposedArg.Vote;
-                var vote = this.props.data.votes.find(it => it.ID === voteId);
+                var vote = this.props.data.votes.find(it => it._id.toString() === voteId);
                 proposedArg.VoteInst = vote;
                 proposedArg.voteDescription = vote.ShortDescriptionTemplate.replace('%A%', article.ShortA).replace('%B%', article.ShortB);
                 var priorityId = proposedArg.Priority;
-                var priority = this.props.data.priorities.find(it => it.ID == priorityId);
+                var priority = this.props.data.priorities.find(it => it._id.toString() == priorityId);
                 proposedArg.PriorityInst = priority;
                 var userId = proposedArg.Owner;
-                var user = this.props.data.users.find(it => it._id === userId);
+                var user = this.props.data.users.find(it => it._id.toString() === userId);
                 proposedArg.User = user;
 
                 if (proposedArg.RootId)
                 {
-                    var rootArg = this.props.data.contestedArgs.find(it => it._id === proposedArg.RootId);
+                    var rootArg = this.props.data.contestedArgs.find(it => it._id.toString() === proposedArg.RootId);
                     proposedArg.RootArg = rootArg;
                     var current = rootArg;
                     for (let index = 0; index < proposedArg.IdChain.length; index++)
                     {
                         var counterId = proposedArg.IdChain[index];
-                        current = current.Counters.find(it => it._id === counterId);
+                        current = current.Counters.find(it => it._id.toString() === counterId);
                     }
                     proposedArg.Contested = current;
                 }

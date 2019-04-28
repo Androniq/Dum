@@ -37,7 +37,7 @@ export default async function getArticleInfo(user, { id })
         
       loadData.push(
         mongoAsync.dbCollections.arguments
-                .find({ Article: article.ID }, { sort: "CreatedDate" })			
+                .find({ Article: article._id.toString() }, { sort: "CreatedDate" })			
           .toArray()
           .then(it => (argumentList = it)),
       );
@@ -46,7 +46,7 @@ export default async function getArticleInfo(user, { id })
         voteResults.push(voteItem);
         loadData.push(
           mongoAsync.dbCollections.popularVote
-            .countDocuments({ Article: article.ID, Vote: element.ID, Active: true })
+            .countDocuments({ Article: article._id.toString(), Vote: element._id.toString(), Active: true })
             .then(it => voteItem.popular = it),
         );
         });
@@ -55,7 +55,7 @@ export default async function getArticleInfo(user, { id })
       {
         loadData.push(
           mongoAsync.dbCollections.popularVote
-            .findOne({ Article: article.ID, User: user._id })
+            .findOne({ Article: article._id.toString(), User: user._id.toString() })
             .then(it => (ownVoteInstance = it)),
         )
       }
@@ -65,7 +65,7 @@ export default async function getArticleInfo(user, { id })
       {
         votes.forEach(element => 
         {
-          if (element.ID === ownVoteInstance.Vote)
+          if (element._id.toString() === ownVoteInstance.Vote)
           {
             ownVote = element.Code;
           }
@@ -122,13 +122,13 @@ export default async function getArticleInfo(user, { id })
                 let argument = argumentList[argumentIndex];
                 
                 // ...that falls in the current category...
-                if (argument.Priority === priority.ID)
+                if (argument.Priority === priority._id.toString())
                 {
                     entry.arguments.push(argument); // store it in the client results
                     for (let voteIndex = 0; voteIndex < voteResults.length; voteIndex++)
                     {
                         let vote = voteResults[voteIndex].vote;
-                        if (vote.ID === argument.Vote) // find the vote option it favors
+                        if (vote._id.toString() === argument.Vote) // find the vote option it favors
                         {
                             argument.voteFor = vote.ShortDescription; // store short description here for client's convenience (redundant but handy data)
                             if (isValidArgument(argument))

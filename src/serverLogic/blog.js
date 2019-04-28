@@ -6,7 +6,8 @@ import {
     getMiddleGround,
     shortLabel,
     mongoInsert,
-	mongoUpdate } from './_common';
+	mongoUpdate, 
+    mongoFind} from './_common';
 
 import {
 	getLevel,
@@ -21,8 +22,8 @@ import {
     {
         var blog = await mongoAsync.dbCollections.blog.findOne({ Url: blogUrl });
         if (!blog)
-            return { status: 404, localMessage: 'Нема такого запису в блоґах' };
-        var owner = await mongoAsync.dbCollections.users.findOne({ _id: blog.Owner }, { "displayName": 1, "photo": 1 });
+            return { status: 404, localMessage: 'Нема такого запису в блоґах' };            
+        var owner = await mongoFind(mongoAsync.dbCollections.users, blog.Owner, { "displayName": 1, "photo": 1 });
         if (!owner)
         {
             owner = await mongoAsync.dbCollections.users.findOne({}, { "displayName": 1, "photo": 1 })

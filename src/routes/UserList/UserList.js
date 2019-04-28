@@ -22,7 +22,7 @@ class UserList extends React.Component
                                 <img src={item.photo || DEFAULT_USERPIC} className="userpic" />
                             </div>
                             <span className={s.userName}>{item.displayName}
-                                <span className={s.itsYou}>{item._id === this.props.context.user._id ? "(це ви)" : null}</span>
+                                <span className={s.itsYou}>{item._id.toString() === this.props.context.user._id ? "(це ви)" : null}</span>
                             </span>
                             <span className={s.role}>{userRoleToLocal(item.role)}</span>
                         </div>

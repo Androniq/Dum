@@ -33,7 +33,6 @@ export default async function setArticle(user, article)
     var projectedArticle =
     {
         _id: article._id,
-        ID: article.ID,
         Content: article.Content,
         Title: article.Title,
         PageTitle: article.PageTitle,
@@ -57,7 +56,6 @@ export default async function setArticle(user, article)
     }
     else
     {
-        projectedArticle.ID = guid();
         await mongoInsert(mongoAsync.dbCollections.articles, projectedArticle, user);
     }
     return { success: true };
