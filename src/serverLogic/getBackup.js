@@ -6,7 +6,8 @@ import {
     getMiddleGround,
     shortLabel,
     mongoInsert,
-	mongoUpdate } from './_common';
+	mongoUpdate, 
+    tableNames} from './_common';
 
 import {
 	getLevel,
@@ -18,6 +19,16 @@ import {
     USER_LEVEL_OWNER, 
     isValidArgument} from '../utility';
 
+const fs = require('fs');
+const archiver = require('archiver');
+
+async function writeTable(tableName)
+{
+    var items = await mongoAsync.dbCollections[tableName].find().toArray();
+    var text = JSON.stringify(items, null, 2);
+    fs.writeFileSync("temp\\" + tableName + ".json", text);
+}
+
 export default async function getBackup(user)
 {
     if (!checkPrivilege(user, USER_LEVEL_OWNER))
@@ -25,24 +36,15 @@ export default async function getBackup(user)
         return { status: 403, message: "You must be the OWNER to get the backup." };
     }
 
-    var fs = require('fs');
-    var archiver = require('archiver');
-
-    var articles = await mongoAsync.dbCollections.articles.find().toArray();
-    var articlesText = JSON.stringify(articles, null, 2);
-    var args = await mongoAsync.dbCollections.arguments.find().toArray();
-    var argumentsText = JSON.stringify(args, null, 2);
-    var blog = await mongoAsync.dbCollections.blog.find().toArray();
-    var blogText = JSON.stringify(blog, null, 2);
-    
     if (!fs.existsSync('temp'))
     {
         fs.mkdirSync('temp');
     }
 
-    fs.writeFileSync("temp\\articles.json", articlesText);
-    fs.writeFileSync("temp\\arguments.json", argumentsText);
-    fs.writeFileSync("temp\\blog.json", blogText);
+    var writeTasks = [];
+    tableNames.forEach(it => writeTasks.push(writeTable(it)));
+
+    await Promise.all(writeTasks);
 
     var output = fs.createWriteStream('public\\backup.zip');
     var archive = archiver('zip');
@@ -67,9 +69,7 @@ export default async function getBackup(user)
     });
 
     archive.pipe(output);
-    archive.file('temp\\articles.json');
-    archive.file('temp\\arguments.json');
-    archive.file('temp\\blog.json');
+    tableNames.forEach(it => archive.file('temp\\' + it + '.json'));
     archive.finalize();
 
     if (!ready)

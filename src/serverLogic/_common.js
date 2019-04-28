@@ -5,6 +5,20 @@ export async function serverReady() {
   await mongoAsync.serverReadyPromise;
 }
 
+export const tableNames = [
+  "articles",
+  "arguments",
+  "blog",
+  "users",
+  "votes",
+  "priorities",
+  "proposedArguments",
+  "popularVote",
+  "notifications",
+  "emailConfirmations",
+  "colors"
+];
+
 const ObjectID = require('mongodb').ObjectID;
 
 // local utilities

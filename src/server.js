@@ -63,6 +63,7 @@ import approveProposal from './serverLogic/approveProposal';
 import rejectProposal from './serverLogic/rejectProposal';
 import proposeCounterArgument from './serverLogic/proposeCounterArgument';
 import getBackup from './serverLogic/getBackup';
+import { uploadBackup } from './serverLogic/uploadBackup';
 
 process.env.IS_SERVER=true;
 
@@ -473,6 +474,7 @@ processApiPost('/api/setArgument', setArgument);
 processApiPost('/api/proposeCounterArgument', proposeCounterArgument);
 processApiPost('/api/setMe', setMe, { userUpdated: true });
 processApiPost('/api/upload', upload, { file: true, userUpdated: true });
+processApiPost('/api/uploadBackup', uploadBackup, { file: true, userUpdated: true });
 
 processApiDelete('/api/rejectProposal/:id', rejectProposal);
 processApiDelete('/api/deleteArgument/:id', deleteArgument);

@@ -29,6 +29,7 @@ import { Helmet } from 'react-helmet';
 import { Redirect } from 'react-router-dom';
 import TextInput from '../../components/TextInput/TextInput';
 import UploadImage from '../../components/UploadImage/UploadImage';
+import UploadArchive from '../../components/UploadArchive/UploadArchive';
 
 class Account extends React.Component
 {
@@ -40,7 +41,8 @@ class Account extends React.Component
         emailOpen: false,
         passwordOpen: false,
         deleteUserpicOpen: false,
-        uploadUserpicOpen: false
+        uploadUserpicOpen: false,
+        uploadBackupOpen: false
     };
 
     constructor(props)
@@ -116,6 +118,9 @@ class Account extends React.Component
 
   onUploadUserpicOpen() { this.setState({ uploadUserpicOpen: true }); }
   onUploadUserpicClose() { this.setState({ uploadUserpicOpen: false }); }
+  
+  onUploadBackupOpen() { this.setState({ uploadBackupOpen: true }); }
+  onUploadBackupClose() { this.setState({ uploadBackupOpen: false }); }
   
     async saveUsername()
     {
@@ -242,6 +247,16 @@ class Account extends React.Component
         var reader = resp.body.getReader();
         var data = await reader.read();
         fileDownload(data.value, 'backup.zip', 'application/zip');
+    }
+
+    async rollBackup()
+    {
+        /*
+        var resp = await this.props.context.fetch('/api/rollBackup', { method: 'POST' });
+        var reader = resp.body.getReader();
+        var data = await reader.read();
+        fileDownload(data.value, 'backup.zip', 'application/zip');
+        */
     }
 
     render()
@@ -398,6 +413,14 @@ class Account extends React.Component
                 ):null}
                 {checkPrivilege(user, USER_LEVEL_OWNER) ? (
                     <BlueButton className={s.navButton} onClick={this.getBackup.bind(this)}>Бекап</BlueButton>
+                ):null}
+                {checkPrivilege(user, USER_LEVEL_OWNER) ? (
+                    <Popup modal open={this.state.uploadBackupOpen} onOpen={this.onUploadBackupOpen.bind(this)}
+                        onClosed={this.onUploadBackupClose.bind(this)} trigger={(
+                            <BlueButton className={s.navButton} onClick={this.rollBackup.bind(this)}>Відновити з бекапу</BlueButton>
+                                )}>
+                        <UploadArchive {...this.props} onSuccess={this.onUploadBackupClose.bind(this)} />
+                    </Popup>
                 ):null}
                 {checkPrivilege(user, USER_LEVEL_OWNER) ? (
                     <BlueButton className={s.navButton}>Передати сайт</BlueButton>
