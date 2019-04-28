@@ -147,12 +147,23 @@ clickArgument()
       goToLink(this, "/viewHistory/" + this.props.data.article._id);
   }
 
+  getKeywords()
+  {
+    const universalKeywords = "ДУМ, демократична, українська, мова, як правильно, граматика, орфографія, пунктуація, синтаксис, транслітерація";
+    var localKeywords = this.props.data.article.Keywords;
+
+    if (localKeywords && localKeywords.length)
+      return localKeywords + ", " + universalKeywords;
+    return universalKeywords;
+  }
+
   render()
   {
     return (
       <React.Fragment>
         <Helmet>
           <title>{this.props.data.article.PageTitle}</title>
+          <meta name="keywords" content={this.getKeywords()} />
         </Helmet>
         <div className={s.infoArea}>
           <div className={s.tokenHeader}

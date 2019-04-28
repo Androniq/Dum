@@ -44,6 +44,7 @@ class Html extends React.Component {
           <meta httpEquiv="x-ua-compatible" content="ie=edge" />
           {helmet.title.toComponent()}
           <meta name="description" content={description} />
+          {helmet.meta.toComponent()}
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           {scripts.map(script => (
             <link key={script} rel="preload" href={script} as="script" />
