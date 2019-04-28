@@ -66,6 +66,8 @@ import getBackup from './serverLogic/getBackup';
 import { uploadBackup } from './serverLogic/uploadBackup';
 import getProfile from './serverLogic/getProfile';
 import setRole from './serverLogic/setRole';
+import { getChange } from './serverLogic/getChange';
+import getHistory from './serverLogic/getHistory';
 
 process.env.IS_SERVER=true;
 
@@ -467,6 +469,8 @@ processApiGet('/api/confirm/:token', endConfirm, { userUpdated: true });
 processApiGet('/api/getNotifications', getNotifications);
 processApiGet('/api/getUserList', getUserList);
 processApiGet('/api/getProfile/:id', getProfile);
+processApiGet('/api/getChange/:id', getChange);
+processApiGet('/api/getHistory/:id', getHistory);
 processApiGet('/api/getApprovals', getApprovals);
 processApiGet('/api/getBackup', getBackup, { download: true });
 

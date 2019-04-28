@@ -112,6 +112,11 @@ class ViewProfile extends React.Component
     {        
         await this.alterLevel(USER_LEVEL_ADMIN);
     }
+    
+    async gotoChange(id)
+    {
+        this.props.history.push('/viewChange/' + id);
+    }
 
     render()
     {
@@ -150,6 +155,7 @@ class ViewProfile extends React.Component
                             <span className={s.timestamp}>{this.userFriendlyTimestamp(new Date(item.Time), now)}</span>
                             <span className={s.action}>{this.localAction(item.Action)}</span>
                             <span className={s.articleTitle}>{this.articleName(item.Article, this.props.data.articles)}</span>
+                            <BlueButton className={s.gotoChange} onClick={(()=>this.gotoChange(item._id)).bind(this)}>Переглянути зміну</BlueButton>
                         </div>
                     ))}
                 </div>

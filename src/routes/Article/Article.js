@@ -141,6 +141,10 @@ clickArgument()
 {
   this.props.history.push('/editArgument/new/' + this.props.data.article.Url);
 }
+  async gotoHistory()
+  {
+      window.open("/viewHistory/" + this.props.data.article._id, "_blank");
+  }
 
   render()
   {
@@ -176,6 +180,9 @@ clickArgument()
                 <BlueButton onClick={this.clickArgument.bind(this)}>Аргументувати...</BlueButton>
                 {checkPrivilege(context.user, USER_LEVEL_MODERATOR) ? (
                   <BlueButton onClick={this.clickEdit.bind(this)} href="">Редагувати</BlueButton>
+                ) : ""}
+                {checkPrivilege(context.user, USER_LEVEL_ADMIN) ? (
+                  <BlueButton onClick={this.gotoHistory.bind(this)} href="">Історія змін</BlueButton>
                 ) : ""}
               </div>
             ) : (

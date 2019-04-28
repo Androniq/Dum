@@ -20,6 +20,8 @@ import UserList from '../routes/UserList/UserList';
 import Approvals from '../routes/Approvals/Approvals';
 import EditCounterArgument from '../routes/EditCounterArgument/EditCounterArgument';
 import ViewProfile from '../routes/ViewProfile/ViewProfile';
+import ViewChange from '../routes/ViewChange/ViewChange';
+import ViewHistory from '../routes/ViewHistory/ViewHistory';
 
 const ContextType =
 {
@@ -76,6 +78,8 @@ class App extends React.Component
           <Route path='/eventLog' render={EventLog(context)} />
           <Route path='/userList' render={UserList(context)} />
           <Route path='/viewProfile/:id' render={ViewProfile(context)} />
+          <Route path='/viewChange/:id' render={ViewChange(context)} />
+          <Route path='/viewHistory/:id' render={ViewHistory(context)} />
           <Route path='/loading' render={LoadingWithEverything(context)} />
           <Route render={ErrorPageWithEverything(context)} />
         </Switch>

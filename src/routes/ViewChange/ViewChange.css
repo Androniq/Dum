@@ -1,0 +1,51 @@
+.header
+{    
+}
+
+.topRow
+{
+    display: flex;
+    flex-direction: row;
+    width: 100%;    
+}
+
+.row
+{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+}
+
+.userpic
+{
+    width: 150px;
+    height: 150px;
+}
+
+.userCard
+{
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.displayName
+{
+    font-weight: 600;
+}
+
+.rightContainer
+{
+    margin-left: auto;
+}
+
+.viewUserButton
+{
+    min-width: 300px;
+}
+
+.text
+{
+    flex: 1;
+}

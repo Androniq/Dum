@@ -33,7 +33,7 @@ export default async function getProfile(user, { id })
         return { status: 404, message: "User with requested ID not found" };
     }
 
-    var history = await mongoAsync.dbCollections.history.find({ User: id }).toArray();
+    var history = await mongoAsync.dbCollections.history.find({ User: id }).sort({ Time: -1 }).toArray();
 
     var articleIds = [];
     history.forEach(it => {
@@ -48,7 +48,7 @@ export default async function getProfile(user, { id })
             Article: { $in: articleIds } }).toArray();
         deletedArticles.forEach(it =>
             {
-                articles.push({ _id: it.Article, Title: it.Change.Title });
+                articles.push({ _id: it.Article, Title: it.Change.article.Title });
             });
     }
 

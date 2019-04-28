@@ -7,8 +7,20 @@
 
 .userpic
 {
-    width: 150px;
-    height: 150px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    margin: 3px;
+}
+
+.username
+{
+    flex: 1;
+}
+
+.timestamp
+{
+    flex: 1;
 }
 
 .userCard
