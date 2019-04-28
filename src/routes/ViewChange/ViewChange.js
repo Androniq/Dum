@@ -90,6 +90,33 @@ class ViewChange extends React.Component
         showSticky(this, "Зміни у форматі JSON скопійовано до буферу обміну");
     }
 
+    async restoreArticle()
+    {
+        var url = "/api/restoreArticle/" + this.props.data.articleId;
+        var resp = await this.props.context.fetch(url, { method: 'POST' });
+        if (!resp.ok)
+        {
+            console.error(resp.message);
+            return;
+        }
+        var json = await resp.json();
+        var url = json.articleUrl;
+        this.props.history.push('/article/' + url);
+    }
+
+    actionDependentComponent()
+    {
+        switch (this.props.data.Action)
+        {
+            case "DeleteArticle": return (
+                <div>
+                    <BlueButton className={s.viewUserButton} onClick={this.restoreArticle.bind(this)}>Відновити!</BlueButton>
+                </div>
+            );
+        }
+        return null;
+    }
+
     render()
     {
         return (
@@ -144,6 +171,7 @@ class ViewChange extends React.Component
                         <BlueButton className={s.viewUserButton} onClick={this.copyData.bind(this)}>Скопіювати JSON змін</BlueButton>
                     </div>
                 </div>
+                {this.actionDependentComponent()}
             </div>
         );
     }

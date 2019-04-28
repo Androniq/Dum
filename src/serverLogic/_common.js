@@ -101,7 +101,16 @@ export async function mongoFind(collection, id, projection)
   if (typeof collection === 'string')
     collection = mongoAsync.dbCollections[collection];
   if (typeof id === 'string')
-    id = new ObjectID(id);
+  {
+    try
+    {
+      id = new ObjectID(id);
+    }
+    catch
+    {
+      return null;
+    }
+  }
   if (Array.isArray(id))
   {
     if (!id.length)
@@ -110,9 +119,20 @@ export async function mongoFind(collection, id, projection)
     for (let index = 0; index < id.length; index++)
     {
       if (typeof id[index] === 'string')
-        convertedId.push(new ObjectID(id[index]));
+      {
+        try
+        {
+          convertedId.push(new ObjectID(id[index]));
+        }
+        catch
+        {
+          return [];
+        }
+      }
       else
+      {
         convertedId.push(id[index]);
+      }
     }
     return await collection.find({ _id: { $in: convertedId } }, projection).toArray();
   }

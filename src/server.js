@@ -69,6 +69,7 @@ import setRole from './serverLogic/setRole';
 import { getChange } from './serverLogic/getChange';
 import getHistory from './serverLogic/getHistory';
 import getEventLog from './serverLogic/getEventLog';
+import restoreArticle from './serverLogic/restoreArticle';
 
 process.env.IS_SERVER=true;
 
@@ -483,6 +484,7 @@ processApiPost('/api/proposeCounterArgument', proposeCounterArgument);
 processApiPost('/api/setMe', setMe, { userUpdated: true });
 processApiPost('/api/setRole', setRole);
 processApiPost('/api/upload', upload, { file: true, userUpdated: true });
+processApiPost('/api/restoreArticle/:id', restoreArticle);
 processApiPost('/api/uploadBackup', uploadBackup, { file: true, userUpdated: true });
 
 processApiDelete('/api/rejectProposal/:id', rejectProposal);

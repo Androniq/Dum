@@ -17,22 +17,22 @@ class Footer extends React.Component {
     return (
       <div className={s.root}>
         <div className={s.container}>
-          <span className={s.text}>© Your Company</span>
+          <span className={s.text}>© ДУМ 2019</span>
           <span className={s.spacer}>·</span>
           <Link className={s.link} to="/">
-            Home
+            Домівка
           </Link>
           <span className={s.spacer}>·</span>
           <Link className={s.link} to="/admin">
-            Admin
+            Адмінка
           </Link>
           <span className={s.spacer}>·</span>
           <Link className={s.link} to="/privacy">
-            Privacy
+            Приватність
           </Link>
           <span className={s.spacer}>·</span>
           <Link className={s.link} to="/not-found">
-            Not Found
+            Інше
           </Link>
         </div>
       </div>

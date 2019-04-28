@@ -44,6 +44,11 @@ export function guid()
       s4() + '-' + s4() + s4() + s4();
 }
 
+export function softId()
+{
+	return s4() + s4();
+}
+
 export function htmlNonEmpty(html)
 {
 	let tag = false;

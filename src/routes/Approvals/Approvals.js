@@ -5,7 +5,7 @@ import cx from 'classnames';
 import { Helmet } from 'react-helmet';
 import withEverything from '../../withEverything';
 import FormattedText from '../../components/FormattedText/FormattedText';
-import { DEFAULT_USERPIC } from '../../utility';
+import { DEFAULT_USERPIC, goToLink } from '../../utility';
 import BlueButton from '../../components/BlueButton/BlueButton';
 
 class Approvals extends React.Component
@@ -36,6 +36,7 @@ class Approvals extends React.Component
 
     clickViewUser(item)
     {
+        window.open("/viewProfile/" + item.User._id, "_blank");
     }
 
     clickViewArticle(item)
