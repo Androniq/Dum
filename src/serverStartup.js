@@ -84,6 +84,7 @@ async function getDbCollections()
       const dbPriorities = await getCollection(db, 'Priorities');
       const dbArguments = await getCollection(db, 'Arguments');
       const dbProposedArguments = await getCollection(db, 'ProposedArguments');
+      const dbHistory = await getCollection(db, 'History');
       const dbColors = await getCollection(db, 'Colors');
       const dbPopularVote = await getCollection(db, 'PopularVote');
       const dbUsers = await getCollection(db, 'Users');
@@ -99,6 +100,7 @@ async function getDbCollections()
         priorities: dbPriorities,
         arguments: dbArguments,
         proposedArguments: dbProposedArguments,
+        history: dbHistory,
         colors: dbColors,
         popularVote: dbPopularVote,
         users: dbUsers,

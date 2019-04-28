@@ -33,7 +33,9 @@ export default async function getProfile(user, { id })
         return { status: 404, message: "User with requested ID not found" };
     }
 
-    var data = { viewedUser };
+    var history = await mongoAsync.dbCollections.history.find({ User: id }).toArray();
+
+    var data = { viewedUser, history };
 
     return data;
 }

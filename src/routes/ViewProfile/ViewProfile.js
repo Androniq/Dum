@@ -32,6 +32,51 @@ class ViewProfile extends React.Component
         return null;
     }
 
+    numericEnding(number)
+    {
+        if (number < 0) return null;
+        number = Math.floor(number);
+        if (number <= 1) return "у";
+        if (number <= 4) return "и";
+        if (number <= 20) return "";
+        if (number <= 99)
+            return this.numericEnding(number % 10);
+        return this.numericEnding(number % 100);
+    }
+
+    userFriendlyTimestamp(stamp, now)
+    {
+        if (stamp > now)
+            return "Майбутнє?";
+        var diff = (now - stamp) / 1000; // seconds
+        if (diff < 60)
+            return "Щойно";
+        diff /= 60; // minutes
+        if (diff <= 59)
+            return Math.floor(diff) + " хвилин" + this.numericEnding(diff) + " тому";
+        diff /= 60; // hours
+        if (diff <= 23)
+            return Math.floor(diff) + " годин" + this.numericEnding(diff) + " тому";
+        return stamp.toLocaleDateString();
+    }
+
+    localAction(action)
+    {
+        switch (action)
+        {
+            case "CreateArticle": return "Створив статтю";
+            case "UpdateArticle": return "Відредагував статтю";
+            case "DeleteArticle": return "Видалив статтю";
+            case "CreateArgument": return "Додав аргумент";
+            case "UpdateArgument": return "Змінив аргумент";
+            case "DeleteArgument": return "Видалив аргумент";
+            case "ApproveArgument": return "Схвалив аргумент";
+            case "ApproveCounterArgument": return "Схвалив контраргумент";
+            case "RejectArgument": return "Відхилив аргумент";
+        }
+        return action;
+    }
+
     async alterLevel(newLevel)
     {
         var requestBody = { id: this.props.data.viewedUser._id, level: newLevel };
@@ -66,6 +111,7 @@ class ViewProfile extends React.Component
     render()
     {
         var viewed = this.props.data.viewedUser;
+        var now = new Date();
         return (
             <div className="container">
                 <Helmet>
@@ -93,6 +139,14 @@ class ViewProfile extends React.Component
                         ) : null}
                     </div>
                 ) : null}
+                <div className={s.historyView}>
+                    {this.props.data.history.map(item => (
+                        <div key={item._id} className={s.historyItem}>
+                            <span className={s.timestamp}>{this.userFriendlyTimestamp(new Date(item.Time), now)}</span>
+                            <span className={s.action}>{this.localAction(item.Action)}</span>
+                        </div>
+                    ))}
+                </div>
             </div>
         );
     }

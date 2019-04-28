@@ -6,7 +6,10 @@ import {
     getMiddleGround,
     shortLabel,
     mongoInsert,
-	mongoUpdate } from './_common';
+	mongoUpdate, 
+	mongoFind,
+	writeHistory,
+	getDifference} from './_common';
 
 import {
 	getLevel,
@@ -34,15 +37,23 @@ export default async function setArgument(user, arg)
 
 	if (!isNew)
 	{
+		var oldArg = await mongoFind(mongoAsync.dbCollections.arguments, arg._id);
+		if (!oldArg)
+		{
+			return { status: 404, message: "Argument not found" };
+		}
 		await mongoUpdate(mongoAsync.dbCollections.arguments, arg, user);
+		await writeHistory(user, arg.Article, "UpdateArgument", getDifference(oldArg, arg));
 	}
 	else if (isProposal)
 	{
-		await mongoInsert(mongoAsync.dbCollections.proposedArguments, arg, user);
+		var r = await mongoInsert(mongoAsync.dbCollections.proposedArguments, arg, user);
+		await writeHistory(user, arg.Article, "ProposeArgument", r.insertedId);
 	}
 	else
 	{
-		await mongoInsert(mongoAsync.dbCollections.arguments, arg, user);
+		var r = await mongoInsert(mongoAsync.dbCollections.arguments, arg, user);
+		await writeHistory(user, arg.Article, "CreateArgument", r.insertedId);
 	}
 	return { success: true };
 }

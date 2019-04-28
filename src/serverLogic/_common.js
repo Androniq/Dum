@@ -185,3 +185,71 @@ export function clearTempFolder()
   }
   fs.mkdirSync("temp");
 }
+
+const excluded = ["_id", "Owner", "CreatedDate", "UpdatedDate", "DateCreated", "DateUpdated"];
+
+export function getDifference(oldValue, newValue)
+{
+  var propNames = [];
+  for (var pn in oldValue)
+  {
+    propNames.push(pn);    
+  }
+  for (var pn in newValue)
+  {
+    if (!propNames.includes(pn))
+      propNames.push(pn);
+  }
+  propNames = propNames.filter(it => !excluded.includes(it));
+  var diff = [];
+  for (let index = 0; index < propNames.length; index++)
+  {
+    let propname = propNames[index];
+    let oldP = oldValue[propname];
+    let newP = newValue[propname];
+    if (!oldP && newP)
+    {
+      diff.push({ field: propname, new: newP });
+    }
+    else if (!newP && oldP)
+    {
+      diff.push({ field: propname, old: oldP });
+    }
+    else if (!newP && !oldP)
+    {
+      // indetectable change
+    }
+    else
+    {
+      if (typeof oldP === 'object')
+      {
+        var innerDiff = getDifference(oldP, newP);
+        diff.push({ field: propname, diff: innerDiff });
+      }
+      /*
+      else if (typeof oldP === 'array')
+      {
+
+      }
+      */
+      else
+      {
+        if (oldP != newP)
+          diff.push({ field: propname, old: oldP, new: newP });
+      }
+    }
+  }
+  return diff;
+}
+
+export async function writeHistory(user, articleId, action, change)
+{
+  var now = new Date();
+  await mongoAsync.dbCollections.history.insertOne({
+    User: user._id.toString(),
+    Article: articleId.toString(),
+    Time: now,
+    Action: action,
+    Change: change
+  });
+}

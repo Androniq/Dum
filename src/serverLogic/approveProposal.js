@@ -8,7 +8,9 @@ import {
     mongoInsert,
 	mongoUpdate, 
     mongoDelete,
-    mongoFind} from './_common';
+    mongoFind,
+    writeHistory,
+    getDifference} from './_common';
 
 import {
 	getLevel,
@@ -56,6 +58,8 @@ export default async function approveProposal(user, body, { id })
         if (t && t.result && t.result.ok)
         {
             await mongoDelete(mongoAsync.dbCollections.proposedArguments, id);
+            var newRootArgument = await mongoFind(mongoAsync.dbCollections.arguments, proposal.RootId);
+            await writeHistory(user, proposal.Article, "ApproveCounterArgument", getDifference(rootArgument, newRootArgument));
 
             return { success: true };
         }
@@ -75,6 +79,7 @@ export default async function approveProposal(user, body, { id })
     if (t && t.result && t.result.ok)
     {
         await mongoDelete(mongoAsync.dbCollections.proposedArguments, id);
+        await writeHistory(user, proposal.Article, "ApproveArgument", proposal);
 
         return { success: true };
     }

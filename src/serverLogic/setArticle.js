@@ -6,7 +6,10 @@ import {
     getMiddleGround,
     shortLabel,
     mongoInsert,
-	mongoUpdate } from './_common';
+	mongoUpdate, 
+    mongoFind,
+    getDifference,
+    writeHistory} from './_common';
 
 import {
 	getLevel,
@@ -45,9 +48,15 @@ export default async function setArticle(user, article)
         CreatedDate: article.CreatedDate,
         UpdatedDate: article.UpdatedDate,
         Owner: article.Owner
-    };    
+    };
+    var action = 'CreateArticle';
+    var change = null;
+    var articleId = article._id;
     if (article._id)
     {
+        action = 'UpdateArticle';
+        var doc = await mongoFind(mongoAsync.dbCollections.articles, article._id);
+        change = getDifference(doc, projectedArticle);
         var upd = await mongoUpdate(mongoAsync.dbCollections.articles, projectedArticle, user);
         if (upd.matchedCount < 1)
         {
@@ -56,7 +65,9 @@ export default async function setArticle(user, article)
     }
     else
     {
-        await mongoInsert(mongoAsync.dbCollections.articles, projectedArticle, user);
+        var r = await mongoInsert(mongoAsync.dbCollections.articles, projectedArticle, user);
+        articleId = r.insertedId;
     }
+    await writeHistory(user, articleId, action, change);
     return { success: true };
 }

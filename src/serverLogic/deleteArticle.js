@@ -8,7 +8,8 @@ import {
     mongoInsert,
     mongoUpdate,
     mongoDelete, 
-    mongoFind} from './_common';
+    mongoFind,
+    writeHistory} from './_common';
 
 import {
 	getLevel,
@@ -34,5 +35,6 @@ export default async function deleteArticle(user, { id })
     var works = args.map(arg => mongoDelete(mongoAsync.dbCollections.arguments, arg._id));
     works.push(mongoDelete(mongoAsync.dbCollections.articles, id));
     await Promise.all(works);
+    await writeHistory(user, id, "DeleteArticle", article);
 	return { success: true };
 }

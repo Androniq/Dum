@@ -38,3 +38,31 @@
     display: flex;
     flex-direction: row;
 }
+
+.adminButton
+{
+
+}
+
+.historyView
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.historyItem
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.timestamp
+{
+    flex: 1;
+}
+
+.action
+{
+    flex: 1;
+}

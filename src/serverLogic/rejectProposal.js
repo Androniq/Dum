@@ -7,7 +7,9 @@ import {
     shortLabel,
     mongoInsert,
 	mongoUpdate, 
-    mongoDelete} from './_common';
+    mongoDelete,
+    writeHistory,
+    mongoFind} from './_common';
 
 import {
 	getLevel,
@@ -28,7 +30,14 @@ export default async function rejectProposal(user, { id })
         return { status: 403, message: "Insufficient privileges" };
     }
 
+    var proposal = await mongoFind(mongoAsync.dbCollections.proposedArguments, id);
+    if (!proposal)
+    {
+        return { status: 404, message: "Proposal not found" };
+    }
+
     await mongoDelete(mongoAsync.dbCollections.proposedArguments, id);
+    await writeHistory(user, proposal.Article, "RejectProposal", proposal);
 
     return { success: true };
 }

@@ -7,7 +7,9 @@ import {
     shortLabel,
     mongoInsert,
     mongoUpdate,
-    mongoDelete } from './_common';
+    mongoDelete, 
+    mongoFind,
+    writeHistory} from './_common';
 
 import {
 	getLevel,
@@ -23,7 +25,13 @@ export default async function deleteArgument(user, { id })
 	if (!checkPrivilege(user, USER_LEVEL_MODERATOR))
     {
         return { status: 403, message: "Insufficient privileges" };
-	}
+    }
+    var arg = await mongoFind(mongoAsync.dbCollections.arguments, id);
+    if (!arg)
+    {
+        return { status: 404, message: "Argument not found" };
+    }
     await mongoDelete(mongoAsync.dbCollections.arguments, id);
+    await writeHistory(user, arg.Article, "DeleteArgument", arg);
 	return { success: true };
 }
