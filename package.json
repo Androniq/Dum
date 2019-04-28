@@ -29,6 +29,7 @@
     "express-session": "^1.15.6",
     "extract-zip": "^1.6.7",
     "fb": "^2.0.0",
+    "fs-extra": "^7.0.1",
     "graphql": "^0.13.2",
     "history": "^4.7.2",
     "isomorphic-style-loader": "^4.0.0",
