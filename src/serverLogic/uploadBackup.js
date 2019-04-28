@@ -28,7 +28,7 @@ const ObjectID = require('mongodb').ObjectID;
 async function applyBackup()
 {
     var path = __dirname + '\\..\\temp';
-    extract('temp/backup.zip', { dir: path }, error =>
+    extract('temp/backup.zip', { dir: path }, async (error) =>
     {
         if (error)
         {
@@ -36,6 +36,8 @@ async function applyBackup()
             return;            
         }
         
+        await mongoAsync.db.dropDatabase();
+
         fs.readdir(path + '\\temp', function (err, files)
         {
             if (err)
@@ -73,6 +75,20 @@ async function applyBackup()
                         }
                     }
                 }
+            });
+        });
+        fs.readdir(path + '\\temp\\files', function (err, files)
+        {
+            if (err)
+            {
+                return console.error('Unable to scan directory: ' + err);
+            } 
+            files.forEach(async (file) =>
+            {
+                var path = 'temp/temp/files/' + file;
+                var stream = mongoAsync.fs.openUploadStreamWithId(file, file);
+                var data = fs.createReadStream(path);
+                data.pipe(stream);
             });
         });
     });

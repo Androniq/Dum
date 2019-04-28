@@ -240,23 +240,44 @@ class Account extends React.Component
         this.props.history.push('/userList');
     }
 
+    constructArray(buffer)
+    {
+        if (!buffer || !buffer.length)
+            return [];
+        var length = 0;
+        buffer.forEach(it => length += it.length);
+        var r = new buffer[0].constructor(length);
+        var index = 0;
+        buffer.forEach(it =>
+            {
+                r.set(it, index);
+                index += it.length;
+            })
+        return r;
+    }
+        
     async getBackup()
     {
         var fileDownload = require('js-file-download');
         var resp = await this.props.context.fetch('/api/getBackup', { method: 'GET' });
         var reader = resp.body.getReader();
-        var data = await reader.read();
-        fileDownload(data.value, 'backup.zip', 'application/zip');
+        var buffer = [];
+        var data;
+
+        do
+        {
+            data = await reader.read();
+            if (data.value)
+                buffer.push(data.value);
+        }
+        while (data && !data.done)
+
+        console.info(buffer.length);
+        fileDownload(this.constructArray(buffer), 'backup.zip', 'application/zip');
     }
 
     async rollBackup()
     {
-        /*
-        var resp = await this.props.context.fetch('/api/rollBackup', { method: 'POST' });
-        var reader = resp.body.getReader();
-        var data = await reader.read();
-        fileDownload(data.value, 'backup.zip', 'application/zip');
-        */
     }
 
     render()

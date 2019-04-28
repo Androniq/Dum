@@ -30,6 +30,32 @@ async function writeTable(tableName)
     fs.writeFileSync("temp\\" + tableName + ".json", text);
 }
 
+async function downloadFile(filename)
+{
+    var stream = mongoAsync.fs.openDownloadStreamByName(filename);
+    var ws = fs.createWriteStream("temp/files/" + filename);
+    var resolver;
+    var promise = new Promise((resolve, reject) =>
+    {
+        resolver = resolve;
+    });
+    stream.on('end', () => {
+        resolver();
+    })
+    stream.pipe(ws);
+    await promise;
+}
+
+async function writeFiles(list)
+{
+    var tasks = [];
+    list.forEach(it =>
+        {
+            tasks.push(downloadFile(it.filename));
+        });
+    await Promise.all(tasks);
+}
+
 export default async function getBackup(user)
 {
     if (!checkPrivilege(user, USER_LEVEL_OWNER))
@@ -38,8 +64,11 @@ export default async function getBackup(user)
     }
 
     clearTempFolder();
+    fs.mkdir("temp/files");
 
-    var writeTasks = [];
+    var fileList = await mongoAsync.fs.find().toArray();
+
+    var writeTasks = [writeFiles(fileList)];
     tableNames.forEach(it => writeTasks.push(writeTable(it)));
 
     await Promise.all(writeTasks);
@@ -69,7 +98,8 @@ export default async function getBackup(user)
     archive.pipe(output);
 
     tableNames.forEach(it => archive.file('temp\\' + it + '.json'));
-    
+    fileList.forEach(it => archive.file('temp\\files\\' + it.filename));
+
     archive.finalize();
 
     if (!ready)
