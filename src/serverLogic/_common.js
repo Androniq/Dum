@@ -106,12 +106,15 @@ export async function mongoFind(collection, id, projection)
   {
     if (!id.length)
       return [];
+    var convertedId = [];
     for (let index = 0; index < id.length; index++)
     {
       if (typeof id[index] === 'string')
-        id[index] = new ObjectID(id[index]);
+        convertedId.push(new ObjectID(id[index]));
+      else
+        convertedId.push(id[index]);
     }
-    return await collection.find({ _id: { $in: id } }, projection).toArray();
+    return await collection.find({ _id: { $in: convertedId } }, projection).toArray();
   }
 	return await collection.findOne({ _id: id }, projection);
 }

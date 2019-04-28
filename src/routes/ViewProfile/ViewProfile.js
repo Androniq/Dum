@@ -77,6 +77,11 @@ class ViewProfile extends React.Component
         return action;
     }
 
+    articleName(id, articles)
+    {
+        return articles.find(it => it._id === id).Title;
+    }
+
     async alterLevel(newLevel)
     {
         var requestBody = { id: this.props.data.viewedUser._id, level: newLevel };
@@ -144,6 +149,7 @@ class ViewProfile extends React.Component
                         <div key={item._id} className={s.historyItem}>
                             <span className={s.timestamp}>{this.userFriendlyTimestamp(new Date(item.Time), now)}</span>
                             <span className={s.action}>{this.localAction(item.Action)}</span>
+                            <span className={s.action}>{this.articleName(item.Article, this.props.data.articles)}</span>
                         </div>
                     ))}
                 </div>
