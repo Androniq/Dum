@@ -1,0 +1,67 @@
+.historyView
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.historyItem
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.userpic
+{
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    margin: 3px;
+}
+
+.username
+{
+    flex: 1;
+    max-width: 150px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.timestamp
+{
+    flex: 1;
+    max-width: 200px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.action
+{
+    flex: 1;
+    max-width: 200px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.articleTitle
+{
+    flex: 1;
+    max-width: 200px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.gotoChangeBox
+{
+    margin-left: auto;
+}
+
+.gotoChange
+{
+    flex:1;
+    min-width: 200px;
+}

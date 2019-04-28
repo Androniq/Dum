@@ -68,6 +68,7 @@ import getProfile from './serverLogic/getProfile';
 import setRole from './serverLogic/setRole';
 import { getChange } from './serverLogic/getChange';
 import getHistory from './serverLogic/getHistory';
+import getEventLog from './serverLogic/getEventLog';
 
 process.env.IS_SERVER=true;
 
@@ -471,6 +472,7 @@ processApiGet('/api/getUserList', getUserList);
 processApiGet('/api/getProfile/:id', getProfile);
 processApiGet('/api/getChange/:id', getChange);
 processApiGet('/api/getHistory/:id', getHistory);
+processApiGet('/api/getEventLog', getEventLog);
 processApiGet('/api/getApprovals', getApprovals);
 processApiGet('/api/getBackup', getBackup, { download: true });
 
