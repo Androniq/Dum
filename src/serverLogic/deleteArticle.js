@@ -35,6 +35,6 @@ export default async function deleteArticle(user, { id })
     var works = args.map(arg => mongoDelete(mongoAsync.dbCollections.arguments, arg._id));
     works.push(mongoDelete(mongoAsync.dbCollections.articles, id));
     await Promise.all(works);
-    await writeHistory(user, id, "DeleteArticle", article);
+    await writeHistory(user, id, "DeleteArticle", { article, arguments: args });
 	return { success: true };
 }

@@ -149,7 +149,7 @@ class ViewProfile extends React.Component
                         <div key={item._id} className={s.historyItem}>
                             <span className={s.timestamp}>{this.userFriendlyTimestamp(new Date(item.Time), now)}</span>
                             <span className={s.action}>{this.localAction(item.Action)}</span>
-                            <span className={s.action}>{this.articleName(item.Article, this.props.data.articles)}</span>
+                            <span className={s.articleTitle}>{this.articleName(item.Article, this.props.data.articles)}</span>
                         </div>
                     ))}
                 </div>
