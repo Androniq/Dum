@@ -535,8 +535,6 @@ app.get('*', async (req, res, next) => {
     var userAgent = req.headers["user-agent"];
     var isMobile = (userAgent && userAgent.indexOf("Mobile") != -1) ? true : false;
 
-    console.info(isMobile ? "mobile":"desktop");
-
     // Global (context) variables that can be easily accessed from any React component
     // https://facebook.github.io/react/docs/context.html
     const context = {

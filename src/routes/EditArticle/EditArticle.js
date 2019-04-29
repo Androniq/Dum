@@ -163,39 +163,41 @@ async onDeleteDo()
 }
 
   render()
-  {    
+  {
+    var isMobile = this.props.context.isMobile;
+    var textInput = isMobile ? s.textInputMobile : s.textInput;
       return (
           <div className={s.editArticleContainer}>
             <Helmet>
               <title>{this.getTitle(this.props.data)}</title>
             </Helmet>
             <div className={s.editArticleGrid}>
-              <TextInput className={classnames(s.textInput, s.grid11, this.state.validatorTitle)} placeholder="Коротка назва статті, наприклад: Вірно"
+              <TextInput className={classnames(textInput, isMobile ? s.grid11m : s.grid11, this.state.validatorTitle)} placeholder="Коротка назва статті, наприклад: Вірно"
                 onSave={this.updateTitle.bind(this)} value={this.state.Title}
                 hint="Напишіть тут коротку назву, за якою можна буде швидко ідентифікувати статтю: лише підозріла лексема, наприклад, «Вірно»." />
-              <TextInput className={classnames(s.textInput, s.grid12, this.state.validatorPageTitle)} placeholder="Повна назва статті, наприклад: Вірно чи правильно?"
+              <TextInput className={classnames(textInput, isMobile ? s.grid12m : s.grid12, this.state.validatorPageTitle)} placeholder="Повна назва статті, наприклад: Вірно чи правильно?"
                 onSave={this.updatePageTitle.bind(this)} value={this.state.PageTitle}
                 hint="Назва, яка відображатиметься в заголовку вкладки у веб-оглядачі. Бажано використовувати формат: [Підозріла лексема] чи [надійна лексема]?, наприклад: «Вірно чи правильно?»." />
-               <div className={classnames(s.urlValidator, s.grid21)}>
-                  <TextInput className={classnames(s.textInput, s.urlBoxSpecial, this.state.validatorUrl)} placeholder="Адреса сторінки латинкою, наприклад: virno"
+              <div className={classnames(isMobile ? s.urlValidatorMobile : s.urlValidator, isMobile ? s.grid21m : s.grid21)}>
+                <TextInput className={classnames(textInput, isMobile ? s.urlBoxSpecialMobile : s.urlBoxSpecial, this.state.validatorUrl)} placeholder="Адреса сторінки латинкою, наприклад: virno"
                     onSave={this.updateUrl.bind(this)} value={this.state.Url}
                     hint="Фрагмент URL, який використовуватиметься для навігації до цієї сторінки. Повинен бути унікальним (перевірка виконується автоматично). Найкраще, якщо це буде латинізація короткої назви (наприклад, «virno»)." />
-                  <img className={classnames(s.urlValidatorOk, this.state.urlUnique === true ? s.visible : s.invisible)} src='/images/ok.png' />
-                  <img className={classnames(s.urlValidatorFail, this.state.urlUnique === false ? s.visible : s.invisible)} src='/images/error.png' />
+                  <img className={classnames(s.urlValidatorOk, isMobile && s.urlValidatorIconMobile, this.state.urlUnique === true ? s.visible : s.invisible)} src='/images/ok.png' />
+                  <img className={classnames(s.urlValidatorFail, isMobile && s.urlValidatorIconMobile, this.state.urlUnique === false ? s.visible : s.invisible)} src='/images/error.png' />
               </div>
-              <TextInput className={classnames(s.textInput, s.grid22, this.state.validatorKeywords)} placeholder="Ключові слова через кому: вірно, вірний, вірніше"
+              <TextInput className={classnames(textInput, isMobile ? s.grid22m : s.grid22, this.state.validatorKeywords)} placeholder="Ключові слова через кому: вірно, вірний, вірніше"
                 onSave={this.updateKeywords.bind(this)} value={this.state.Keywords}
                 hint="Перелік розділених комою ключових слів, за якими користувачі сайту шукатимуть цю статтю. Включіть сюди також похідні та споріднені слова з інших частин мови, наприклад: «співпадіння, співпадати». Важливо вказати саме підозрілу лексему – користувачі рідко шукають статтю за надійною лексемою." />
-              <TextInput className={classnames(s.textInput, s.grid31, this.state.validatorTokenA)} placeholder="Лексема А з на́голосом, наприклад: Ві́рно"
+              <TextInput className={classnames(textInput, isMobile ? s.grid31m : s.grid31, this.state.validatorTokenA)} placeholder="Лексема А з на́голосом, наприклад: Ві́рно"
                 onSave={this.updateTokenA.bind(this)} value={this.state.TokenA}
                 hint="«Ліва» (підозріла) лексема. (Якщо вона раптом переможе в голосуванні, то сайт автоматично поміняє лексеми місцями при відображенні.) Використовуйте знак на́голосу і уточнення, наприклад: «Ві́рно (у значенні «правильно»)». Якщо ви не знаєте, як ставити наголос, то просто поставте зірочку (*) після наголошеної літери, наприклад: «Ві*рно» – система сама замінить її на наголос після натиснення кнопки «Зберегти»." />
-              <TextInput className={classnames(s.textInput, s.grid32, this.state.validatorTokenB)} placeholder="Лексема Б з на́голосом, наприклад: Пра́вильно"
+              <TextInput className={classnames(textInput, isMobile ? s.grid32m : s.grid32, this.state.validatorTokenB)} placeholder="Лексема Б з на́голосом, наприклад: Пра́вильно"
                 onSave={this.updateTokenB.bind(this)} value={this.state.TokenB}
                 hint="«Права» (надійна) лексема. (Якщо вона раптом програє в голосуванні, то сайт автоматично поміняє лексеми місцями при відображенні.) Пишіть з великої букви і використовуйте знак на́голосу, наприклад: «Пра́вильно». Якщо ви не знаєте, як ставити наголос, то просто поставте зірочку (*) після наголошеної літери, наприклад: «Ві*рно» – система сама замінить її на наголос після натиснення кнопки «Зберегти»." />
-              <TextInput className={classnames(s.textInput, s.grid41, this.state.validatorShortA)} placeholder="Лексема А коротко, наприклад: вірно"
+              <TextInput className={classnames(textInput, isMobile ? s.grid41m : s.grid41, this.state.validatorShortA)} placeholder="Лексема А коротко, наприклад: вірно"
                 onSave={this.updateShortA.bind(this)} value={this.state.ShortA} maxLength={16}
                 hint="Коротке позначення лексеми А, яке відображатиметься на кнопках для голосування. Його потрібно писати з малої літери і без наголосів. Максимальна довжина – 16 символів. Наприклад: «вірно»." />
-              <TextInput className={classnames(s.textInput, s.grid42, this.state.validatorShortB)} placeholder="Лексема Б коротко, наприклад: правильно"
+              <TextInput className={classnames(textInput, isMobile ? s.grid42m : s.grid42, this.state.validatorShortB)} placeholder="Лексема Б коротко, наприклад: правильно"
                 onSave={this.updateShortB.bind(this)} value={this.state.ShortB} maxLength={16}
                 hint="Коротке позначення лексеми Б, яке відображатиметься на кнопках для голосування. Його потрібно писати з малої літери і без наголосів. Максимальна довжина – 16 символів. Наприклад: «правильно»." />
             </div>
