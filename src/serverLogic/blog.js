@@ -26,7 +26,7 @@ import {
         var owner = await mongoFind(mongoAsync.dbCollections.users, blog.Owner, { "displayName": 1, "photo": 1 });
         if (!owner)
         {
-            owner = await mongoAsync.dbCollections.users.findOne({}, { "displayName": 1, "photo": 1 })
+            owner = await mongoAsync.dbCollections.users.findOne({}, { projection: { "displayName": 1, "photo": 1 }})
                 || { displayName: "ТОЙ-КОГО-НЕ-МОЖНА-НАЗИВАТИ" };
         }
         blog.Owner = owner;

@@ -25,6 +25,7 @@ export default async function searchArticles(user, params, query)
         return { success: true, articles: [] };
     }
     var regex = new RegExp('.*'+q.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')+'.*');
-    var list = await mongoAsync.dbCollections.articles.find({ Keywords: regex }).toArray();
+    var list = await mongoAsync.dbCollections.articles.find({ Keywords: regex },
+        { projection: { "PageTitle": 1, "Url": 1, "_id": 0 }}).toArray();
     return { success: true, articles: list };
 }

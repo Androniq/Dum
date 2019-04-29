@@ -26,7 +26,7 @@ export default async function getProfile(user, { id })
     }
 
     var viewedUser = await mongoFind(mongoAsync.dbCollections.users, id,
-        { projection: { "displayName": 1, "photo": 1, "role": 1, "confirmed": 1, "blocked": 1 } });
+        { "displayName": 1, "photo": 1, "role": 1, "confirmed": 1, "blocked": 1 });
 
     if (!viewedUser)
     {

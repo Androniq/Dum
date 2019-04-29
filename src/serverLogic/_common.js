@@ -135,9 +135,9 @@ export async function mongoFind(collection, id, projection)
         convertedId.push(id[index]);
       }
     }
-    return await collection.find({ _id: { $in: convertedId } }, projection).toArray();
+    return await collection.find({ _id: { $in: convertedId } }, { projection }).toArray();
   }
-	return await collection.findOne({ _id: id }, projection);
+	return await collection.findOne({ _id: id }, { projection });
 }
 
 export async function mongoInsert(collection, item, user)

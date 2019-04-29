@@ -19,6 +19,6 @@ import {
 
 export default async function getArticles()
 {
-    var list = await mongoAsync.dbCollections.articles.find().toArray();
+    var list = await mongoAsync.dbCollections.articles.find({}, { projection: { "PageTitle": 1, "Url": 1, "_id": 0 }}).toArray();
     return { articles: list };
 }

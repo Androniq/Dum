@@ -27,7 +27,7 @@ export default async function getNotifications(user)
     }
     var notifications = await mongoAsync.dbCollections.notifications.find({ to: user._id }).toArray();
     var userIds = [...new Set(notifications.map(it => it.from))];    
-    var users = await mongoFind(mongoAsync.dbCollections.users, userIds, { projection: { "photo": 1, "displayName": 1 } });
+    var users = await mongoFind(mongoAsync.dbCollections.users, userIds, { "photo": 1, "displayName": 1 });
     var resp = 
     {
         notifications,
