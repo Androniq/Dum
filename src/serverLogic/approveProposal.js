@@ -37,6 +37,12 @@ export default async function approveProposal(user, body, { id })
         return { status: 404, message: "Proposal with provided ID not found" };
     }
 
+    if (!proposal.Article)
+    {
+        await mongoDelete(mongoAsync.dbCollections.proposedArguments, id);
+        return { success: true };
+    }
+
     if (proposal.RootId)
     {
         var rootArgument = await mongoFind(mongoAsync.dbCollections.arguments, proposal.RootId);

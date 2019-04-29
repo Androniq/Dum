@@ -53,30 +53,38 @@ class Approvals extends React.Component
         this.props.data.proposedArgs.forEach(proposedArg =>
             {
                 var articleId = proposedArg.Article;
-                var article = this.props.data.articles.find(it => it._id.toString() === articleId);
-                proposedArg.ArticleInst = article;
-                var voteId = proposedArg.Vote;
-                var vote = this.props.data.votes.find(it => it._id.toString() === voteId);
-                proposedArg.VoteInst = vote;
-                proposedArg.voteDescription = vote.ShortDescriptionTemplate.replace('%A%', article.ShortA).replace('%B%', article.ShortB);
-                var priorityId = proposedArg.Priority;
-                var priority = this.props.data.priorities.find(it => it._id.toString() == priorityId);
-                proposedArg.PriorityInst = priority;
-                var userId = proposedArg.Owner;
-                var user = this.props.data.users.find(it => it._id.toString() === userId);
-                proposedArg.User = user;
-
-                if (proposedArg.RootId)
+                if (articleId)
                 {
-                    var rootArg = this.props.data.contestedArgs.find(it => it._id.toString() === proposedArg.RootId);
-                    proposedArg.RootArg = rootArg;
-                    var current = rootArg;
-                    for (let index = 0; index < proposedArg.IdChain.length; index++)
+                    var article = this.props.data.articles.find(it => it._id.toString() === articleId);
+                    if (!article)
                     {
-                        var counterId = proposedArg.IdChain[index];
-                        current = current.Counters.find(it => it._id.toString() === counterId);
+                        proposedArg.Article = null;
+                        return;
                     }
-                    proposedArg.Contested = current;
+                    proposedArg.ArticleInst = article;
+                    var voteId = proposedArg.Vote;
+                    var vote = this.props.data.votes.find(it => it._id.toString() === voteId);
+                    proposedArg.VoteInst = vote;
+                    proposedArg.voteDescription = vote.ShortDescriptionTemplate.replace('%A%', article.ShortA).replace('%B%', article.ShortB);
+                    var priorityId = proposedArg.Priority;
+                    var priority = this.props.data.priorities.find(it => it._id.toString() == priorityId);
+                    proposedArg.PriorityInst = priority;
+                    var userId = proposedArg.Owner;
+                    var user = this.props.data.users.find(it => it._id.toString() === userId);
+                    proposedArg.User = user;
+
+                    if (proposedArg.RootId)
+                    {
+                        var rootArg = this.props.data.contestedArgs.find(it => it._id.toString() === proposedArg.RootId);
+                        proposedArg.RootArg = rootArg;
+                        var current = rootArg;
+                        for (let index = 0; index < proposedArg.IdChain.length; index++)
+                        {
+                            var counterId = proposedArg.IdChain[index];
+                            current = current.Counters.find(it => it._id.toString() === counterId);
+                        }
+                        proposedArg.Contested = current;
+                    }
                 }
             });
         return (
@@ -88,7 +96,7 @@ class Approvals extends React.Component
                     {this.props.data.proposedArgs.length ? "" : 
                         <span className={s.noNewProposals}>Нових пропозицій немає</span>
                     }
-                    {this.props.data.proposedArgs.map(item => (
+                    {this.props.data.proposedArgs.map(item => item.Article ? (                        
                         <div key={item._id} className={s.itemContainer}>
                             <div className={s.labelContainer}>
                                 <span className={cx(s.labelBase, s.labelTokenA)}>{item.ArticleInst.TokenA}</span>
@@ -122,6 +130,25 @@ class Approvals extends React.Component
                             <div className={s.panel}>
                                 <BlueButton onClick={(()=>this.clickApprove(item)).bind(this)}>Схвалити</BlueButton>
                                 <BlueButton onClick={(()=>this.clickReject(item)).bind(this)}>Відхилити</BlueButton>
+                                <BlueButton onClick={(()=>this.clickBan(item)).bind(this)}>БАН!</BlueButton>
+                            </div>
+                        </div>
+                        ) : (
+                        <div key={item._id} className={s.itemContainer}>
+                            <div className={s.contentContainer}>
+                                <FormattedText html={item.Content} />
+                            </div>
+                            <div className={s.panel}>
+                                <div className={s.avatar}>
+                                    <img src={item.User && item.User.photo || DEFAULT_USERPIC} className="userpic" />
+                                </div>
+                                <div className={s.username}>
+                                    <span>{item.User && item.User.displayName || "Анонім"}</span>
+                                </div>
+                                <BlueButton onClick={(()=>this.clickViewUser(item)).bind(this)}>Переглянути користувача</BlueButton>
+                            </div>
+                            <div className={s.panel}>
+                                <BlueButton onClick={(()=>this.clickApprove(item)).bind(this)}>Переглянуто</BlueButton>
                                 <BlueButton onClick={(()=>this.clickBan(item)).bind(this)}>БАН!</BlueButton>
                             </div>
                         </div>

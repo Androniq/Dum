@@ -17,7 +17,7 @@ import {
 	USER_LEVEL_ADMIN,
     USER_LEVEL_OWNER } from '../utility';
     
-export default async function proposeCounterArgument(user, arg)
+export default async function propose(user, arg)
 {
 	if (!checkPrivilege(user, USER_LEVEL_MEMBER))
     {
@@ -26,6 +26,8 @@ export default async function proposeCounterArgument(user, arg)
     
     if (arg._id)
         delete arg._id;
+
+    arg.User = user;
 
     await mongoInsert(mongoAsync.dbCollections.proposedArguments, arg, user);
 

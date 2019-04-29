@@ -33,7 +33,7 @@ export default async function getApprovals(user)
     var contestedArgIds = [];
     proposedArgs.forEach(proposedArg =>
         {
-            if (!articleIds.some(item => item === proposedArg.Article))
+            if (proposedArg.Article && !articleIds.some(item => item === proposedArg.Article))
             {
                 articleIds.push(proposedArg.Article);
             }
@@ -48,10 +48,9 @@ export default async function getApprovals(user)
             }
         });    
     var articles = await mongoFind(mongoAsync.dbCollections.articles, articleIds);
-    console.info(articleIds);
     var contestedArgs = await mongoFind(mongoAsync.dbCollections.arguments, contestedArgIds);
     articles.forEach(article => {
-        article.Content = null;
+        delete article.Content;
     });    
     var users = await mongoFind(mongoAsync.dbCollections.users, userIds, { projection: { "photo": 1, "displayName": 1 } });
     var votes = mongoAsync.preloads.votes;

@@ -148,7 +148,7 @@ export async function mongoInsert(collection, item, user)
 	item.DateCreated = now;
 	item.DateUpdated = now;
 	if (user)
-		item.Owner = user._id;
+		item.Owner = user._id.toString();
 	return await collection.insertOne(item);
 }
 

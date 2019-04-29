@@ -1,0 +1,50 @@
+.container
+{
+    max-width: 980px;
+    margin-left: auto;
+    margin-right: auto;    
+}
+
+.editGrid
+{
+    display: grid;
+    justify-items: center;    
+}
+
+.contentEditor
+{
+    margin: 10px;
+}
+
+.buttonsContainer
+{
+    display: flex;
+    flex-direction: row;
+}
+
+.validationFail
+{
+    border: red;
+    border-width: 2px;
+    border-style: solid;
+}
+
+.modalContainer
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.modalText
+{
+    text-align: center;
+    font-weight: 600;
+}
+
+.modalButtons
+{
+    display: flex;
+    flex-direction: row;
+    width: 600px;
+}

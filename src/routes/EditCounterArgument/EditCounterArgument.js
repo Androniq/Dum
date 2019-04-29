@@ -87,7 +87,7 @@ async sendProposal()
     cargument.Article = argument.Article;
     var text = JSON.stringify(cargument);
   
-    var res = await this.props.context.fetch('/api/proposeCounterArgument', {method:'POST', body: text, headers: { "Content-Type": "application/json" }});
+    var res = await this.props.context.fetch('/api/propose', {method:'POST', body: text, headers: { "Content-Type": "application/json" }});
     var resj = await res.json();
     if (resj.success)
     {

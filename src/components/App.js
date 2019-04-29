@@ -22,6 +22,7 @@ import EditCounterArgument from '../routes/EditCounterArgument/EditCounterArgume
 import ViewProfile from '../routes/ViewProfile/ViewProfile';
 import ViewChange from '../routes/ViewChange/ViewChange';
 import ViewHistory from '../routes/ViewHistory/ViewHistory';
+import ProposeArticle from '../routes/ProposeArticle/ProposeArticle';
 
 const ContextType =
 {
@@ -74,6 +75,7 @@ class App extends React.Component
           <Route path='/confirm/:token' render={Confirm(context)} />
           <Route path='/notifications' render={Notifications(context)} />
           <Route path='/approvals' render={Approvals(context)} />
+          <Route path='/proposeArticle' render={ProposeArticle(context)} />
           <Route path='/editBlog' render={EditBlog(context)} />
           <Route path='/eventLog' render={EventLog(context)} />
           <Route path='/userList' render={UserList(context)} />
