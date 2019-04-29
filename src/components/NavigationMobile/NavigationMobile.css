@@ -1,0 +1,50 @@
+.root
+{
+    background: lightgray;
+    width: 100%;
+}
+
+.container
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.item
+{
+    flex: 1;
+    height: 40px;
+}
+
+.link
+{
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.userPanel
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.userpic
+{
+    width: 32px;
+    height: 32px;
+    max-width: 32px;
+    max-height: 32px;
+    min-width: 32px;
+    min-height: 32px;
+    border-radius: 50%;
+    margin: 3px;
+}
+
+.userName
+{
+    font-weight: bold;
+}

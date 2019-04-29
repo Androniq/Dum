@@ -1,0 +1,70 @@
+/**
+ * React Starter Kit (https://www.reactstarterkit.com/)
+ *
+ * Copyright © 2014-present Kriasoft, LLC. All rights reserved.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE.txt file in the root directory of this source tree.
+ */
+
+ @import '../variables.css';
+
+ :root {
+   --brand-color: #61dafb;
+ }
+ 
+ .root {
+   background: #fff;
+   color: #000;
+   width: 980px;
+   margin: 0 auto;
+   align-items: center;
+ }
+ 
+ .container
+ {
+   min-height: 80px;  
+   width: 100%;
+   display: flex;
+   flex-direction: row;
+ }
+ 
+ .brand {
+   color: color(var(--brand-color) lightness(+10%));
+   text-decoration: none;
+   font-size: 1.75em; /* ~28px */
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   flex-grow: 1;
+ }
+ 
+ .brandTxt {
+   margin-left: 10px;
+   font-weight: bold;
+ }
+ 
+ .banner {
+   text-align: center;
+ }
+ 
+ .bannerTitle {
+   margin: 0;
+   padding: 10px;
+   font-weight: normal;
+   font-size: 4em;
+   line-height: 1em;
+ }
+ 
+ .bannerDesc {	
+   padding: 0;
+   color: rgba(255, 255, 255, 0.5);
+   font-size: 1.25em;
+   margin: 0;
+ }
+ 
+ .navigation
+ {
+   flex-grow: 1;
+   align-self: flex-end;
+ }

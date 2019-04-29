@@ -1,0 +1,64 @@
+.root
+{
+    background: lightblue;
+}
+
+.container
+{
+    display: flex;    
+    align-items: center;        
+    justify-items: stretch;
+}
+
+.brand
+{
+    flex: 1;
+    text-decoration: none;
+}
+
+.item1
+{
+    flex: 1;
+}
+
+.item2
+{
+    flex: 1;
+    text-decoration: none;
+}
+
+.item3
+{
+    flex: 1;
+}
+
+.menuContainer
+{
+    background: grey;
+    width: 100%;
+    display: flex;
+}
+
+.expandableMenu
+{
+    overflow: hidden;
+    width: 100%;
+}
+
+.visible
+{
+    transition: height 0.5s ease-in-out;   
+}
+
+.invisible
+{
+    height: 0px;
+    transition: height 0.5s ease-in-out;   
+}
+
+.brandTxt
+{
+    font-weight: bold;
+    font-size: 24px;
+    color: black;
+}

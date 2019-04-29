@@ -44,7 +44,7 @@ class Navigation extends React.Component
           ) : null}
         </div>
         <span className={s.spacer}> | </span>
-        <div className={this.props.context.isMobile ? s.userPanelMobile : s.userPanel}>
+        <div className={s.userPanel}>
           {this.props.context.user ? (
             <React.Fragment>
               <Link className={s.link} to="/account">
