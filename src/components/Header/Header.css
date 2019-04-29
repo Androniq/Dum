@@ -29,6 +29,14 @@
   flex-direction: row;
 }
 
+.containerMobile
+{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .brand {
   color: color(var(--brand-color) lightness(+10%));
   text-decoration: none;

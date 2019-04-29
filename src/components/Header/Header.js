@@ -15,6 +15,8 @@ import Navigation from '../Navigation';
 import logoUrl from './logo-small.png';
 import logoUrl2x from './logo-small@2x.png';
 import logo from './logo.png';
+import { BrowserView, MobileView, isMobile } from 'react-device-detect';
+import BlueButton from '../BlueButton/BlueButton';
 
 class Header extends React.Component
 {
@@ -27,7 +29,7 @@ class Header extends React.Component
   {
     return (
       <div className={s.root}>
-        <div className={s.container}>
+        <div className={isMobile ? s.containerMobile : s.container}>
           <Link className={s.brand} to="/">
             <img
               src={logo}
@@ -38,7 +40,16 @@ class Header extends React.Component
             />
             <span className={s.brandTxt}>ДУМ</span>
           </Link>
-          <Navigation className={s.navigation} context={this.props.context} />
+          <BrowserView>
+            <Navigation className={s.navigation} context={this.props.context} />
+          </BrowserView>
+          <MobileView>
+            <Collapsible trigger={(
+              <BlueButton>+</BlueButton>
+            )}>
+              <Navigation className={s.navigation} context={this.props.context} />
+            </Collapsible>
+          </MobileView>
         </div>
       </div>
     );

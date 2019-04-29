@@ -13,6 +13,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Navigation.css';
 import { Link } from 'react-router-dom';
 import { checkPrivilege, USER_LEVEL_MODERATOR, DEFAULT_USERPIC, USER_LEVEL_MEMBER } from '../../utility';
+import { isMobile } from 'react-device-detect';
 
 class Navigation extends React.Component
 {
@@ -44,7 +45,7 @@ class Navigation extends React.Component
           ) : null}
         </div>
         <span className={s.spacer}> | </span>
-        <div className={s.userPanel}>
+        <div className={isMobile ? s.userPanelMobile : s.userPanel}>
           {this.props.context.user ? (
             <React.Fragment>
               <Link className={s.link} to="/account">
