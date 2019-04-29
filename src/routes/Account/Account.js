@@ -290,6 +290,12 @@ class Account extends React.Component
         var hasAvatar = user.photo && user.photo !== DEFAULT_USERPIC;
 
         var role = user.confirmed ? user.role : 'visitor';
+
+        var innerRow1 = cx(s.innerRow1, this.props.context.isMobile ? s.innerRowMobile : null);
+        var innerRow2 = cx(s.innerRow2, this.props.context.isMobile ? s.innerRowMobile : null);
+        var innerRow3 = cx(s.innerRow3, this.props.context.isMobile ? s.innerRowMobile : null);
+        var inputField = this.props.context.isMobile ? s.inputFieldMobile : s.inputField;
+
         return (
         <div className={s.container}>
             <Helmet>
@@ -316,12 +322,12 @@ class Account extends React.Component
                             <BlueButton className={cx(s.row1, s.column3)}>Змінити</BlueButton>
                     )}>
                         <div className={s.grid}>
-                            <div className={cx(s.flex, s.innerRow1)}>
+                            <div className={cx(s.flex, innerRow1)}>
                                 <span className={s.label}>Введіть адресу електронної пошти:</span>
-                                <TextInput noPopup className={s.inputField} value={this.props.context.user.email}
+                                <TextInput noPopup className={inputField} value={this.props.context.user.email}
                                     onSave={this.updateEmail.bind(this)} />
                             </div>
-                            <div className={cx(s.flex, s.innerRow2)}>
+                            <div className={cx(s.flex, innerRow2)}>
                                 <BlueButton onClick={this.saveEmail.bind(this)}>Гаразд</BlueButton>
                                 <BlueButton onClick={this.onEmailClose.bind(this)}>Скасувати</BlueButton>
                             </div>
@@ -334,12 +340,12 @@ class Account extends React.Component
                         <BlueButton className={cx(s.row2, s.column3)}>Змінити</BlueButton>
                     )}>
                         <div className={s.grid}>
-                            <div className={cx(s.flex, s.innerRow1)}>
+                            <div className={cx(s.flex, innerRow1)}>
                                 <span className={s.label}>Введіть ім’я для відображення:</span>
-                                <TextInput noPopup className={s.inputField} value={this.props.context.user.displayName}
+                                <TextInput noPopup className={inputField} value={this.props.context.user.displayName}
                                     onSave={this.updateUsername.bind(this)} />
                             </div>
-                            <div className={cx(s.flex, s.innerRow2)}>
+                            <div className={cx(s.flex, innerRow2)}>
                                 <BlueButton onClick={this.saveUsername.bind(this)}>Гаразд</BlueButton>
                                 <BlueButton onClick={this.onUsernameClose.bind(this)}>Скасувати</BlueButton>
                             </div>
@@ -351,19 +357,19 @@ class Account extends React.Component
                             <BlueButton className={cx(s.row3, s.column23)}>Змінити пароль</BlueButton>
                         )}>
                         <div className={s.grid}>
-                            <div className={cx(s.grid, s.innerRow1)}>
+                            <div className={cx(s.grid, innerRow1)}>
                                 {user.password && user.password.length ? (
                                     <React.Fragment>
                                         <span className={cx(s.label, s.innerRow1, s.column1)}>Поточний пароль:</span>
-                                        <TextInput noPopup className={cx(s.inputField, s.innerRow1, s.column2)} type="password"
+                                        <TextInput noPopup className={cx(inputField, s.innerRow1, s.column2)} type="password"
                                             onSave={this.updatePassword.bind(this)} />
                                     </React.Fragment>
                                 ) : null}
-                                <span className={cx(s.label, s.innerRow2, s.column1)}>Новий пароль:</span>
-                                <TextInput noPopup className={cx(s.inputField, s.innerRow2, s.column2)} type="password"
+                                <span className={cx(s.label, innerRow2, s.column1)}>Новий пароль:</span>
+                                <TextInput noPopup className={cx(inputField, s.innerRow2, s.column2)} type="password"
                                     onSave={this.updatePasswordN1.bind(this)} />
-                                <span className={cx(s.label, s.innerRow3, s.column1)}>Повторіть новий пароль:</span>
-                                <TextInput noPopup className={cx(s.inputField, s.innerRow3, s.column2)} type="password"
+                                <span className={cx(s.label, innerRow3, s.column1)}>Повторіть новий пароль:</span>
+                                <TextInput noPopup className={cx(inputField, s.innerRow3, s.column2)} type="password"
                                     onSave={this.updatePasswordN2.bind(this)} />
                             </div>
                             <div className={cx(s.flex, s.innerRow2)}>
