@@ -129,6 +129,42 @@
     grid-column: 2;
 }
 
+.pvButtonAm
+{
+    grid-row: 1;
+    grid-column: 1;
+}
+
+.pvButtonABm
+{
+    grid-row: 2;
+    grid-column: 1;
+}
+
+.pvButtonSm
+{
+    grid-row: 3;
+    grid-column: 1;
+}
+
+.pvButtonEQm
+{
+    grid-row: 4;
+    grid-column: 1;
+}
+
+.pvButtonBm
+{
+    grid-row: 5;
+    grid-column: 1;
+}
+
+.pvButtonBAm
+{
+    grid-row: 6;
+    grid-column: 1;
+}
+
 .pvButtonCurrent
 {
     box-shadow: 0 0 3pt 2pt #4080ff;

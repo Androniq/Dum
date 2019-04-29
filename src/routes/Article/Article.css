@@ -7,6 +7,16 @@
     flex-direction: column;
 }
 
+.infoAreaMobile
+{
+    margin: 0px auto;
+    max-width: 980px;
+    min-width: 240px;
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+}
+
 .header
 {
     text-align: center;
@@ -20,6 +30,12 @@
     display: flex;
     border-radius: 20px;
     width: 100%;
+}
+
+.tokenHeaderMobile
+{
+    flex-wrap: wrap;
+    width: 90%;
 }
 
 .tokenBase
@@ -55,6 +71,12 @@
 .buttonContainer
 {
     display: flex;
+    flex-wrap: wrap;
+}
+
+.button
+{
+    flex: 1;
 }
 
 .textNotAuthorized
@@ -73,7 +95,12 @@
 .pvContainer
 {
     display: grid;
-    grid-gap: 6px;    
+    grid-gap: 6px;
+}
+
+.pvButton
+{
+
 }
 
 .prioritiesContainer

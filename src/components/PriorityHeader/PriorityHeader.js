@@ -18,7 +18,7 @@ class PriorityHeader extends React.Component {
         <div className={s.priorityHeader}>
             <span className={s.priorityTitle}>{this.props.priorityTitle}:</span>
             {this.props.popularOverride ? (
-                <span className={s.priorityPopularOverride}>(популярне голосування)</span>
+                <span className={s.priorityPopularOverride}>{this.props.context.isMobile?"(ПГ)":"(популярне голосування)"}</span>
             ) : ""}
             <span className={s.priorityVoteFor}>{this.props.voteFor}</span>
             <img src="/images/expandArrow.png" className={classnames(s.priorityCollapseIndicator,

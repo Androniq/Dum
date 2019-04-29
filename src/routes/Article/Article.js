@@ -127,7 +127,7 @@ voteButton(code)
   var opt = this.getVoteOption(code);
   var hint = opt.vote.HintTemplate.replace('%A%', this.props.data.article.ShortA).replace('%B%', this.props.data.article.ShortB);
   return (
-    <VoteButton code={code} ownVote={this.state.ownVote} onClick={this.clickVote(code)} hint={hint}>
+    <VoteButton code={code} ownVote={this.state.ownVote} onClick={this.clickVote(code)} hint={hint} context={this.props.context}>
       {opt.vote.ShortestDescription}
     </VoteButton>
   );
@@ -159,14 +159,15 @@ clickArgument()
 
   render()
   {
+    var isMobile = this.props.context.isMobile;
     return (
       <React.Fragment>
         <Helmet>
           <title>{this.props.data.article.PageTitle}</title>
           <meta name="keywords" content={this.getKeywords()} />
         </Helmet>
-        <div className={s.infoArea}>
-          <div className={s.tokenHeader}
+        <div className={this.props.context.isMobile ? s.infoAreaMobile : s.infoArea}>
+          <div className={classnames(s.tokenHeader, isMobile ? s.tokenHeaderMobile : null)}
             style={{ backgroundColor: this.props.data.result.ColorCode, color: this.props.data.result.WhiteText ? "white" : "black" }}>
             <span className={classnames(s.tokenBase, s.tokenA)}>{this.props.data.article.TokenA}</span>
             <span className={classnames(s.tokenBase, s.tokenB)}>{this.props.data.article.TokenB}</span>
@@ -178,7 +179,7 @@ clickArgument()
           <UserContext.Consumer>
             {context => context.user ? context.user.confirmed ? !context.user.blocked ? (
               <div className={s.buttonContainer}>
-                <Popup trigger={<BlueButton>Голосувати!</BlueButton>} position="top center"
+                <Popup trigger={<BlueButton className={s.button}>Голосувати!</BlueButton>} position="top center"
                   open={this.state.votePopupOpen} onOpen={this.onVotePopupOpen.bind(this)} onClosed={this.onVotePopupClose.bind(this)} modal>
                   <div className={s.pvContainer}>
                     {this.voteButton('A')}
@@ -189,12 +190,12 @@ clickArgument()
                     {this.voteButton('S')}
                   </div>
                 </Popup>
-                <BlueButton onClick={this.clickArgument.bind(this)}>Аргументувати...</BlueButton>
+                <BlueButton onClick={this.clickArgument.bind(this)} className={s.button}>Аргументувати...</BlueButton>
                 {checkPrivilege(context.user, USER_LEVEL_MODERATOR) ? (
-                  <BlueButton onClick={this.clickEdit.bind(this)}>Редагувати</BlueButton>
+                  <BlueButton onClick={this.clickEdit.bind(this)} className={s.button}>Редагувати</BlueButton>
                 ) : ""}
                 {checkPrivilege(context.user, USER_LEVEL_ADMIN) ? (
-                  <BlueButton onClick={this.gotoHistory.bind(this)}>Історія змін</BlueButton>
+                  <BlueButton onClick={this.gotoHistory.bind(this)} className={s.button}>Історія змін</BlueButton>
                 ) : ""}
               </div>
             ) : (
@@ -218,10 +219,10 @@ clickArgument()
                   <div key={priority.priority._id} className={s.priorityContainer}>
                     <Collapsible trigger={(
                       <PriorityHeader priorityTitle={priority.priority.Title} popularOverride={priority.priority.popularOverride}
-                        voteFor={priority.voteFor} isOpen={false} />
+                        voteFor={priority.voteFor} isOpen={false} context={this.props.context} />
                     )} triggerWhenOpen={(
                       <PriorityHeader priorityTitle={priority.priority.Title} popularOverride={priority.priority.popularOverride}
-                        voteFor={priority.voteFor} isOpen={true} />
+                        voteFor={priority.voteFor} isOpen={true} context={this.props.context} />
                     )}
                       easing="ease">
                       <div className={s.priorityArgs}>

@@ -47,6 +47,18 @@ class VoteButton extends React.Component
 
     getButtonStyle(code)
     {
+        if (this.props.context.isMobile)
+        {
+            switch (code)
+            {
+                case 'A': return s.pvButtonAm;
+                case 'AB': return s.pvButtonABm;
+                case 'EQ': return s.pvButtonEQm;
+                case 'BA': return s.pvButtonBAm;
+                case 'B': return s.pvButtonBm;
+                case 'S': return s.pvButtonSm;
+            }
+        }
         switch (code)
         {
             case 'A': return s.pvButtonA;
@@ -70,6 +82,20 @@ class VoteButton extends React.Component
 
     getPopupPosition(code)
 	{
+        if (this.props.context.isMobile)
+        {
+            switch (code)
+            {
+                case 'A':
+                case 'AB':
+                case 'S':;
+                    return "top center";
+                case 'EQ':
+                case 'BA':
+                case 'B':
+                    return "bottom center";
+            }
+        }
 		switch (code)
 		{
 			case 'A':
