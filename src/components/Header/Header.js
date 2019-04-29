@@ -29,7 +29,7 @@ class Header extends React.Component
   render()
   {
     return (
-      <div className={s.root}>
+      <div className={isMobile ? s.rootMobile : s.root}>
         <div className={isMobile ? s.containerMobile : s.container}>
           <Link className={s.brand} to="/">
             <img
@@ -45,6 +45,7 @@ class Header extends React.Component
             <Navigation className={s.navigation} context={this.props.context} />
           </BrowserView>
           <MobileView>
+            <span>{isMobile}</span>
             <Collapsible trigger={(
               <BlueButton className={s.expander}>+</BlueButton>
             )} triggerWhenOpen={(

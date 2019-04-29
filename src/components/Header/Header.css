@@ -21,6 +21,14 @@
   align-items: center;
 }
 
+.rootMobile {
+  background: #fff;
+  color: #000;
+  width: 100%;
+  margin: 0 auto;
+  align-items: center;
+}
+
 .container
 {
   min-height: 80px;  
