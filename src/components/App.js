@@ -23,7 +23,7 @@ import ViewProfile from '../routes/ViewProfile/ViewProfile';
 import ViewChange from '../routes/ViewChange/ViewChange';
 import ViewHistory from '../routes/ViewHistory/ViewHistory';
 import ProposeArticle from '../routes/ProposeArticle/ProposeArticle';
-import { MobileView, BrowserView, isMobile } from 'react-device-detect';
+import { MobileView, BrowserView, getUA } from 'react-device-detect';
 
 const ContextType =
 {
@@ -62,7 +62,7 @@ class App extends React.Component
   render()
   {
     var context = this.props.context;
-    context.isMobile = isMobile;
+    context.isMobile = getUA.indexOf("Mobile") != -1;
     return (
       <React.Fragment>
         <Switch>
