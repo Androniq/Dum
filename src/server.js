@@ -70,6 +70,7 @@ import { getChange } from './serverLogic/getChange';
 import getHistory from './serverLogic/getHistory';
 import getEventLog from './serverLogic/getEventLog';
 import restoreArticle from './serverLogic/restoreArticle';
+import searchArticles from './serverLogic/searchArticles';
 
 process.env.IS_SERVER=true;
 
@@ -457,6 +458,7 @@ app.get('/api/whoami', async (req, res) =>
 });
 
 processApiGet('/api/getArticles', getArticles);
+processApiGet('/api/searchArticles', searchArticles);
 processApiGet('/api/article/:id', getArticleInfo);
 processApiGet('/api/getArticle/:id', getArticle);
 processApiGet('/api/getNewArgument/:id', getNewArgument);

@@ -14,12 +14,45 @@ import s from './Home.css';
 import withEverything from '../../withEverything';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import TextInput from '../../components/TextInput/TextInput';
 
 class Home extends React.Component
 {
+  constructor(props)
+  {
+    super(props);
+
+    this.state = 
+    {
+      articles: this.props.data.articles
+    };
+  }
+
   static propTypes =
   {
   };
+
+  async onSearch(term)
+  {
+    if (!term)
+    {
+      this.setState({ articles: this.props.data.articles });
+      return;
+    }
+    var ans = await this.props.context.fetch('/api/searchArticles?q='+term, { method: 'GET' });
+    if (ans.status !== 200)
+    {
+        console.error(ans.status);
+        return;
+    }
+    var json = await ans.json();
+    if (!json.success)
+    {
+        console.error(json.message);
+        return;
+    }
+    this.setState({ articles: json.articles });
+  }
 
   render()
   {
@@ -29,7 +62,8 @@ class Home extends React.Component
           <title>Головна</title>
         </Helmet>
         <div className={s.container}>
-          {this.props.data.articles.map(item => (
+          <TextInput noPopup placeholder="Пошук" onSave={this.onSearch.bind(this)} />
+          {this.state.articles.map(item => (
             <article key={item._id} className={s.newsItem}>
               <h3 className={s.newsTitle}>
                 <Link to={`/article/${item.Url}`}>{item.PageTitle}</Link>
