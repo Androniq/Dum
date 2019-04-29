@@ -15,7 +15,7 @@ import Navigation from '../Navigation';
 import logoUrl from './logo-small.png';
 import logoUrl2x from './logo-small@2x.png';
 import logo from './logo.png';
-import { BrowserView, MobileView } from 'react-device-detect';
+import { BrowserView, MobileView, getUA } from 'react-device-detect';
 import BlueButton from '../BlueButton/BlueButton';
 import Collapsible from 'react-collapsible';
 

@@ -62,7 +62,7 @@ class App extends React.Component
   render()
   {
     var context = this.props.context;
-    context.isMobile = getUA.indexOf("Mobile") != -1;
+    context.isMobile |= getUA.indexOf("Mobile") != -1;
     return (
       <React.Fragment>
         <Switch>
