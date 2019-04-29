@@ -168,6 +168,7 @@ async onDeleteDo()
 
   render()
   {
+    var isMobile = this.props.context.isMobile;
       return (
           <div className={s.editArgumentContainer}>
             <Helmet>
@@ -179,23 +180,23 @@ async onDeleteDo()
             </div>
             <div className={s.editArgumentGrid}>
               <Select
-                className={classnames(s.comboBox, s.grid11, this.state.priorityValidator)}
+                className={classnames(isMobile ? s.comboBoxMobile : s.comboBox, isMobile ? s.grid11m : s.grid11, this.state.priorityValidator)}
                 options={this.props.data.priorityItems}
                 onChange={this.updatePriority.bind(this)}
                 placeholder="Виберіть пріоритет"
                 styles={{placeholder:this.placeholderApplyStyle}}
                 defaultValue={this.props.data.priorityItems.find(it => it.value === this.props.data.argument.Priority)} />
               <Select
-                className={classnames(s.comboBox, s.grid12, this.state.voteValidator)}
+                className={classnames(isMobile ? s.comboBoxMobile : s.comboBox, isMobile ? s.grid12m : s.grid12, this.state.voteValidator)}
                 options={this.props.data.voteItems}
                 onChange={this.updateVote.bind(this)}
                 placeholder="На користь якого варіанту ваш аргумент?"
                 styles={{placeholder:this.placeholderApplyStyle}}
                 defaultValue={this.props.data.voteItems.find(it => it.value === this.props.data.argument.Vote)} />
-              <div className={classnames(s.descriptionBox, s.grid21)}>
+              <div className={classnames(s.descriptionBox, isMobile ? s.grid21m : s.grid21)}>
                 <FormattedText html={this.state.priorityDescription }/>
               </div>
-              <div className={classnames(s.descriptionBox, s.grid22)}>
+              <div className={classnames(s.descriptionBox, isMobile ? s.grid22m : s.grid22)}>
                 <FormattedText html={this.state.voteDescription }/>
               </div>
             </div>
@@ -213,8 +214,8 @@ async onDeleteDo()
               <div className={s.modalContainer}>
                 <span className={s.modalText}>Ви точно бажаєте видалити цей аргумент?</span>
                 <div className={s.modalButtons}>
-                  <BlueButton onClick={this.onDeleteDo.bind(this)}>Так</BlueButton>
-                  <BlueButton onClick={this.onCancelDeletion.bind(this)}>Ні</BlueButton>
+                  <BlueButton className={s.button} onClick={this.onDeleteDo.bind(this)}>Так</BlueButton>
+                  <BlueButton className={s.button} onClick={this.onCancelDeletion.bind(this)}>Ні</BlueButton>
                 </div>
               </div>
             </Popup>
