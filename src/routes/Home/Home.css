@@ -28,6 +28,11 @@
   font-size: 1.5rem;
 }
 
+.searchBox
+{
+  margin: 3px;  
+}
+
 .newsDesc {
   h1,
   h2,

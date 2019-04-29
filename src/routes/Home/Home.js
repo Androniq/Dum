@@ -62,7 +62,7 @@ class Home extends React.Component
           <title>Головна</title>
         </Helmet>
         <div className={s.container}>
-          <TextInput noPopup placeholder="Пошук" onSave={this.onSearch.bind(this)} />
+          <TextInput className={s.searchBox} noPopup placeholder="Пошук" onSave={this.onSearch.bind(this)} />
           {this.state.articles.map(item => (
             <article key={item._id} className={s.newsItem}>
               <h3 className={s.newsTitle}>
