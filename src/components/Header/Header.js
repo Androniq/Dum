@@ -46,10 +46,13 @@ class Header extends React.Component
           </BrowserView>
           <MobileView>
             <Collapsible trigger={(
-              <BlueButton>+</BlueButton>
-            )}>
-              <Navigation className={s.navigation} context={this.props.context} />
-            </Collapsible>
+              <BlueButton className={s.expander}>+</BlueButton>
+            )} triggerWhenOpen={(
+              <React.Fragment>
+                <BlueButton className={s.expander}>-</BlueButton>
+                <Navigation className={s.navigationMobile} context={this.props.context} />
+              </React.Fragment>
+            )} />
           </MobileView>
         </div>
       </div>

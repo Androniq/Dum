@@ -76,3 +76,12 @@
   flex-grow: 1;
   align-self: flex-end;
 }
+
+.navigationMobile
+{
+}
+
+.expander
+{
+  width: 100%;
+}
