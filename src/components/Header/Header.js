@@ -17,6 +17,7 @@ import logoUrl2x from './logo-small@2x.png';
 import logo from './logo.png';
 import { BrowserView, MobileView, isMobile } from 'react-device-detect';
 import BlueButton from '../BlueButton/BlueButton';
+import Collapsible from 'react-collapsible';
 
 class Header extends React.Component
 {
