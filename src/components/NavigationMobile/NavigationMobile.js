@@ -32,7 +32,7 @@ class NavigationMobile extends React.Component
                                 </Link>
                             </div>
                             <div className={s.item}>
-                                <Link className={s.link} to="/logout">Вийти</Link>
+                                <a className={s.link} href={"/logout?returnTo=" + this.props.context.pathname}>Вийти</a>
                             </div>
                         </React.Fragment>
                     ) : (
