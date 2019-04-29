@@ -532,11 +532,15 @@ app.get('*', async (req, res, next) => {
       graphql,
     });
 
+    var userAgent = req.headers["user-agent"];
+    var isMobile = (userAgent && userAgent.indexOf("Mobile") != -1) ? true : false;
+
     // Global (context) variables that can be easily accessed from any React component
     // https://facebook.github.io/react/docs/context.html
     const context = {
       insertCss,
       fetch,
+      isMobile,
       user: getUser(req),
       // The twins below are wild, be careful!
       pathname: req.path,

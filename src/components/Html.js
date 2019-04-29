@@ -12,6 +12,7 @@ import PropTypes from 'prop-types';
 import serialize from 'serialize-javascript';
 import config from '../config';
 import { Helmet } from 'react-helmet';
+import { MobileView, BrowserView } from 'react-device-detect';
 
 /* eslint-disable react/no-danger */
 

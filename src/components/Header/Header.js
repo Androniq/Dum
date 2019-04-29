@@ -15,7 +15,7 @@ import Navigation from '../Navigation';
 import logoUrl from './logo-small.png';
 import logoUrl2x from './logo-small@2x.png';
 import logo from './logo.png';
-import { BrowserView, MobileView, isMobile } from 'react-device-detect';
+import { BrowserView, MobileView } from 'react-device-detect';
 import BlueButton from '../BlueButton/BlueButton';
 import Collapsible from 'react-collapsible';
 
@@ -27,10 +27,10 @@ class Header extends React.Component
   }
 
   render()
-  {
+  {        
     return (
-      <div className={isMobile ? s.rootMobile : s.root}>
-        <div className={isMobile ? s.containerMobile : s.container}>
+      <div className={this.props.context.isMobile ? s.rootMobile : s.root}>
+        <div className={this.props.context.isMobile ? s.containerMobile : s.container}>
           <Link className={s.brand} to="/">
             <img
               src={logo}
@@ -45,7 +45,6 @@ class Header extends React.Component
             <Navigation className={s.navigation} context={this.props.context} />
           </BrowserView>
           <MobileView>
-            <span>{isMobile}</span>
             <Collapsible trigger={(
               <BlueButton className={s.expander}>+</BlueButton>
             )} triggerWhenOpen={(

@@ -23,6 +23,7 @@ import ViewProfile from '../routes/ViewProfile/ViewProfile';
 import ViewChange from '../routes/ViewChange/ViewChange';
 import ViewHistory from '../routes/ViewHistory/ViewHistory';
 import ProposeArticle from '../routes/ProposeArticle/ProposeArticle';
+import { MobileView, BrowserView, isMobile } from 'react-device-detect';
 
 const ContextType =
 {
@@ -40,7 +41,8 @@ const ContextType =
   rehydrateState: PropTypes.object,
   setLayoutState: PropTypes.func,
   action: PropTypes.func,
-  url: PropTypes.string
+  url: PropTypes.string,
+  isMobile: PropTypes.bool
 };
 
 class App extends React.Component
@@ -60,7 +62,8 @@ class App extends React.Component
   render()
   {
     var context = this.props.context;
-    return (      
+    context.isMobile = isMobile;
+    return (
       <React.Fragment>
         <Switch>
           <Route path='/' exact render={Home(context)} />
