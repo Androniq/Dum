@@ -199,3 +199,12 @@
     flex: 1;
     min-width: 200px;
 }
+
+.ynButton
+{    
+}
+
+.ynButtonMobile
+{
+    width: 100%;
+}

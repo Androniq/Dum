@@ -295,6 +295,7 @@ class Account extends React.Component
         var innerRow2 = cx(s.innerRow2, this.props.context.isMobile ? s.innerRowMobile : null);
         var innerRow3 = cx(s.innerRow3, this.props.context.isMobile ? s.innerRowMobile : null);
         var inputField = this.props.context.isMobile ? s.inputFieldMobile : s.inputField;
+        var ynButton = this.props.context.isMobile ? s.ynButtonMobile : s.ynButton;
 
         return (
         <div className={s.container}>
@@ -328,8 +329,8 @@ class Account extends React.Component
                                     onSave={this.updateEmail.bind(this)} />
                             </div>
                             <div className={cx(s.flex, innerRow2)}>
-                                <BlueButton onClick={this.saveEmail.bind(this)}>Гаразд</BlueButton>
-                                <BlueButton onClick={this.onEmailClose.bind(this)}>Скасувати</BlueButton>
+                                <BlueButton className={ynButton} onClick={this.saveEmail.bind(this)}>Гаразд</BlueButton>
+                                <BlueButton className={ynButton} onClick={this.onEmailClose.bind(this)}>Скасувати</BlueButton>
                             </div>
                         </div>
                     </Popup>                    
@@ -346,8 +347,8 @@ class Account extends React.Component
                                     onSave={this.updateUsername.bind(this)} />
                             </div>
                             <div className={cx(s.flex, innerRow2)}>
-                                <BlueButton onClick={this.saveUsername.bind(this)}>Гаразд</BlueButton>
-                                <BlueButton onClick={this.onUsernameClose.bind(this)}>Скасувати</BlueButton>
+                                <BlueButton className={ynButton} onClick={this.saveUsername.bind(this)}>Гаразд</BlueButton>
+                                <BlueButton className={ynButton} onClick={this.onUsernameClose.bind(this)}>Скасувати</BlueButton>
                             </div>
                         </div>
                     </Popup>
@@ -373,8 +374,8 @@ class Account extends React.Component
                                     onSave={this.updatePasswordN2.bind(this)} />
                             </div>
                             <div className={cx(s.flex, s.innerRow2)}>
-                                <BlueButton onClick={this.savePassword.bind(this)}>Гаразд</BlueButton>
-                                <BlueButton onClick={this.onPasswordClose.bind(this)}>Скасувати</BlueButton>
+                                <BlueButton className={ynButton} onClick={this.savePassword.bind(this)}>Гаразд</BlueButton>
+                                <BlueButton className={ynButton} onClick={this.onPasswordClose.bind(this)}>Скасувати</BlueButton>
                             </div>
                         </div>
                     </Popup>
