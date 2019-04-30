@@ -27,7 +27,7 @@ export default async function propose(user, arg)
     if (arg._id)
         delete arg._id;
 
-    arg.User = user;
+    arg.User = user._id;
 
     await mongoInsert(mongoAsync.dbCollections.proposedArguments, arg, user);
 
