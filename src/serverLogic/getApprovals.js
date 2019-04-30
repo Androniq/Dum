@@ -52,7 +52,7 @@ export default async function getApprovals(user)
     articles.forEach(article => {
         delete article.Content;
     });    
-    var users = await mongoFind(mongoAsync.dbCollections.users, userIds, { projection: { "photo": 1, "displayName": 1 } });
+    var users = await mongoFind(mongoAsync.dbCollections.users, userIds, { "photo": 1, "displayName": 1 });
     var votes = mongoAsync.preloads.votes;
     var priorities = mongoAsync.preloads.priorities;
     votes.forEach(vote =>
