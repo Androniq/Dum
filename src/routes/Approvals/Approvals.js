@@ -53,7 +53,10 @@ class Approvals extends React.Component
         this.props.data.proposedArgs.forEach(proposedArg =>
             {
                 var articleId = proposedArg.Article;
-                if (articleId)
+                var userId = proposedArg.Owner;
+                var user = this.props.data.users.find(it => it._id.toString() === userId);
+                proposedArg.User = user;
+            if (articleId)
                 {
                     var article = this.props.data.articles.find(it => it._id.toString() === articleId);
                     if (!article)
@@ -69,9 +72,6 @@ class Approvals extends React.Component
                     var priorityId = proposedArg.Priority;
                     var priority = this.props.data.priorities.find(it => it._id.toString() == priorityId);
                     proposedArg.PriorityInst = priority;
-                    var userId = proposedArg.Owner;
-                    var user = this.props.data.users.find(it => it._id.toString() === userId);
-                    proposedArg.User = user;
 
                     if (proposedArg.RootId)
                     {
