@@ -43,7 +43,7 @@ class Html extends React.Component {
           <meta charSet="utf-8" />
           <meta httpEquiv="x-ua-compatible" content="ie=edge" />
           {helmet.title.toComponent()}
-          <meta name="description" content={description} />
+          <meta name="description" content={description || "ДУМ – демократична українська мова. Сайт про правила української мови, граматику, орфографію, синтаксис, транслітерацію, типові мовні помилки та про епістемологію мови."} />
           {helmet.meta.toComponent()}
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           {scripts.map(script => (

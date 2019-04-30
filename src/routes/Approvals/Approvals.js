@@ -56,7 +56,7 @@ class Approvals extends React.Component
                 var userId = proposedArg.Owner;
                 var user = this.props.data.users.find(it => it._id.toString() === userId);
                 proposedArg.User = user;
-            if (articleId)
+                if (articleId)
                 {
                     var article = this.props.data.articles.find(it => it._id.toString() === articleId);
                     if (!article)

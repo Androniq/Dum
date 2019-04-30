@@ -64,7 +64,7 @@ class Home extends React.Component
         <div className={s.container}>
           <TextInput className={s.searchBox} noPopup placeholder="Пошук" onSave={this.onSearch.bind(this)} />
           {this.state.articles.map(item => (
-            <article key={item._id} className={s.newsItem}>
+            <article key={item.Url} className={s.newsItem}>
               <h3 className={s.newsTitle}>
                 <Link to={`/article/${item.Url}`}>{item.PageTitle}</Link>
               </h3>
