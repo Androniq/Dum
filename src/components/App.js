@@ -24,6 +24,7 @@ import ViewChange from '../routes/ViewChange/ViewChange';
 import ViewHistory from '../routes/ViewHistory/ViewHistory';
 import ProposeArticle from '../routes/ProposeArticle/ProposeArticle';
 import { getUA } from 'react-device-detect';
+import Privacy from '../routes/Privacy/Privacy';
 
 const ContextType =
 {
@@ -86,6 +87,7 @@ class App extends React.Component
           <Route path='/viewProfile/:id' render={ViewProfile(context)} />
           <Route path='/viewChange/:id' render={ViewChange(context)} />
           <Route path='/viewHistory/:id' render={ViewHistory(context)} />
+          <Route path='/privacy' render={Privacy(context)} />
           <Route path='/loading' render={LoadingWithEverything(context)} />
           <Route render={ErrorPageWithEverything(context)} />
         </Switch>

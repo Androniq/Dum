@@ -23,16 +23,12 @@ class Footer extends React.Component {
             Домівка
           </Link>
           <span className={s.spacer}>·</span>
-          <Link className={s.link} to="/admin">
-            Адмінка
-          </Link>
-          <span className={s.spacer}>·</span>
           <Link className={s.link} to="/privacy">
             Приватність
           </Link>
           <span className={s.spacer}>·</span>
           <Link className={s.link} to="/not-found">
-            Інше
+            404
           </Link>
         </div>
       </div>
