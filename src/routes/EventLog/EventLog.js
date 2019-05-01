@@ -90,7 +90,7 @@ class EventLog extends React.Component
                         <div key={item._id} className={s.historyItem}>
                             <img className={s.userpic} src={this.getPhoto(item.User, this.props.data.users)} />
                             <span className={s.username}>{this.getName(item.User, this.props.data.users)}</span>
-                            <span className={s.timestamp}>{this.userFriendlyTimestamp(new Date(item.Time), now)}</span>
+                            <span className={s.timestamp}>{this.userFriendlyTimestamp(new Date(item.Time).toLocaleDateString('uk-UA'), now)}</span>
                             <span className={s.action}>{this.localAction(item.Action)}</span>
                             <span className={s.title}>{this.getTitle(item.Article, this.props.data.articles)}</span>
                             <div className={s.gotoChangeBox}>
