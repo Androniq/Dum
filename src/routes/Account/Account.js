@@ -273,7 +273,6 @@ class Account extends React.Component
         }
         while (data && !data.done)
 
-        console.info(buffer.length);
         fileDownload(this.constructArray(buffer), 'backup.zip', 'application/zip');
     }
 
