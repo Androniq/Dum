@@ -71,6 +71,8 @@ import getHistory from './serverLogic/getHistory';
 import getEventLog from './serverLogic/getEventLog';
 import restoreArticle from './serverLogic/restoreArticle';
 import searchArticles from './serverLogic/searchArticles';
+import { uploadInit } from './serverLogic/uploadInit';
+import { uploadChunk } from './serverLogic/uploadChunk';
 
 process.env.IS_SERVER=true;
 
@@ -488,6 +490,8 @@ processApiPost('/api/setRole', setRole);
 processApiPost('/api/upload', upload, { file: true, userUpdated: true });
 processApiPost('/api/restoreArticle/:id', restoreArticle);
 processApiPost('/api/uploadBackup', uploadBackup, { file: true, userUpdated: true });
+processApiPost('/api/uploadInit', uploadInit, { file: true });
+processApiPost('/api/uploadChunk', uploadChunk, { file: true });
 
 processApiDelete('/api/rejectProposal/:id', rejectProposal);
 processApiDelete('/api/deleteArgument/:id', deleteArgument);
