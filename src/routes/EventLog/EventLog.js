@@ -34,7 +34,7 @@ class EventLog extends React.Component
         diff /= 60; // hours
         if (diff <= 23)
             return Math.floor(diff) + " годин" + this.numericEnding(diff) + " тому";
-        return stamp.toLocaleDateString();
+        return stamp.toLocaleDateString('uk-UA');
     }
 
     localAction(action)
