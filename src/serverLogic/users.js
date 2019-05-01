@@ -50,7 +50,7 @@ export async function setMe(user, setters)
     if (projection.photo && user.photo && user.photo.startsWith('/upload/'))
     {
         // delete the old userpic
-        mongoAsync.fs.delete(user.photo.substring(8),err => { if (err) console.error(err); });
+        await mongoAsync.fs.delete(user.photo.substring(8),err => { if (err) console.error(err); });
     }
     await mongoUpdate(mongoAsync.dbCollections.users, projection);
     return { success: true };
