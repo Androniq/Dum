@@ -40,7 +40,7 @@ export async function upload(user, req, params, { ext })
     var name = generateToken() + '.' + ext;
     var path = '/upload/' + name;
     var stream = mongoAsync.fs.openUploadStreamWithId(name, name);
-    req.pipe(stream);
+    await req.pipe(stream);
     await mongoUpdate('users', { _id: user._id, photo: path });
     return { success: true, path };
 }
