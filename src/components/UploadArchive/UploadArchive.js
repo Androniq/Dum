@@ -32,11 +32,28 @@ class UploadArchive extends React.Component
         reader.onload = async () =>
         {
             const fileAsArrayBuffer = reader.result;
-            var resp = await this.props.context.fetch('/api/uploadBackup?ext='+ext, { method: 'POST', body: fileAsArrayBuffer,
-                headers: { "Content-Type": "application/octet-stream" }});
-            var rj = await resp.json();
-            if (rj.success)
+            const chunkSize = 1024;
+            var chunkNumber = Math.ceil(fileAsArrayBuffer.byteLength / chunkSize);
+            var chunks = [];
+            for (var index = 0; index < chunkNumber; index++)
             {
+                chunks.push(fileAsArrayBuffer.slice(chunkSize*index, Math.min(chunkSize*(index+1), fileAsArrayBuffer.byteLength)));
+            }
+            var resp = await this.props.context.fetch('/api/uploadInit?chunkSize='+chunkSize+'&chunkNumber='+chunkNumber
+                +'&totalSize='+fileAsArrayBuffer.byteLength+'&operation=backup&ext='+ext, { method: 'POST',
+                headers: { "Content-Type": "application/json" }});
+            var json = await resp.json();
+            if (json.success)
+            {
+                var chunkOps = [];
+                for (var index = 0; index < chunkNumber; index++)
+                {
+                    chunkOps.push(this.props.context.fetch('/api/uploadChunk?uploadToken='+json.uploadToken+'&chunkIndex='+index, { method: 'POST', body: chunks[index],
+                        headers: { "Content-Type": "application/octet-stream" }}));
+                }
+                
+                await Promise.all(chunkOps);
+
                 showSticky(this, 'Завантаження успішне');
                 if (this.props.onSuccess)
                     this.props.onSuccess();
