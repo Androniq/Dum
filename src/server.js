@@ -107,7 +107,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.raw(
   {
     inflate: true,
-    limit: '100kb',
+    limit: '256kb',
     type: 'image/*'
 }));
 app.use(passport.initialize());
