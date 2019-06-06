@@ -25,7 +25,7 @@ import fs from 'fs';
 const extract = require('extract-zip');
 const ObjectID = require('mongodb').ObjectID;
 
-async function applyBackup()
+export async function applyBackup()
 {
     var path = __dirname + '\\..\\temp';
     extract('temp/backup.zip', { dir: path }, async (error) =>

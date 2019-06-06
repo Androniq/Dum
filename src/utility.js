@@ -158,7 +158,7 @@ export function generateToken()
 	return r;
 }
 
-export const acceptedExtensions = ['png','jpg','jpeg','tiff'];
+export const acceptedExtensions = ['png','jpg','jpeg','tif','tiff'];
 
 export function getExtension(filename)
 {

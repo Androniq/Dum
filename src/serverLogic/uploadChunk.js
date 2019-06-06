@@ -22,6 +22,7 @@ import {
 
 import fs from 'fs';
 import { currentUploads } from './uploadInit';
+const toArray = require('stream-to-array');
 
 export async function uploadChunk(user, body, params, { uploadToken, chunkIndex })
 {
@@ -34,7 +35,8 @@ export async function uploadChunk(user, body, params, { uploadToken, chunkIndex 
     {
         return { status: 404, message: "Chunk on non-existing upload" };
     }
-    upload.chunks[chunkIndex].data = body;
+
+    upload.chunks[chunkIndex].data = await toArray(body);
     upload.chunks[chunkIndex].resolver();
     return { success: true };
 }
